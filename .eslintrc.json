@@ -1,0 +1,31 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:react/recommended",
+    "./node_modules/sanctuary-style/eslint-es6.json"
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "jsx": true,
+      "impliedStrict": true
+    },
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "./"
+  },
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": ["off"],
+    "comma-dangle": ["error", "never"],
+    "radix": ["error", "as-needed"],
+    "object-curly-spacing": ["error", "always"]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

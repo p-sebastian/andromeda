@@ -36,8 +36,13 @@
     "@types/redux-persist": "^4.3.1",
     "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^4.1.16",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
     "add": "^2.0.6",
     "babel-preset-expo": "^5.1.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0",
+    "sanctuary-style": "^3.0.0",
     "typescript": "^3.4.5"
   },
   "private": true
