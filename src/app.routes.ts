@@ -2,7 +2,7 @@ import {
   createAppContainer, createStackNavigator,
   createMaterialTopTabNavigator, createSwitchNavigator
 } from 'react-navigation';
-import SonarrHomeScreen from './components/sonarr/home.component';
+import SonarrHomeScreen from './components/sonarr/home.screen';
 
 const SonarrTabs = createMaterialTopTabNavigator ({
   home: SonarrHomeScreen

@@ -5,7 +5,7 @@ import { ScreenFComponent } from '../../utils/types.util';
 const SonarrHomeScreen: ScreenFComponent = () => {
   return (
     <View>
-      <Text>Hello</Text>
+      <Text style={{ fontFamily: 'fira-code-bold', fontWeight: '200' }}>Hello</Text>
     </View>
   );
 };
