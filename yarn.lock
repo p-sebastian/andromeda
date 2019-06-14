@@ -941,6 +941,14 @@
   resolved "https://registry.yarnpkg.com/@types/fbemitter/-/fbemitter-2.0.32.tgz#8ed204da0f54e9c8eaec31b1eec91e25132d082c"
   integrity sha1-jtIE2g9U6cjq7DGx7skeJRMtCCw=
 
+"@types/hoist-non-react-statics@^3.3.0":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+
 "@types/invariant@^2.2.29":
   version "2.2.29"
   resolved "https://registry.yarnpkg.com/@types/invariant/-/invariant-2.2.29.tgz#aa845204cd0a289f65d47e0de63a6a815e30cc66"
@@ -990,6 +998,16 @@
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
+
+"@types/react-redux@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.0.tgz#ed2c90ff192433251bd8a264195529f3613d53e2"
+  integrity sha512-SBJd6oNACDU/taMcDzFfj0mbVa+OI42L8WNvgPsCWiWUNIavPLeX5oA22V64tYIDUc7cGmJjDyLlWeCrqpZu1w==
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.0"
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+    redux "^4.0.0"
 
 "@types/react@*", "@types/react@^16.8.19":
   version "16.8.19"
@@ -5353,6 +5371,11 @@ react-navigation-drawer@~1.2.1:
   dependencies:
     react-native-tab-view "^1.2.0"
 
+react-navigation-hooks@^1.0.0-alpha.2:
+  version "1.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-navigation-hooks/-/react-navigation-hooks-1.0.0-alpha.2.tgz#e44de3790d1f0ba6ff33dc11caa0e55d2a4fc8f7"
+  integrity sha512-G/JlquD3Xs8fYSLywKz6TV+APev8IwHDThU7X9gK2fZnLyk5tX9OeuO4pTpv4jv/tTRcjk7wkKQ+pHI+rFXa/g==
+
 react-navigation-stack@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.4.0.tgz#69cdb029ea4ee5877d7e933b3117dc90bc841eb2"
@@ -5477,7 +5500,7 @@ redux-thunk@*, redux-thunk@^2.3.0:
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
   integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
 
-redux@*, redux@^4.0.1:
+redux@*, redux@^4.0.0, redux@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
   integrity sha512-R7bAtSkk7nY6O/OYMVR9RiBI+XghjF9rlbl5806HJbQph0LJVHZrU5oaO4q70eUKiqMRqm4y07KLTlMZ2BlVmg==
