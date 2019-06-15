@@ -18,3 +18,5 @@ export const THEME = Object.freeze ({
   SONARR,
   RADARR
 });
+
+export type TTheme = typeof BASE;

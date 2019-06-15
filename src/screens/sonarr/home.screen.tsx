@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { ScreenFComponent } from '../../utils/types.util';
+import { ScreenFComponent } from '@utils/types.util';
 
 const SonarrHomeScreen: ScreenFComponent = () => {
   return (
     <View>
-      <Text style={{ fontFamily: 'fira-code-bold', fontWeight: '200' }}>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
     </View>
   );
 };

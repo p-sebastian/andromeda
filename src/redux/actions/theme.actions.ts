@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { THEME_CHANGE } from './types';
 
-type TTheme = 'SONARR' | 'RADARR';
+type ThemeName = 'SONARR' | 'RADARR';
 
-export const changeTheme = (which: TTheme) => action (THEME_CHANGE, which);
+export const changeTheme = (which: ThemeName) => action (THEME_CHANGE, which);

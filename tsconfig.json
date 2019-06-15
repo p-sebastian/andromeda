@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
     "noEmit": true,
     "lib": ["dom", "esnext"],
     "jsx": "react-native",
     "moduleResolution": "node",
+    "target": "esnext",
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "declaration": true,
@@ -16,6 +18,15 @@
     "typeRoots": [
       "./@types"
     ],                       /* List of folders to include type definitions from. */
+    "paths": {
+      "@common": ["components/common/index.ts"],
+      "@components": ["components/index.ts"],
+      "@screens": ["screens/index.ts"],
+      "@utils/*": ["utils/*"],
+      "@reducers": ["redux/reducers/index.ts"],
+      "@epics": ["redux/epics/index.ts"],
+      "@actions": ["redux/actions/index.ts"]
+    },
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true

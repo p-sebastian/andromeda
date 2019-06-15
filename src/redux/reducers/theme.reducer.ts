@@ -1,6 +1,6 @@
 import { THEME_CHANGE } from '../actions/types';
 import { ThemeActionsType } from '../actions';
-import { THEME } from '../../utils/theme.util';
+import { THEME } from '@utils/theme.util';
 
 const DEFAULT_STATE = {
   theme: THEME['SONARR']
