@@ -18,13 +18,12 @@ type Props = { content: any };
 const ADrawer: React.FC<Props> & Extra = ({ content, children }) => {
   const { position } = ADrawer;
   const animated = { transform: [{ translateX: position }] };
-  console.info ('rendered');
 
   return (
     <SViewContainer as={Animated.View} style={animated as any}>
       <SSafeAreaView>
         <DrawerContent content={content} position={position} />
-        <MainContent main={children} />
+        <MainContent main={children} position={position} />
       </SSafeAreaView>
     </SViewContainer>
   );
@@ -34,7 +33,6 @@ ADrawer.position = new Animated.Value (OFFSET);
 type ContentProps = { content: any, position: Animated.Value };
 const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
   const [panResponder] = useState (createPanResponder (position));
-  console.info (`OFFSET: ${OFFSET}, DRAWER: ${DRAWER_WIDTH}`);
   return (
     <SDrawerView as={Animated.View}
       {...panResponder.panHandlers}
@@ -52,17 +50,16 @@ const createPanResponder = (position: Animated.Value) => {
       // makes sure you are moving horizontally significantly
       Math.abs (dx) > Math.abs (dy * 2),
     onPanResponderMove: (event, { dx }) => {
-      const { _value, _offset } = position as any;
+      const { _offset } = position as any;
       // position the element has moved when finger released
       if ((DRAWER_WIDTH - OFFSET) - _offset > dx && dx > OFFSET - _offset) {
-        console.info ('value', _value);
         position.setValue (dx);
       }
     },
     onPanResponderGrant: (e, { dx }) => {
       position.extractOffset ();
     },
-    onPanResponderRelease: (e, { dx, vx }) => {
+    onPanResponderRelease: (e, { dx }) => {
       const { _value } = position as any;
       // prevents resetting when position isnt moving
       if (_value > 0 || _value < 0) {
@@ -83,21 +80,34 @@ const createPanResponder = (position: Animated.Value) => {
       // reset offset when animation finishes
       position.setOffset (value);
       position.setValue (0);
-      // position.flattenOffset ();
     });
   };
   return panResponder;
 };
 
-type MainProps = { main: ReactNode };
-const MainContent: React.FC<MainProps> = ({ main }) => {
+type MainProps = { main: ReactNode, position: Animated.Value };
+const MainContent: React.FC<MainProps> = ({ main, position }) => {
+  // hide main content
+  const animated = { opacity: position.interpolate ({
+    inputRange: [OFFSET, DRAWER_WIDTH - OFFSET],
+    outputRange: [1, 0]
+  }) };
+
   return (
     <SMainView as={Animated.View}>
-      {main}
+      <STransparentOverlay as={Animated.View} style={animated as any}>
+        {main}
+      </STransparentOverlay>
     </SMainView>
   );
 };
 
+/**
+ * transparent overlay, that fades in color from parent
+ */
+const STransparentOverlay = styled.View`
+  flex: 1;
+`;
 // Container view
 const SViewContainer = styled.View`
   position: absolute;
@@ -118,7 +128,8 @@ const SDrawerView = styled.View`
 const SMainView = styled.View`
   position: absolute;
   width: ${SCREEN_WIDTH - OFFSET};
-  height: ${SCREEN_HEIGHT};
+  height: ${SCREEN_HEIGHT}; 
+  background-color: red;
 `;
 
 export default ADrawer;
