@@ -1,7 +1,8 @@
 import React, { ReactNode, useState } from 'react';
 import { Animated, Dimensions, PanResponder } from 'react-native';
 import styled from 'styled-components/native';
-import { AText } from './Text.component';
+import { useShallowSelector } from '@utils/recipes.util';
+import { StyledThemeP } from '@utils/types.util';
 
 const SCREEN_WIDTH = Dimensions.get ('window').width;
 const SCREEN_HEIGHT = Dimensions.get ('window').height;
@@ -33,9 +34,12 @@ ADrawer.position = new Animated.Value (OFFSET);
 type ContentProps = { content: any, position: Animated.Value };
 const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
   const [panResponder] = useState (createPanResponder (position));
+  const THEME = useShallowSelector (state => state.theme);
+
   return (
     <SDrawerView as={Animated.View}
       {...panResponder.panHandlers}
+      theme={THEME}
     >
       {content}
     </SDrawerView>
@@ -87,6 +91,7 @@ const createPanResponder = (position: Animated.Value) => {
 
 type MainProps = { main: ReactNode, position: Animated.Value };
 const MainContent: React.FC<MainProps> = ({ main, position }) => {
+  const THEME = useShallowSelector (state => state.theme);
   // hide main content
   const animated = { opacity: position.interpolate ({
     inputRange: [OFFSET, DRAWER_WIDTH - OFFSET],
@@ -94,8 +99,11 @@ const MainContent: React.FC<MainProps> = ({ main, position }) => {
   }) };
 
   return (
-    <SMainView as={Animated.View}>
-      <STransparentOverlay as={Animated.View} style={animated as any}>
+    <SMainView as={Animated.View} theme={THEME}>
+      <STransparentOverlay
+        as={Animated.View}
+        style={animated as any}
+      >
         {main}
       </STransparentOverlay>
     </SMainView>
@@ -117,19 +125,19 @@ const SSafeAreaView = styled.SafeAreaView`
   flex: 1;
   background-color: red;
 `;
-const SDrawerView = styled.View`
+const SDrawerView = styled.View<StyledThemeP>`
   position: absolute;
   flex: 1;
   width: ${DRAWER_WIDTH};
   height: ${SCREEN_HEIGHT};
   left: ${-DRAWER_WIDTH + OFFSET};
-  background-color: green;
+  background-color: ${({ theme }) => theme.dark};
 `;
-const SMainView = styled.View`
+const SMainView = styled.View<StyledThemeP>`
   position: absolute;
   width: ${SCREEN_WIDTH - OFFSET};
   height: ${SCREEN_HEIGHT}; 
-  background-color: red;
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export default ADrawer;

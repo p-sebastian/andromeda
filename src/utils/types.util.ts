@@ -5,6 +5,7 @@ import {
 import { Epic } from 'redux-observable';
 import { RootState } from '../redux/reducers';
 import { ThemeActionsType } from '../redux/actions';
+import { TTheme } from './theme.util';
 
 /**
  * T: Navigation passed params interface
@@ -32,3 +33,5 @@ export type ScreenFComponent<P = {}, options = {}> =
 type TActions = ThemeActionsType;
 type TDependencies = {};
 export type TEpic<A extends TActions> = Epic<A, A, RootState, TDependencies>;
+// add theme prop for styled components
+export type StyledThemeP = { theme: TTheme };

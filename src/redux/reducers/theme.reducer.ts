@@ -3,7 +3,7 @@ import { ThemeActionsType } from '../actions';
 import { THEME } from '@utils/theme.util';
 
 const DEFAULT_STATE = {
-  theme: THEME['SONARR']
+  ...THEME['SONARR']
 };
 
 export const themeReducer =
@@ -11,7 +11,7 @@ export const themeReducer =
 
   switch (action.type) {
     case THEME_CHANGE:
-      return { theme: THEME[action.payload] };
+      return { ...THEME[action.payload] };
     default: return state;
   }
 };
