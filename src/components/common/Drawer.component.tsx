@@ -50,7 +50,7 @@ const createPanResponder = (position: Animated.Value) => {
      */
     onMoveShouldSetPanResponderCapture: (e, { dx, dy }) =>
       // makes sure you are moving horizontally significantly
-      Math.abs (dx) > Math.abs (dy * 1.1),
+      Math.abs (dx) > Math.abs (dy * 2),
     onPanResponderMove: (event, { dx }) => {
       const { _value, _offset } = position as any;
       // position the element has moved when finger released
@@ -63,14 +63,17 @@ const createPanResponder = (position: Animated.Value) => {
       position.extractOffset ();
     },
     onPanResponderRelease: (e, { dx, vx }) => {
-      // const { x, flattenOffset } = position;
-      position.flattenOffset ();
-      lock (dx > 0, vx);
+      const { _value } = position as any;
+      // prevents resetting when position isnt moving
+      if (_value > 0 || _value < 0) {
+        position.flattenOffset ();
+        lock (dx > 0);
+      }
     }
   });
 
-  type Lock = (open: boolean, v: number) => void;
-  const lock: Lock = (open, v) => {
+  type Lock = (open: boolean) => void;
+  const lock: Lock = open => {
     const value = open ? DRAWER_WIDTH - OFFSET : OFFSET;
     Animated.timing (position, {
       toValue: value,
@@ -80,6 +83,7 @@ const createPanResponder = (position: Animated.Value) => {
       // reset offset when animation finishes
       position.setOffset (value);
       position.setValue (0);
+      // position.flattenOffset ();
     });
   };
   return panResponder;
