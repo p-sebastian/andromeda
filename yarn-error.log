@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/sebastian/.nvm/versions/node/v11.14.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add expo-apploading
+  /Users/sebastian/.nvm/versions/node/v11.14.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add expo-animated
 
 PATH: 
   /Users/sebastian/.nvm/versions/node/v11.14.0/bin:/Users/sebastian/.emacs.d/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/sbin:/Users/sebastian/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/opt/X11/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-apploading: Not found
+  Error: https://registry.yarnpkg.com/expo-animated: Not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:66058:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:129541:22)
       at Request.emit (events.js:193:13)
@@ -71,6 +71,7 @@ npm manifest:
       "@typescript-eslint/eslint-plugin": "^1.10.2",
       "@typescript-eslint/parser": "^1.10.2",
       "add": "^2.0.6",
+      "babel-plugin-module-resolver": "^3.2.0",
       "babel-preset-expo": "^5.1.1",
       "eslint": "^5.16.0",
       "eslint-plugin-react": "^7.13.0",
@@ -1465,7 +1466,7 @@ Lockfile:
       follow-redirects "1.5.10"
       is-buffer "^2.0.2"
   
-  babel-plugin-module-resolver@^3.1.1:
+  babel-plugin-module-resolver@^3.1.1, babel-plugin-module-resolver@^3.2.0:
     version "3.2.0"
     resolved "https://registry.yarnpkg.com/babel-plugin-module-resolver/-/babel-plugin-module-resolver-3.2.0.tgz#ddfa5e301e3b9aa12d852a9979f18b37881ff5a7"
     integrity sha512-tjR0GvSndzPew/Iayf4uICWZqjBwnlMWjSx6brryfQ81F9rxBVqwDJtFCV8oOs0+vJeefK9TmdZtkIFdFe1UnA==

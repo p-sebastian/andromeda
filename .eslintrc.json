@@ -20,6 +20,7 @@
   "rules": {
     "no-unused-vars": "off",
     "no-console": "off",
+    "react/prop-types": "off",
     "@typescript-eslint/explicit-function-return-type": ["off"],
     "comma-dangle": ["error", "never"],
     "radix": ["error", "as-needed"],

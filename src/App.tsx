@@ -6,6 +6,7 @@ import { AppLoading } from 'expo';
 
 import Store from './redux/store';
 import AppContainer from './app.routes';
+import ADrawer from '@common/Drawer.component';
 
 console.disableYellowBox = true;
 
@@ -26,7 +27,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AppContainer />
+        <ADrawer content={null}>
+          <AppContainer />
+        </ADrawer>
       </PersistGate>
     </Provider>
   );

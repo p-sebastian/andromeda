@@ -4,15 +4,14 @@ module.exports = function(api) {
     presets: ['babel-preset-expo'],
     plugins: [
       ['module-resolver', {
-        'root': ['./src'],
         'alias': {
-          '@common': './components/common',
-          '@components': './components',
-          '@screens': './screens',
-          '@utils': './utils',
-          '@reducers': './redux/reducers',
-          '@epics': './redux/epics',
-          '@actions': './redux/actions'
+          '@common': './src/components/common',
+          '@components': './src/components',
+          '@screens': './src/screens',
+          '@utils': './src/utils',
+          '@reducers': './src/redux/reducers',
+          '@epics': './src/redux/epics',
+          '@actions': './src/redux/actions'
         }
       }]
     ]

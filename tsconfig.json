@@ -19,13 +19,13 @@
       "./@types"
     ],                       /* List of folders to include type definitions from. */
     "paths": {
-      "@common": ["components/common/index.ts"],
-      "@components": ["components/index.ts"],
-      "@screens": ["screens/index.ts"],
+      "@common/*": ["components/common/*"],
+      "@components/*": ["components/*"],
+      "@screens/*": ["screens/*"],
       "@utils/*": ["utils/*"],
-      "@reducers": ["redux/reducers/index.ts"],
-      "@epics": ["redux/epics/index.ts"],
-      "@actions": ["redux/actions/index.ts"]
+      "@reducers/*": ["redux/reducers/*"],
+      "@epics/*": ["redux/epics/*"],
+      "@actions/*": ["redux/actions/*"]
     },
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -33,5 +33,6 @@
   },
   "include": [
     "src/**/*"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }

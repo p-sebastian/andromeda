@@ -1,4 +1,4 @@
-const BASE = Object.freeze ({
+export const BASE = Object.freeze ({
   fontRegular: 'dank-mono',
   fontItalic: 'dank-mono-italic',
   fontBold: 'fira-code-bold'

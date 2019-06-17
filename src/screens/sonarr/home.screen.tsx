@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { ScreenFComponent } from '@utils/types.util';
+import { View } from 'react-native';
+import { ScreenFComponent } from '../../utils/types.util';
+import { AText } from '../../components/common';
 
 const SonarrHomeScreen: ScreenFComponent = () => {
   return (
     <View>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
+      <AText>Hello</AText>
+      <AText>Hello</AText>
+      <AText>Hello</AText>
+      <AText>Hello</AText>
     </View>
   );
 };
