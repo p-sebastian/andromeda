@@ -5,11 +5,11 @@ import { AText } from './Text.component';
 
 const SCREEN_WIDTH = Dimensions.get ('window').width;
 const SCREEN_HEIGHT = Dimensions.get ('window').height;
-const DRAWER_WIDTH = SCREEN_WIDTH * 75 / 100;
 // Sidebar size
 const OFFSET = SCREEN_WIDTH * 10 / 100;
+const DRAWER_WIDTH = SCREEN_WIDTH * 75 / 100 + OFFSET;
 
-type Extra = { position: Animated.ValueXY };
+type Extra = { position: Animated.Value };
 type Props = { content: any };
 /**
  * Moves the 2 screens as a whole, while applying
@@ -17,10 +17,11 @@ type Props = { content: any };
  */
 const ADrawer: React.FC<Props> & Extra = ({ content, children }) => {
   const { position } = ADrawer;
+  const animated = { transform: [{ translateX: position }] };
   console.info ('rendered');
 
   return (
-    <SViewContainer as={Animated.View} style={position.getLayout ()}>
+    <SViewContainer as={Animated.View} style={animated as any}>
       <SSafeAreaView>
         <DrawerContent content={content} position={position} />
         <MainContent main={children} />
@@ -28,9 +29,9 @@ const ADrawer: React.FC<Props> & Extra = ({ content, children }) => {
     </SViewContainer>
   );
 };
-ADrawer.position = new Animated.ValueXY ({ x: OFFSET, y: 0 });
+ADrawer.position = new Animated.Value (OFFSET);
 
-type ContentProps = { content: any, position: Animated.ValueXY };
+type ContentProps = { content: any, position: Animated.Value };
 const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
   const [panResponder] = useState (createPanResponder (position));
   console.info (`OFFSET: ${OFFSET}, DRAWER: ${DRAWER_WIDTH}`);
@@ -42,22 +43,23 @@ const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
     </SDrawerView>
   );
 };
-const createPanResponder = (position: Animated.ValueXY) => {
+const createPanResponder = (position: Animated.Value) => {
   const panResponder = PanResponder.create ({
-    onStartShouldSetPanResponder: () => true,
     /**
      * only moves when dx is far greater than dy
      */
-    onMoveShouldSetPanResponderCapture: (e, gesture) =>
-      Math.abs (gesture.dx) > Math.abs (gesture.dy * 1.1),
-    onPanResponderMove: (event, { dx, x0 }) => {
+    onMoveShouldSetPanResponderCapture: (e, { dx, dy }) =>
+      // makes sure you are moving horizontally significantly
+      Math.abs (dx) > Math.abs (dy * 1.1),
+    onPanResponderMove: (event, { dx }) => {
+      const { _value, _offset } = position as any;
       // position the element has moved when finger released
-      const { _offset } = position.x as any;
       if ((DRAWER_WIDTH - OFFSET) - _offset > dx && dx > OFFSET - _offset) {
-        position.setValue ({ x: dx, y: 0 });
+        console.info ('value', _value);
+        position.setValue (dx);
       }
     },
-    onPanResponderGrant: (e, gesture) => {
+    onPanResponderGrant: (e, { dx }) => {
       position.extractOffset ();
     },
     onPanResponderRelease: (e, { dx, vx }) => {
@@ -69,11 +71,16 @@ const createPanResponder = (position: Animated.ValueXY) => {
 
   type Lock = (open: boolean, v: number) => void;
   const lock: Lock = (open, v) => {
+    const value = open ? DRAWER_WIDTH - OFFSET : OFFSET;
     Animated.timing (position, {
-      toValue: { x: open ? DRAWER_WIDTH - OFFSET : OFFSET, y: 0 },
-      duration: 400
-      // useNativeDriver: true
-    }).start ();
+      toValue: value,
+      duration: 400,
+      useNativeDriver: true
+    }).start (() => {
+      // reset offset when animation finishes
+      position.setOffset (value);
+      position.setValue (0);
+    });
   };
   return panResponder;
 };
