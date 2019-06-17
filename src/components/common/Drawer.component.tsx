@@ -5,7 +5,7 @@ import { AText } from './Text.component';
 
 const SCREEN_WIDTH = Dimensions.get ('window').width;
 const SCREEN_HEIGHT = Dimensions.get ('window').height;
-const DRAWER_WIDTH = SCREEN_WIDTH * 70 / 100;
+const DRAWER_WIDTH = SCREEN_WIDTH * 75 / 100;
 // Sidebar size
 const OFFSET = SCREEN_WIDTH * 10 / 100;
 
@@ -42,26 +42,41 @@ const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
     </SDrawerView>
   );
 };
-const createPanResponder = (position: Animated.ValueXY) =>
-  PanResponder.create ({
-  onStartShouldSetPanResponder: () => true,
-  /**
-   * only moves when dx is far greater than dy
-   */
-  onMoveShouldSetPanResponderCapture: (e, gesture) =>
-    Math.abs (gesture.dx) > Math.abs (gesture.dy * 1.1),
-  onPanResponderMove: (event, { dx, x0 }) => {
-    // position the element has moved when finger released
-    const { _offset } = position.x as any;
-    if ((DRAWER_WIDTH - OFFSET) - _offset > dx && dx > OFFSET - _offset) {
-      position.setValue ({ x: dx, y: 0 });
+const createPanResponder = (position: Animated.ValueXY) => {
+  const panResponder = PanResponder.create ({
+    onStartShouldSetPanResponder: () => true,
+    /**
+     * only moves when dx is far greater than dy
+     */
+    onMoveShouldSetPanResponderCapture: (e, gesture) =>
+      Math.abs (gesture.dx) > Math.abs (gesture.dy * 1.1),
+    onPanResponderMove: (event, { dx, x0 }) => {
+      // position the element has moved when finger released
+      const { _offset } = position.x as any;
+      if ((DRAWER_WIDTH - OFFSET) - _offset > dx && dx > OFFSET - _offset) {
+        position.setValue ({ x: dx, y: 0 });
+      }
+    },
+    onPanResponderGrant: (e, gesture) => {
+      position.extractOffset ();
+    },
+    onPanResponderRelease: (e, { dx, vx }) => {
+      // const { x, flattenOffset } = position;
+      position.flattenOffset ();
+      lock (dx > 0, vx);
     }
-  },
-  onPanResponderGrant: (e, gesture) => {
-    position.extractOffset ();
-  },
-  onPanResponderRelease: () => position.flattenOffset ()
-});
+  });
+
+  type Lock = (open: boolean, v: number) => void;
+  const lock: Lock = (open, v) => {
+    Animated.timing (position, {
+      toValue: { x: open ? DRAWER_WIDTH - OFFSET : OFFSET, y: 0 },
+      duration: 400
+      // useNativeDriver: true
+    }).start ();
+  };
+  return panResponder;
+};
 
 type MainProps = { main: ReactNode };
 const MainContent: React.FC<MainProps> = ({ main }) => {
