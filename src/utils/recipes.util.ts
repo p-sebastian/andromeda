@@ -1,5 +1,8 @@
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { RootState } from '@reducers/index';
+import { TActions, StyledThemeP } from './types.util';
+import { Dispatch, useCallback } from 'react';
+import { TTheme } from './theme.util';
 
 /**
  * Uses a shallow equal so that it doesnt trigger a
@@ -8,10 +11,35 @@ import { RootState } from '@reducers/index';
  */
 type Selector = (state: RootState) => any;
 export const useShallowSelector = (selector: Selector) =>
-  useSelector<RootState, any> (selector, shallowEqual);
+  useSelector (selector, shallowEqual);
 
 /**
  * to use when returning a primitive value from
  * the selector
  */
 export const useASelector = (selector: Selector) => useSelector (selector);
+
+/**
+ * useDispatch but with type safety
+ */
+export const useADispatch = () => useDispatch<Dispatch<TActions>> ();
+
+/**
+ * memoizes callback so that if its sent to a child component
+ * it doesnt trigger a rerender when the reference changes
+ */
+export const useADispatchC = (action: TActions) => {
+  const dispatch = useADispatch ();
+  return useCallback (
+    () => dispatch (action),
+    [dispatch]
+  );
+};
+
+/**
+ * For use with styled components that has been
+ * passed the theme prop
+ */
+type ThemeKey = keyof TTheme;
+type TExtract = (key: ThemeKey) => (props: StyledThemeP) => TTheme[ThemeKey];
+export const extractStyleTheme: TExtract = key => ({ theme }) => theme[key];

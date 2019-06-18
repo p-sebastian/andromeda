@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
-import { Animated, Dimensions, PanResponder } from 'react-native';
+import { Animated, Dimensions, PanResponder, View } from 'react-native';
 import styled from 'styled-components/native';
-import { useShallowSelector } from '@utils/recipes.util';
+import { useShallowSelector, extractStyleTheme } from '@utils/recipes.util';
 import { StyledThemeP } from '@utils/types.util';
 
 const SCREEN_WIDTH = Dimensions.get ('window').width;
@@ -9,6 +9,8 @@ const SCREEN_HEIGHT = Dimensions.get ('window').height;
 // Sidebar size
 const OFFSET = SCREEN_WIDTH * 10 / 100;
 const DRAWER_WIDTH = SCREEN_WIDTH * 75 / 100 + OFFSET;
+const HIDDEN_WIDTH = DRAWER_WIDTH - OFFSET;
+console.info (DRAWER_WIDTH);
 
 type Extra = { position: Animated.Value };
 type Props = { content: any };
@@ -21,12 +23,14 @@ const ADrawer: React.FC<Props> & Extra = ({ content, children }) => {
   const animated = { transform: [{ translateX: position }] };
 
   return (
-    <SViewContainer as={Animated.View} style={animated as any}>
-      <SSafeAreaView>
-        <DrawerContent content={content} position={position} />
-        <MainContent main={children} position={position} />
-      </SSafeAreaView>
-    </SViewContainer>
+    <View>
+      <SViewContainer as={Animated.View} style={animated as any}>
+        <SSafeAreaView>
+          <DrawerContent content={content} position={position} />
+          <MainContent main={children} position={position} />
+        </SSafeAreaView>
+      </SViewContainer>
+    </View>
   );
 };
 ADrawer.position = new Animated.Value (OFFSET);
@@ -34,6 +38,14 @@ ADrawer.position = new Animated.Value (OFFSET);
 type ContentProps = { content: any, position: Animated.Value };
 const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
   const [panResponder] = useState (createPanResponder (position));
+  /**
+   * makes title bar stick to the left, while animation is happening
+   * 26, is the pixel number of the bars width;
+   */
+  const animate = { transform: [{ translateX: position.interpolate ({
+    inputRange: [OFFSET, HIDDEN_WIDTH + 26],
+    outputRange: [-OFFSET + 26, -HIDDEN_WIDTH]
+  }) }] };
   const THEME = useShallowSelector (state => state.theme);
 
   return (
@@ -41,6 +53,9 @@ const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
       {...panResponder.panHandlers}
       theme={THEME}
     >
+      <STitleContainer as={Animated.View} style={animate as any}>
+        <STitle theme={THEME}>{THEME.title}</STitle>
+      </STitleContainer>
       {content}
     </SDrawerView>
   );
@@ -75,7 +90,7 @@ const createPanResponder = (position: Animated.Value) => {
 
   type Lock = (open: boolean) => void;
   const lock: Lock = open => {
-    const value = open ? DRAWER_WIDTH - OFFSET : OFFSET;
+    const value = open ? HIDDEN_WIDTH : OFFSET;
     Animated.timing (position, {
       toValue: value,
       duration: 400,
@@ -94,7 +109,7 @@ const MainContent: React.FC<MainProps> = ({ main, position }) => {
   const THEME = useShallowSelector (state => state.theme);
   // hide main content
   const animated = { opacity: position.interpolate ({
-    inputRange: [OFFSET, DRAWER_WIDTH - OFFSET],
+    inputRange: [OFFSET, HIDDEN_WIDTH],
     outputRange: [1, 0]
   }) };
 
@@ -131,13 +146,36 @@ const SDrawerView = styled.View<StyledThemeP>`
   width: ${DRAWER_WIDTH};
   height: ${SCREEN_HEIGHT};
   left: ${-DRAWER_WIDTH + OFFSET};
-  background-color: ${({ theme }) => theme.dark};
+  background-color: ${extractStyleTheme ('dark')};
 `;
 const SMainView = styled.View<StyledThemeP>`
   position: absolute;
   width: ${SCREEN_WIDTH - OFFSET};
   height: ${SCREEN_HEIGHT}; 
-  background-color: ${({ theme }) => theme.background};
+  background-color: ${extractStyleTheme ('background')};
+`;
+const STitleContainer = styled.View`
+  position: absolute;
+  z-index: 20;
+  height: ${SCREEN_HEIGHT};
+  width: 26px;
+  left: ${DRAWER_WIDTH - OFFSET - 26};
+  top: 0;
+  justify-content: center;
+  align-items: center;
+`;
+const STitle = styled.Text<StyledThemeP>`
+  color: white;
+  transform: rotate(270deg);
+  text-transform: capitalize;
+  /* this width sets the length available for the text
+   * the one limiting it is the container which must have a fixed
+   * width 
+   */
+  width: 200;
+  text-align: center;
+  font-family: ${extractStyleTheme ('fontItalic')};
+  font-size: 24px;
 `;
 
 export default ADrawer;

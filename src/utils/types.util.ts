@@ -30,7 +30,7 @@ export type ScreenFComponent<P = {}, options = {}> =
  *
  * Epic<InputActions, OutputActions, RootState, InjectedDependencies>
  */
-type TActions = ThemeActionsType;
+export type TActions = ThemeActionsType;
 type TDependencies = {};
 export type TEpic<A extends TActions> = Epic<A, A, RootState, TDependencies>;
 // add theme prop for styled components

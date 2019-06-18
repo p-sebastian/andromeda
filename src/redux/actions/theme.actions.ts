@@ -1,6 +1,5 @@
 import { action } from 'typesafe-actions';
 import { THEME_CHANGE } from './types';
+import { ThemeEnum } from '@utils/enums.util';
 
-type ThemeName = 'SONARR' | 'RADARR';
-
-export const changeTheme = (which: ThemeName) => action (THEME_CHANGE, which);
+export const changeTheme = (which: ThemeEnum) => action (THEME_CHANGE, which);
