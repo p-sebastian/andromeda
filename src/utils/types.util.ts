@@ -22,7 +22,7 @@ export abstract class ScreenComponent<P = {}, S = {}, A = {}>
   extends React.Component<P & NavProps<A>, S> { }
 
 export type ScreenFComponent<P = {}, options = {}> =
-  React.FC<P> & { navigationOptions: NavigationScreenConfig<options> };
+  React.FC<P> & { navigationOptions?: NavigationScreenConfig<options> };
 
 /**
  * Generalize Epic type

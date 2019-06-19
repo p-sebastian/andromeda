@@ -1,12 +1,21 @@
 import {
   createAppContainer, createStackNavigator,
-  createMaterialTopTabNavigator, createSwitchNavigator
+  createMaterialTopTabNavigator, createSwitchNavigator, TabNavigatorConfig
 } from 'react-navigation';
-import { SonarrHomeScreen } from '@screens/index';
+import { ShowsScreen, UpcomingScreen } from '@screens/index';
+import AHeader from '@common/Header.component';
+import { AMaterialTopTabBar } from './components';
+
+const tabConfig: TabNavigatorConfig = {
+  tabBarComponent: AMaterialTopTabBar,
+  swipeEnabled: false,
+  resetOnBlur: true
+};
 
 const SonarrTabs = createMaterialTopTabNavigator ({
-  home: SonarrHomeScreen
-});
+  Shows: ShowsScreen,
+  Upcoming: UpcomingScreen
+}, tabConfig);
 
 /**
  * The switch is meant to render the tabs of the selected
@@ -25,7 +34,10 @@ const AppSwitch = createSwitchNavigator ({
  */
 const ScreenStack = createStackNavigator ({
   main: AppSwitch
+}, {
+  defaultNavigationOptions: {
+    header: AHeader as any
+  }
 });
-
 
 export default createAppContainer (ScreenStack);

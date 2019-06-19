@@ -7,7 +7,6 @@ import { useADispatchC } from '@utils/recipes.util';
 import { changeTheme } from '@actions/theme.actions';
 import { ThemeEnum } from '@utils/enums.util';
 
-
 const SonarrHomeScreen: ScreenFComponent = () => {
   const toSonarr = useADispatchC (changeTheme (ThemeEnum.SONARR));
   const toRadarr = useADispatchC (changeTheme (ThemeEnum.RADARR));
@@ -31,6 +30,8 @@ const SonarrHomeScreen: ScreenFComponent = () => {
 };
 
 SonarrHomeScreen.navigationOptions = {
+  // tabBarOptions: {
+  // }
 };
 
 export default SonarrHomeScreen;

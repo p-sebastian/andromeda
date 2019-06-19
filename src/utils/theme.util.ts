@@ -9,20 +9,25 @@ export const BASE = Object.freeze ({
   fontItalic: 'dank-mono-italic',
   fontBold: 'fira-code-bold',
   fontColor: main,
-  background: main,
+  primary: main,
+  primaryDark: 'hsla(232, 14%, 10%, 1)',
   dark: main,
   title: 'Home'
 });
 
 const SONARR = Object.freeze ({
   ...BASE,
-  background: sonarrMain,
+  fontColor: 'white',
+  primary: sonarrMain,
+  primaryDark: 'hsla(201, 98%, 24%, 1)',
   title: 'sonarr'
 });
 
 const RADARR = Object.freeze ({
   ...BASE,
-  background: radarrMain,
+  fontColor: main,
+  primary: radarrMain,
+  primaryDark: 'hsla(42, 100%, 42%, 1)',
   title: 'radarr'
 });
 
@@ -30,5 +35,3 @@ export const THEME = Object.freeze ({
   [ThemeEnum.SONARR]: SONARR,
   [ThemeEnum.RADARR]: RADARR
 });
-
-export type TTheme = typeof BASE;

@@ -152,7 +152,7 @@ const SMainView = styled.View<StyledThemeP>`
   position: absolute;
   width: ${SCREEN_WIDTH - OFFSET};
   height: ${SCREEN_HEIGHT}; 
-  background-color: ${extractStyleTheme ('background')};
+  background-color: ${extractStyleTheme ('primary')};
 `;
 const STitleContainer = styled.View`
   position: absolute;

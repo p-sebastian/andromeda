@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/sebastian/.nvm/versions/node/v11.14.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add expo-animated
+  /Users/sebastian/.nvm/versions/node/v11.14.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add -D @types/react-navigation-hooks
 
 PATH: 
-  /Users/sebastian/.nvm/versions/node/v11.14.0/bin:/Users/sebastian/.emacs.d/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/sbin:/Users/sebastian/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/opt/X11/bin
+  /Users/sebastian/.emacs.d/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/sbin:/Users/sebastian/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/opt/X11/bin:/Users/sebastian/.nvm/versions/node/v11.14.0/bin:/Users/sebastian/.emacs.d/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/sbin:/Users/sebastian/bin
 
 Yarn version: 
   1.15.2
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-animated: Not found
+  Error: https://registry.yarnpkg.com/@types%2freact-navigation-hooks: Not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:66058:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:129541:22)
       at Request.emit (events.js:193:13)
