@@ -25,7 +25,8 @@
       "@utils/*": ["utils/*"],
       "@reducers/*": ["redux/reducers/*"],
       "@epics/*": ["redux/epics/*"],
-      "@actions/*": ["redux/actions/*"]
+      "@actions/*": ["redux/actions/*"],
+      "@hooks/*": ["hooks/*"]
     },
     "esModuleInterop": true,
     "experimentalDecorators": true,

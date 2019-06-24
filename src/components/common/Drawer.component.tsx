@@ -3,6 +3,7 @@ import { Animated, Dimensions, PanResponder, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useShallowSelector, extractStyleTheme } from '@utils/recipes.util';
 import { StyledThemeP } from '@utils/types.util';
+import { usePanResponder } from '@hooks/usePanResponder';
 
 const SCREEN_WIDTH = Dimensions.get ('window').width;
 const SCREEN_HEIGHT = Dimensions.get ('window').height;
@@ -10,15 +11,14 @@ const SCREEN_HEIGHT = Dimensions.get ('window').height;
 const OFFSET = SCREEN_WIDTH * 10 / 100;
 const DRAWER_WIDTH = SCREEN_WIDTH * 75 / 100 + OFFSET;
 const HIDDEN_WIDTH = DRAWER_WIDTH - OFFSET;
-console.info (DRAWER_WIDTH);
 
 type Extra = { position: Animated.Value };
-type Props = { content: any };
+type Props = { Content?: React.FC };
 /**
  * Moves the 2 screens as a whole, while applying
  * opacity to the main view
  */
-const ADrawer: React.FC<Props> & Extra = ({ content, children }) => {
+const ADrawer: React.FC<Props> & Extra = ({ Content, children }) => {
   const { position } = ADrawer;
   const animated = { transform: [{ translateX: position }] };
 
@@ -26,7 +26,7 @@ const ADrawer: React.FC<Props> & Extra = ({ content, children }) => {
     <View>
       <SViewContainer as={Animated.View} style={animated as any}>
         <SSafeAreaView>
-          <DrawerContent content={content} position={position} />
+          <DrawerContent Content={Content} position={position} />
           <MainContent main={children} position={position} />
         </SSafeAreaView>
       </SViewContainer>
@@ -35,9 +35,11 @@ const ADrawer: React.FC<Props> & Extra = ({ content, children }) => {
 };
 ADrawer.position = new Animated.Value (OFFSET);
 
-type ContentProps = { content: any, position: Animated.Value };
-const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
-  const [panResponder] = useState (createPanResponder (position));
+type ContentProps = { Content?: React.FC, position: Animated.Value };
+const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
+  const THEME = useShallowSelector (state => state.theme);
+  const [panResponder, title] = usePanResponder (position, THEME.title);
+  // const [panResponder] = useState (createPanResponder (position));
   /**
    * makes title bar stick to the left, while animation is happening
    * 26, is the pixel number of the bars width;
@@ -46,7 +48,6 @@ const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
     inputRange: [OFFSET, HIDDEN_WIDTH + 26],
     outputRange: [-OFFSET + 26, -HIDDEN_WIDTH]
   }) }] };
-  const THEME = useShallowSelector (state => state.theme);
 
   return (
     <SDrawerView as={Animated.View}
@@ -54,54 +55,13 @@ const DrawerContent: React.FC<ContentProps> = ({ content, position }) => {
       theme={THEME}
     >
       <STitleContainer as={Animated.View} style={animate as any}>
-        <STitle theme={THEME}>{THEME.title}</STitle>
+        <STitle theme={THEME}>{title}</STitle>
       </STitleContainer>
-      {content}
+      {/* <SPickerContainer>
+        {Content ? <Content /> : null}
+      </SPickerContainer> */}
     </SDrawerView>
   );
-};
-const createPanResponder = (position: Animated.Value) => {
-  const panResponder = PanResponder.create ({
-    /**
-     * only moves when dx is far greater than dy
-     */
-    onMoveShouldSetPanResponderCapture: (e, { dx, dy }) =>
-      // makes sure you are moving horizontally significantly
-      Math.abs (dx) > Math.abs (dy * 2),
-    onPanResponderMove: (event, { dx }) => {
-      const { _offset } = position as any;
-      // position the element has moved when finger released
-      if ((DRAWER_WIDTH - OFFSET) - _offset > dx && dx > OFFSET - _offset) {
-        position.setValue (dx);
-      }
-    },
-    onPanResponderGrant: (e, { dx }) => {
-      position.extractOffset ();
-    },
-    onPanResponderRelease: (e, { dx }) => {
-      const { _value } = position as any;
-      // prevents resetting when position isnt moving
-      if (_value > 0 || _value < 0) {
-        position.flattenOffset ();
-        lock (dx > 0);
-      }
-    }
-  });
-
-  type Lock = (open: boolean) => void;
-  const lock: Lock = open => {
-    const value = open ? HIDDEN_WIDTH : OFFSET;
-    Animated.timing (position, {
-      toValue: value,
-      duration: 400,
-      useNativeDriver: true
-    }).start (() => {
-      // reset offset when animation finishes
-      position.setOffset (value);
-      position.setValue (0);
-    });
-  };
-  return panResponder;
 };
 
 type MainProps = { main: ReactNode, position: Animated.Value };
@@ -164,7 +124,7 @@ const STitleContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
-const STitle = styled.Text<StyledThemeP>`
+const STitle = styled.Text`
   color: white;
   transform: rotate(270deg);
   text-transform: capitalize;
@@ -176,6 +136,14 @@ const STitle = styled.Text<StyledThemeP>`
   text-align: center;
   font-family: ${extractStyleTheme ('fontItalic')};
   font-size: 24px;
+`;
+const SPickerContainer = styled.View`
+  position: absolute;
+  height: ${SCREEN_HEIGHT};
+  width: ${HIDDEN_WIDTH};
+  left: ${DRAWER_WIDTH - OFFSET};
+  flex: 1;
+  left: ${OFFSET};
 `;
 
 export default ADrawer;

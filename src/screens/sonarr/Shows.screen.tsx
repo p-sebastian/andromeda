@@ -6,6 +6,7 @@ import { AText } from '../../components/common';
 import { useADispatchC } from '@utils/recipes.util';
 import { changeTheme } from '@actions/theme.actions';
 import { ThemeEnum } from '@utils/enums.util';
+import { APicker } from '@components/index';
 
 const SonarrHomeScreen: ScreenFComponent = () => {
   const toSonarr = useADispatchC (changeTheme (ThemeEnum.SONARR));
@@ -25,6 +26,7 @@ const SonarrHomeScreen: ScreenFComponent = () => {
       <AText>Hello</AText>
       <AText>Hello</AText>
       <AText>Hello</AText>
+      <APicker></APicker>
     </View>
   );
 };

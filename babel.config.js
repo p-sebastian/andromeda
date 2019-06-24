@@ -11,7 +11,8 @@ module.exports = function(api) {
           '@utils': './src/utils',
           '@reducers': './src/redux/reducers',
           '@epics': './src/redux/epics',
-          '@actions': './src/redux/actions'
+          '@actions': './src/redux/actions',
+          '@hooks': './src/hooks'
         }
       }]
     ]

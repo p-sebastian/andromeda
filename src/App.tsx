@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import * as Font from 'expo-font';
@@ -7,6 +7,7 @@ import { AppLoading } from 'expo';
 import Store from './redux/store';
 import AppContainer from './app.routes';
 import ADrawer from '@common/Drawer.component';
+import { APicker } from './components';
 
 console.disableYellowBox = true;
 
@@ -27,7 +28,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ADrawer content={null}>
+        <ADrawer Content={APicker}>
           <AppContainer />
         </ADrawer>
       </PersistGate>
