@@ -8,8 +8,6 @@ const SCREEN_WIDTH = Dimensions.get ('window').width;
 const OFFSET = SCREEN_WIDTH * 10 / 100;
 const DRAWER_WIDTH = SCREEN_WIDTH * 75 / 100 + OFFSET;
 const HIDDEN_WIDTH = DRAWER_WIDTH - OFFSET;
-// 281, 37
-// console.info (OFFSET, HIDDEN_WIDTH);
 
 type usePanResponderFn = (position: Animated.Value, themeTitle: string) =>
   [PanResponderInstance, string];

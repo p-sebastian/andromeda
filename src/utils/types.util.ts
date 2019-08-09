@@ -37,3 +37,9 @@ export type TEpic<A extends TActions> = Epic<A, A, RootState, TDependencies>;
 export type TTheme = typeof BASE;
 // add theme prop for styled components
 export type StyledThemeP = { theme: TTheme };
+
+export type TMenuItem = {
+  key: string;
+  title: string;
+  isOnline: boolean;
+};

@@ -11,7 +11,10 @@ export const BASE = Object.freeze ({
   fontColor: main,
   primary: main,
   primaryDark: 'hsla(232, 14%, 10%, 1)',
+  lighterDark: 'hsla(225, 9%, 16%, 1)',
   dark: main,
+  success: 'hsla(133.6, 97%, 77.5%, 1)',
+  danger: 'hsla(12.2, 81.9%, 54.8%, 1)',
   title: 'Home'
 });
 

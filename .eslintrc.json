@@ -2,10 +2,12 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "extends": [
-    "eslint:recommended",
+    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:react/recommended",
-    "./node_modules/sanctuary-style/eslint-es6.json"
+    "airbnb",
+    "prettier",
+    "prettier/react",
+    "eslint-config-prettier"
   ],
   "parserOptions": {
     "sourceType": "module",

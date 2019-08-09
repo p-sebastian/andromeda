@@ -57,9 +57,9 @@ const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
       <STitleContainer as={Animated.View} style={animate as any}>
         <STitle theme={THEME}>{title}</STitle>
       </STitleContainer>
-      {/* <SPickerContainer>
+      <SContentContainer>
         {Content ? <Content /> : null}
-      </SPickerContainer> */}
+      </SContentContainer>
     </SDrawerView>
   );
 };
@@ -137,12 +137,9 @@ const STitle = styled.Text`
   font-family: ${extractStyleTheme ('fontItalic')};
   font-size: 24px;
 `;
-const SPickerContainer = styled.View`
-  position: absolute;
+const SContentContainer = styled.View`
   height: ${SCREEN_HEIGHT};
-  width: ${HIDDEN_WIDTH};
-  left: ${DRAWER_WIDTH - OFFSET};
-  flex: 1;
+  /* moves to the right, so that the sidebar doesnt interfere */
   left: ${OFFSET};
 `;
 
