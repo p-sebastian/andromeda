@@ -1,7 +1,7 @@
 /**
  * Taken from: https://github.com/react-navigation/hooks
  */
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react'
 // TODO: move to "react-navigation" when https://github.com/react-navigation/react-navigation/pull/5276
 // get merged
 import {
@@ -12,42 +12,42 @@ import {
   NavigationEventCallback,
   NavigationEventPayload,
   EventType
-} from 'react-navigation';
+} from 'react-navigation'
 
 export function useNavigation<S>(): NavigationScreenProp<S & NavigationRoute> {
-  return useContext (NavigationContext as any);
+  return useContext(NavigationContext as any)
 }
 
 export function useNavigationParam<T extends keyof NavigationParams>(
   paramName: T
 ) {
-  return useNavigation ().getParam (paramName);
+  return useNavigation().getParam(paramName)
 }
 
 export function useNavigationState() {
-  return useNavigation ().state;
+  return useNavigation().state
 }
 
 export function useNavigationKey() {
-  return useNavigation ().state.key;
+  return useNavigation().state.key
 }
 
 export function useNavigationEvents(handleEvt: NavigationEventCallback) {
-  const navigation = useNavigation ();
-  useEffect (
+  const navigation = useNavigation()
+  useEffect(
     () => {
-      const subsA = navigation.addListener ('action' as any, handleEvt);
-      const subsWF = navigation.addListener ('willFocus', handleEvt);
-      const subsDF = navigation.addListener ('didFocus', handleEvt);
-      const subsWB = navigation.addListener ('willBlur', handleEvt);
-      const subsDB = navigation.addListener ('didBlur', handleEvt);
+      const subsA = navigation.addListener('action' as any, handleEvt)
+      const subsWF = navigation.addListener('willFocus', handleEvt)
+      const subsDF = navigation.addListener('didFocus', handleEvt)
+      const subsWB = navigation.addListener('willBlur', handleEvt)
+      const subsDB = navigation.addListener('didBlur', handleEvt)
       return () => {
-        subsA.remove ();
-        subsWF.remove ();
-        subsDF.remove ();
-        subsWB.remove ();
-        subsDB.remove ();
-      };
+        subsA.remove()
+        subsWF.remove()
+        subsDF.remove()
+        subsWB.remove()
+        subsDB.remove()
+      }
     },
     // For TODO consideration: If the events are tied to the
     // navigation object and the key identifies the nav object,
@@ -56,7 +56,7 @@ export function useNavigationEvents(handleEvt: NavigationEventCallback) {
     // In practice this seems to cause troubles
     undefined
     // [navigation.state.key]
-  );
+  )
 }
 
 const emptyFocusState = {
@@ -64,37 +64,36 @@ const emptyFocusState = {
   isBlurring: false,
   isBlurred: false,
   isFocusing: false
-};
-const didFocusState = { ...emptyFocusState, isFocused: true };
-const willBlurState = { ...emptyFocusState, isBlurring: true };
-const didBlurState = { ...emptyFocusState, isBlurred: true };
-const willFocusState = { ...emptyFocusState, isFocusing: true };
+}
+const didFocusState = { ...emptyFocusState, isFocused: true }
+const willBlurState = { ...emptyFocusState, isBlurring: true }
+const didBlurState = { ...emptyFocusState, isBlurred: true }
+const willFocusState = { ...emptyFocusState, isFocusing: true }
 const getInitialFocusState = (isFocused: boolean) =>
-  isFocused ? didFocusState : didBlurState;
+  isFocused ? didFocusState : didBlurState
 function focusStateOfEvent(eventName: EventType) {
   switch (eventName) {
     case 'didFocus':
-      return didFocusState;
+      return didFocusState
     case 'willFocus':
-      return willFocusState;
+      return willFocusState
     case 'willBlur':
-      return willBlurState;
+      return willBlurState
     case 'didBlur':
-      return didBlurState;
+      return didBlurState
     default:
-      return null;
+      return null
   }
 }
 
 export function useFocusState() {
-  const navigation = useNavigation ();
-  const isFocused = navigation.isFocused ();
-  const [focusState, setFocusState] =
-    useState (getInitialFocusState (isFocused));
+  const navigation = useNavigation()
+  const isFocused = navigation.isFocused()
+  const [focusState, setFocusState] = useState(getInitialFocusState(isFocused))
   function handleEvt(e: NavigationEventPayload) {
-    const newState = focusStateOfEvent (e.type);
-    newState && setFocusState (newState);
+    const newState = focusStateOfEvent(e.type)
+    newState && setFocusState(newState)
   }
-  useNavigationEvents (handleEvt);
-  return focusState;
+  useNavigationEvents(handleEvt)
+  return focusState
 }

@@ -1,13 +1,12 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier", "react"],
   "extends": [
-    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "airbnb",
+    "plugin:react/recommended",
     "prettier",
+    "prettier/@typescript-eslint",
     "prettier/react",
-    "eslint-config-prettier"
   ],
   "parserOptions": {
     "sourceType": "module",
@@ -20,6 +19,7 @@
     "tsconfigRootDir": "./"
   },
   "rules": {
+    "prettier/prettier": "error",
     "no-unused-vars": "off",
     "no-console": "off",
     "react/prop-types": "off",
