@@ -5,7 +5,7 @@
     "lib": ["dom", "esnext"],
     "jsx": "react-native",
     "moduleResolution": "node",
-    "target": "esnext",
+    "target": "es2015",
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "declaration": true,
@@ -16,8 +16,9 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "typeRoots": [
-      "./@types"
-    ],                       /* List of folders to include type definitions from. */
+      "./@types",
+      "node_modules/@types"
+    ],                      
     "paths": {
       "@common/*": ["components/common/*"],
       "@components/*": ["components/*"],
