@@ -22,11 +22,12 @@ module.exports = Object.assign(expoPreset, jestPreset, {
   },
   modulePaths: ['<rootDir>'],
   setupFiles: [...expoPreset.setupFiles, ...jestPreset.setupFiles],
+  setupFilesAfterEnv: ['<rootDir>/jest.init.js'],
   transformIgnorePatterns: [
     `node_modules/(
       ?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|
       @testing-library/react-native|redux|react-redux|redux-observable|redux-persist|redux-thunk|rxjs|
-      styled-components|typesafe-actions
+      styled-components|typesafe-actions|react-native-safe-area-view
     )`
   ],
   modulePaths: ['<rootDir>'],

@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import { render } from '@testing-library/react-native'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import renderer from 'react-test-renderer'
 
 import { RootState } from '@reducers/index'
 import { BASE } from '@utils/theme.util'
@@ -16,7 +17,11 @@ export const withRedux = (
   initialState = INITIAL_STATE
 ) => ({
   ...render(<Provider store={mockStore(initialState)}>{ui}</Provider>)
-  // adding `store` to the returned utilities to allow us
-  // to reference it in our tests (just try to avoid using
-  // this to test implementation details).
+})
+
+export const withReduxRenderer = (
+  ui: React.ReactElement,
+  initialState = INITIAL_STATE
+) => ({
+  ...renderer.create(<Provider store={mockStore(initialState)}>{ui}</Provider>)
 })
