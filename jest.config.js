@@ -1,10 +1,9 @@
 const { pathsToModuleNameMapper } = require('ts-jest/utils')
 const { compilerOptions } = require('./tsconfig')
 const expoPreset = require('jest-expo/jest-preset')
-const jestPreset = require('@testing-library/react-native/jest-preset')
 const { defaults: tsjPreset } = require('ts-jest/presets')
 
-module.exports = Object.assign(expoPreset, jestPreset, {
+module.exports = Object.assign(expoPreset, {
   ...tsjPreset,
   transform: {
     ...tsjPreset.transform,
@@ -21,7 +20,7 @@ module.exports = Object.assign(expoPreset, jestPreset, {
     }
   },
   modulePaths: ['<rootDir>'],
-  setupFiles: [...expoPreset.setupFiles, ...jestPreset.setupFiles],
+  setupFiles: [...expoPreset.setupFiles],
   setupFilesAfterEnv: ['<rootDir>/jest.init.js'],
   transformIgnorePatterns: [
     `node_modules/(

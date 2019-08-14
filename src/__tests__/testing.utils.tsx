@@ -1,9 +1,9 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { render } from '@testing-library/react-native'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import renderer from 'react-test-renderer'
+import { render } from 'react-native-testing-library'
 
 import { RootState } from '@reducers/index'
 import { BASE } from '@utils/theme.util'

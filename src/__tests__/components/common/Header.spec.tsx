@@ -6,9 +6,9 @@ import { withRedux } from '../../testing.utils'
 
 describe('<AHeader/>', () => {
   it('renders', async () => {
-    const { getByLabelText, asJSON } = withRedux(<AHeader />)
-    expect(asJSON()).toMatchSnapshot()
-    expect(getByLabelText(/header/)).toHaveStyleRule(
+    const { toJSON, getByA11yLabel } = withRedux(<AHeader />)
+    expect(toJSON()).toMatchSnapshot()
+    expect(getByA11yLabel(/header/)).toHaveStyleRule(
       'backgroundColor',
       BASE.primary
     )
