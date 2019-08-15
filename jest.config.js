@@ -33,11 +33,12 @@ module.exports = Object.assign(expoPreset, {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/src/'
   }),
-  modulePathIgnorePatterns: ['<rootDir>/src/__tests__/testing.utils.tsx'],
+  modulePathIgnorePatterns: ['<rootDir>/src/__tests__/jest_config/*'],
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
-    '!**/testing.utils.tsx',
+    '!**/jest_config/*',
+    '!**/fakeData.ts',
     '!**/coverage/**',
     '!**/node_modules/**',
     '!**/babel.config.js',

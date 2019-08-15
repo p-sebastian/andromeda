@@ -6,7 +6,6 @@ import SafeAreaView from 'react-native-safe-area-view'
 
 const AHeader: React.FC = () => {
   const THEME = useShallowSelector(state => state.theme)
-  // console.info(SSafeView)
   return <SSafeView theme={THEME} accessibilityLabel="header"></SSafeView>
 }
 

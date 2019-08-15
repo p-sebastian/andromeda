@@ -2,7 +2,7 @@ import { BASE } from '@utils/theme.util'
 import React from 'react'
 import AHeader from '@common/Header.component'
 import 'jest-styled-components/native'
-import { withRedux } from '../../testing.utils'
+import { withRedux } from '../../jest_config/testing.utils'
 
 describe('<AHeader/>', () => {
   it('renders', async () => {

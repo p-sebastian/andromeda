@@ -13,7 +13,7 @@ type Selector<R, S> = (state: S) => R
  */
 export const useShallowSelector = <TSelected, TState = RootState>(
   selector: Selector<TSelected, TState>
-) => useSelector<TState, TSelected>(selector, shallowEqual)
+) => useSelector<TState, TSelected>(useCallback(selector, []), shallowEqual)
 
 /**
  * to use when returning a primitive value from
@@ -21,7 +21,7 @@ export const useShallowSelector = <TSelected, TState = RootState>(
  */
 export const useASelector = <TSelected, TState = RootState>(
   selector: Selector<TSelected, TState>
-) => useSelector<TState, TSelected>(selector)
+) => useSelector<TState, TSelected>(useCallback(selector, []))
 
 /**
  * useDispatch but with type safety
