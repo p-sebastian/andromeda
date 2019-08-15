@@ -1,4 +1,7 @@
 export enum ThemeEnum {
   SONARR,
-  RADARR
+  RADARR,
+  LIDARR,
+  SABNZBD,
+  TRANSMISSION
 }

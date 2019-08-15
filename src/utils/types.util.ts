@@ -2,8 +2,10 @@ import React from 'react'
 import { NavigationScreenProps, NavigationScreenConfig } from 'react-navigation'
 import { Epic } from 'redux-observable'
 import { RootState } from '../redux/reducers'
-import { ThemeActionsType } from '../redux/actions'
+import { ThemeActionsType, NavigationActionsType } from '../redux/actions'
 import { BASE } from './theme.util'
+import { RootNavigation } from './navigation.util'
+import { ScreenNames } from 'app.routes'
 
 /**
  * T: Navigation passed params interface
@@ -32,8 +34,8 @@ export type ScreenFComponent<P = {}, options = {}> = React.FC<P> & {
  *
  * Epic<InputActions, OutputActions, RootState, InjectedDependencies>
  */
-export type TActions = ThemeActionsType
-type TDependencies = {}
+export type TActions = ThemeActionsType | NavigationActionsType
+type TDependencies = { RootNavigation: RootNavigation }
 export type TEpic<A extends TActions> = Epic<A, A, RootState, TDependencies>
 
 export type TTheme = typeof BASE
@@ -42,6 +44,6 @@ export type StyledThemeP = { theme: TTheme }
 
 export type TMenuItem = {
   key: string
-  title: string
+  title: ScreenNames
   isOnline: boolean
 }

@@ -1,16 +1,16 @@
 import React, { ReactNode } from 'react'
-import { Animated, Dimensions, View } from 'react-native'
+import { Animated, View } from 'react-native'
 import styled from 'styled-components/native'
 import { useShallowSelector, extractStyleTheme } from '@utils/recipes.util'
 import { StyledThemeP } from '@utils/types.util'
 import { usePanResponder } from '@hooks/usePanResponder'
-
-const SCREEN_WIDTH = Dimensions.get('window').width
-const SCREEN_HEIGHT = Dimensions.get('window').height
-// Sidebar size
-const OFFSET = (SCREEN_WIDTH * 10) / 100
-const DRAWER_WIDTH = (SCREEN_WIDTH * 75) / 100 + OFFSET
-const HIDDEN_WIDTH = DRAWER_WIDTH - OFFSET
+import {
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  OFFSET,
+  DRAWER_WIDTH,
+  HIDDEN_WIDTH
+} from '@utils/dimensions.util'
 
 type Extra = { position: Animated.Value }
 type Props = { Content?: React.FC }
@@ -38,7 +38,7 @@ ADrawer.position = new Animated.Value(OFFSET)
 type ContentProps = { Content?: React.FC; position: Animated.Value }
 const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
   const THEME = useShallowSelector(state => state.theme)
-  const [panResponder, title] = usePanResponder(position, THEME.title)
+  const [panResponder, title] = usePanResponder(position)
   // const [panResponder] = useState (createPanResponder (position));
   /**
    * makes title bar stick to the left, while animation is happening
@@ -117,7 +117,7 @@ const SMainView = styled.View<StyledThemeP>`
 const STitleContainer = styled.View`
   position: absolute;
   z-index: 20;
-  height: ${SCREEN_HEIGHT};
+  height: ${SCREEN_HEIGHT * 0.3};
   width: 26px;
   left: ${DRAWER_WIDTH - OFFSET - 26};
   top: 0;

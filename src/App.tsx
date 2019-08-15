@@ -8,6 +8,7 @@ import Store from './redux/store'
 import AppContainer from './app.routes'
 import ADrawer from '@common/Drawer.component'
 import { AMenu } from './components'
+import RootNavigation from '@utils/navigation.util'
 
 console.disableYellowBox = true
 
@@ -29,7 +30,7 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ADrawer Content={AMenu}>
-          <AppContainer />
+          <AppContainer ref={ref => (RootNavigation.navigator = ref!)} />
         </ADrawer>
       </PersistGate>
     </Provider>

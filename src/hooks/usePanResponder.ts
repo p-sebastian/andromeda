@@ -5,6 +5,7 @@ import {
   PanResponderInstance
 } from 'react-native'
 import { useState } from 'react'
+import { useASelector } from '@utils/recipes.util'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 // Sidebar size
@@ -13,10 +14,10 @@ const DRAWER_WIDTH = (SCREEN_WIDTH * 75) / 100 + OFFSET
 const HIDDEN_WIDTH = DRAWER_WIDTH - OFFSET
 
 type usePanResponderFn = (
-  position: Animated.Value,
-  themeTitle: string
+  position: Animated.Value
 ) => [PanResponderInstance, string]
-export const usePanResponder: usePanResponderFn = (position, themeTitle) => {
+export const usePanResponder: usePanResponderFn = position => {
+  const themeTitle = useASelector(state => state.theme.title)
   const [title, setTitle] = useState(themeTitle)
   // only gets initialized once
   const [panResponder] = useState(

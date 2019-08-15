@@ -7,9 +7,13 @@ import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2'
 
 import { rootReducer } from '../reducers'
 import epics from '../epics'
+/**
+ * MAKE SURE TO TAKE THE INSTANCE NOT THE CLASS
+ */
+import RootNavigation from '@utils/navigation.util'
 
 const epicMiddleware = createEpicMiddleware({
-  dependencies: {}
+  dependencies: { RootNavigation }
 })
 const persistConfig: PersistConfig = {
   key: 'root',
@@ -27,6 +31,6 @@ export default () => {
   )
   const persistor = persistStore(store)
   persistor.purge()
-  epicMiddleware.run(epics)
+  epicMiddleware.run(epics as any)
   return { store, persistor }
 }

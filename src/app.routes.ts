@@ -8,6 +8,7 @@ import {
 import { ShowsScreen, UpcomingScreen } from '@screens/index'
 import AHeader from '@common/Header.component'
 import { AMaterialTopTabBar } from './components'
+import HomeScreen from '@screens/Home.screen'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -22,13 +23,41 @@ const SonarrTabs = createMaterialTopTabNavigator(
   },
   tabConfig
 )
+const RadarrTabs = createMaterialTopTabNavigator(
+  {
+    Home: HomeScreen
+  },
+  tabConfig
+)
+const LidarrTabs = createMaterialTopTabNavigator(
+  {
+    Home: HomeScreen
+  },
+  tabConfig
+)
+const SabnzbdTabs = createMaterialTopTabNavigator(
+  {
+    Home: HomeScreen
+  },
+  tabConfig
+)
+const TransmissionTabs = createMaterialTopTabNavigator(
+  {
+    Home: HomeScreen
+  },
+  tabConfig
+)
 
 /**
  * The switch is meant to render the tabs of the selected
  * module, since all are different
  */
 const AppSwitch = createSwitchNavigator({
-  Sonarr: SonarrTabs
+  Sonarr: SonarrTabs,
+  Radarr: RadarrTabs,
+  Lidarr: LidarrTabs,
+  Sabnzbd: SabnzbdTabs,
+  Transmission: TransmissionTabs
 })
 
 /**
@@ -48,5 +77,15 @@ const ScreenStack = createStackNavigator(
     }
   }
 )
+
+/**
+ * Screen Names for typing the navigator
+ */
+export type ScreenNames =
+  | 'sonarr'
+  | 'radarr'
+  | 'lidarr'
+  | 'sabnzbd'
+  | 'transmission'
 
 export default createAppContainer(ScreenStack)
