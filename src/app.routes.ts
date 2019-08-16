@@ -9,6 +9,7 @@ import { ShowsScreen, UpcomingScreen } from '@screens/index'
 import AHeader from '@common/Header.component'
 import { AMaterialTopTabBar } from './components'
 import HomeScreen from '@screens/Home.screen'
+import SettingsScreen from '@screens/Settings.screent'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -60,6 +61,15 @@ const AppSwitch = createSwitchNavigator({
   Transmission: TransmissionTabs
 })
 
+const ModalStack = createStackNavigator(
+  {
+    Settings: SettingsScreen
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none'
+  }
+)
 /**
  * Root Navigation
  * This is the main component stack, which will render
@@ -69,7 +79,8 @@ const AppSwitch = createSwitchNavigator({
  */
 const ScreenStack = createStackNavigator(
   {
-    main: AppSwitch
+    Main: AppSwitch,
+    Modal: ModalStack
   },
   {
     defaultNavigationOptions: {
@@ -87,5 +98,6 @@ export type ScreenNames =
   | 'lidarr'
   | 'sabnzbd'
   | 'transmission'
+  | 'settings'
 
 export default createAppContainer(ScreenStack)

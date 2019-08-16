@@ -10,6 +10,9 @@ import _ from 'lodash'
 import { Entypo } from '@expo/vector-icons'
 import { BETWEEN_WIDTH, OFFSET } from '@utils/dimensions.util'
 import { navigate } from '@actions/navigation.actions'
+import { ScreenNames } from 'app.routes'
+import { ThemeEnum } from '@utils/enums.util'
+import { COLORS } from '@utils/constants.util'
 
 type Props = {
   item: TMenuItem
@@ -21,11 +24,12 @@ const AMenuItem: React.FC<Props> = ({ item }) => {
   const isSelected = {
     selected: title === THEME.title,
     isEven: Number(key) % 2 === 0,
+    color: COLORS[key],
     isOnline
   }
 
   return (
-    <SItem theme={THEME} onPress={navigator} {...isSelected}>
+    <SItem onPress={navigator} theme={THEME} {...isSelected}>
       <SText theme={THEME}>{title}</SText>
       {isSelected.selected ? (
         <BtnIcon name="dot-single" size={32} color="white" />
@@ -37,6 +41,7 @@ type TSpecial = StyledThemeP & {
   selected: boolean
   isEven: boolean
   isOnline: boolean
+  color: string
 }
 const SItem = styled.TouchableOpacity<TSpecial>`
   height: 60px;
@@ -44,17 +49,9 @@ const SItem = styled.TouchableOpacity<TSpecial>`
   justify-content: center;
   align-items: center;
   width: ${BETWEEN_WIDTH + OFFSET};
-  ${({ selected, theme }) =>
-    selected &&
-    `
-    border-right-width: 5px;
-    border-style: solid;
-    border-right-color: ${theme.primary};
-  `};
-  /* border-right-width: 3px;
-  border-right-color: ${({ isOnline, theme: { danger, success } }) =>
-    isOnline ? success : danger}; */
-
+  border-right-width: 3px;
+  border-style: solid;
+  border-right-color: ${p => p.color};
   background-color: ${({ isEven, theme }) =>
     isEven ? theme.dark : theme.lighterDark};
 `

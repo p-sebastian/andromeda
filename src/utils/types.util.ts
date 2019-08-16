@@ -6,6 +6,7 @@ import { ThemeActionsType, NavigationActionsType } from '../redux/actions'
 import { BASE } from './theme.util'
 import { RootNavigation } from './navigation.util'
 import { ScreenNames } from 'app.routes'
+import { ThemeEnum } from './enums.util'
 
 /**
  * T: Navigation passed params interface
@@ -43,7 +44,7 @@ export type TTheme = typeof BASE
 export type StyledThemeP = { theme: TTheme }
 
 export type TMenuItem = {
-  key: string
+  key: ThemeEnum
   title: ScreenNames
   isOnline: boolean
 }

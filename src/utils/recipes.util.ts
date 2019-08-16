@@ -34,7 +34,7 @@ export const useADispatch = () => useDispatch<Dispatch<TActions>>()
  */
 export const useADispatchC = (action: TActions) => {
   const dispatch = useADispatch()
-  return useCallback(() => dispatch(action), [action])
+  return useCallback(() => dispatch(action), [])
 }
 
 /**

@@ -4,7 +4,7 @@ import {
   Dimensions,
   PanResponderInstance
 } from 'react-native'
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useASelector } from '@utils/recipes.util'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
@@ -18,51 +18,52 @@ type usePanResponderFn = (
 ) => [PanResponderInstance, string]
 export const usePanResponder: usePanResponderFn = position => {
   const themeTitle = useASelector(state => state.theme.title)
-  const [title, setTitle] = useState(themeTitle)
-  // only gets initialized once
-  const [panResponder] = useState(
-    PanResponder.create({
-      /**
-       * only moves when dx is far greater than dy
-       */
-      onMoveShouldSetPanResponderCapture: (e, { dx, dy }) =>
-        // makes sure you are moving horizontally significantly
-        Math.abs(dx) > Math.abs(dy * 2),
-      onPanResponderMove: (event, { dx }) => {
-        const { _offset } = position as any
-        // position the element has moved when finger released
-        if (DRAWER_WIDTH - OFFSET - _offset > dx && dx > OFFSET - _offset) {
-          // console.info (dx);
-          position.setValue(dx)
+  const [isOpen, setIsOpen] = useState(false)
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        /**
+         * only moves when dx is far greater than dy
+         */
+        onMoveShouldSetPanResponderCapture: (e, { dx, dy }) =>
+          // makes sure you are moving horizontally significantly
+          Math.abs(dx) > Math.abs(dy * 2),
+        onPanResponderMove: (event, { dx }) => {
+          const { _offset } = position as any
+          // position the element has moved when finger released
+          if (DRAWER_WIDTH - OFFSET - _offset > dx && dx > OFFSET - _offset) {
+            // console.info (dx);
+            position.setValue(dx)
+          }
+        },
+        onPanResponderGrant: (e, { dx }) => {
+          position.extractOffset()
+        },
+        onPanResponderRelease: (e, { dx }) => {
+          const { _value } = position as any
+          // prevents resetting when position isnt moving
+          if (_value > 0 || _value < 0) {
+            position.flattenOffset()
+            lock(dx > 0)
+          }
         }
-      },
-      onPanResponderGrant: (e, { dx }) => {
-        position.extractOffset()
-      },
-      onPanResponderRelease: (e, { dx }) => {
-        const { _value } = position as any
-        // prevents resetting when position isnt moving
-        if (_value > 0 || _value < 0) {
-          position.flattenOffset()
-          lock(dx > 0)
-        }
-      }
-    })
+      }),
+    []
   )
 
   type Lock = (open: boolean) => void
-  const lock: Lock = open => {
+  const lock: Lock = useCallback(open => {
     const value = open ? HIDDEN_WIDTH : OFFSET
     Animated.timing(position, {
       toValue: value,
       duration: 400,
       useNativeDriver: true
     }).start(() => {
-      setTitle(open ? 'Andromeda' : themeTitle)
+      setIsOpen(open)
       // reset offset when animation finishes
       position.setOffset(value)
       position.setValue(0)
     })
-  }
-  return [panResponder, title]
+  }, [])
+  return [panResponder, isOpen ? 'Andromeda' : themeTitle]
 }

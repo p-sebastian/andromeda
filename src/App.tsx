@@ -16,7 +16,6 @@ const { persistor, store } = Store()
 
 export default function App() {
   const [isReady, setReady] = useState(false)
-
   if (!isReady) {
     return (
       <AppLoading
@@ -30,11 +29,19 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ADrawer Content={AMenu}>
-          <AppContainer ref={ref => (RootNavigation.navigator = ref!)} />
+          <AppContainer
+            onNavigationStateChange={log}
+            ref={ref => (RootNavigation.navigator = ref!)}
+          />
         </ADrawer>
       </PersistGate>
     </Provider>
   )
+}
+const log = (prevState: any, newState: any, action: any) => {
+  // console.info('PREV', prevState)
+  // console.info('NEW', newState)
+  console.info('ACTION', action)
 }
 
 const _loadAssets = async () => {
