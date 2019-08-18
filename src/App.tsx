@@ -8,7 +8,6 @@ import Store from './redux/store'
 import AppContainer from './app.routes'
 import ADrawer from '@common/Drawer.component'
 import { AMenu } from './components'
-import RootNavigation from '@utils/navigation.util'
 
 console.disableYellowBox = true
 
@@ -29,10 +28,7 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ADrawer Content={AMenu}>
-          <AppContainer
-            onNavigationStateChange={log}
-            ref={ref => (RootNavigation.navigator = ref!)}
-          />
+          <AppContainer />
         </ADrawer>
       </PersistGate>
     </Provider>
@@ -41,7 +37,7 @@ export default function App() {
 const log = (prevState: any, newState: any, action: any) => {
   // console.info('PREV', prevState)
   // console.info('NEW', newState)
-  console.info('ACTION', action)
+  // console.info('ACTION', action)
 }
 
 const _loadAssets = async () => {

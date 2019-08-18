@@ -9,9 +9,7 @@ import {
 import _ from 'lodash'
 import { Entypo } from '@expo/vector-icons'
 import { BETWEEN_WIDTH, OFFSET } from '@utils/dimensions.util'
-import { navigate } from '@actions/navigation.actions'
-import { ScreenNames } from 'app.routes'
-import { ThemeEnum } from '@utils/enums.util'
+import { do_navigate } from '@actions/navigation.actions'
 import { COLORS } from '@utils/constants.util'
 
 type Props = {
@@ -19,7 +17,7 @@ type Props = {
 }
 const AMenuItem: React.FC<Props> = ({ item }) => {
   const { title, key, isOnline } = item
-  const navigator = useADispatchC(navigate(title))
+  const navigator = useADispatchC(do_navigate(title))
   const THEME = useShallowSelector(state => state.theme)
   const isSelected = {
     selected: title === THEME.title,

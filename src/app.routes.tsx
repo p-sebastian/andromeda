@@ -1,5 +1,5 @@
+import React from 'react'
 import {
-  createAppContainer,
   createStackNavigator,
   createMaterialTopTabNavigator,
   createSwitchNavigator,
@@ -10,6 +10,8 @@ import AHeader from '@common/Header.component'
 import { AMaterialTopTabBar } from './components'
 import HomeScreen from '@screens/Home.screen'
 import SettingsScreen from '@screens/Settings.screent'
+import { useASelector, useADispatch } from '@utils/recipes.util'
+import { createReduxContainer } from 'react-navigation-redux-helpers'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -77,7 +79,7 @@ const ModalStack = createStackNavigator(
  * This is a stack because screens navigated from the tabs
  * will be rendered on top of everything to use all the screen
  */
-const ScreenStack = createStackNavigator(
+export const ScreenStack = createStackNavigator(
   {
     Main: AppSwitch,
     Modal: ModalStack
@@ -90,6 +92,15 @@ const ScreenStack = createStackNavigator(
 )
 
 /**
+ * Merges Navigation State and Dispatch with redux
+ */
+const ReduxNavigationContainer = createReduxContainer(ScreenStack)
+const AppNavigator: React.FC = () => {
+  const state = useASelector(state => state.navigation)
+  const dispatch = useADispatch()
+  return <ReduxNavigationContainer state={state} dispatch={dispatch} />
+}
+/**
  * Screen Names for typing the navigator
  */
 export type ScreenNames =
@@ -100,4 +111,4 @@ export type ScreenNames =
   | 'transmission'
   | 'settings'
 
-export default createAppContainer(ScreenStack)
+export default AppNavigator

@@ -1,28 +1,24 @@
 import { isOfType } from 'typesafe-actions'
-import { filter, mergeMap } from 'rxjs/operators'
+import { filter, map } from 'rxjs/operators'
 import { NavigationActionsType, ThemeActionsType } from '../actions'
 import { TEpic } from '@utils/types.util'
-import { NAVIGATE_TO } from '../actions/types'
-import { navigateComplete } from '../actions/navigation.actions'
 import _ from 'lodash'
-import { concat, of } from 'rxjs'
 import { changeTheme } from '@actions/theme.actions'
 import { ThemeEnum } from '@utils/enums.util'
+import { NavigationActions } from 'react-navigation'
+import { AVAILABLE_SERVERS } from '@utils/constants.util'
 
 const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = (
   $action,
-  {},
-  { RootNavigation }
+  {}
 ) =>
   $action.pipe(
-    filter(isOfType(NAVIGATE_TO)),
-    mergeMap(action => {
-      const { screen, params } = action.payload
-      RootNavigation.navigate(_.capitalize(screen), params)
-      return concat(
-        of(navigateComplete()),
-        of(changeTheme(ThemeEnum[screen.toLocaleUpperCase() as any] as any))
+    filter(isOfType(NavigationActions.NAVIGATE)),
+    map((action: any) => {
+      const which = AVAILABLE_SERVERS.find(
+        s => s.title === action.routeName.toLocaleLowerCase()
       )
+      return changeTheme(which === undefined ? ThemeEnum.MAIN : which.key)
     })
   )
 

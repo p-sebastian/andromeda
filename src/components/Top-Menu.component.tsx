@@ -9,11 +9,11 @@ import {
   useASelector,
   useADispatchC
 } from '@utils/recipes.util'
-import { navigate } from '@actions/navigation.actions'
+import { do_navigate } from '@actions/navigation.actions'
 
 const { height } = Dimensions.get('window')
 const ATopMenu: React.FC = () => {
-  const toSettings = useADispatchC(navigate('settings'))
+  const toSettings = useADispatchC(do_navigate('settings'))
   const fontRegular = useASelector(state => state.theme.fontRegular)
   return (
     <Container>

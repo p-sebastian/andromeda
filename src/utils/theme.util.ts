@@ -62,6 +62,7 @@ const TRANSMISSION = Object.freeze({
 })
 
 export const THEME = Object.freeze({
+  [ThemeEnum.MAIN]: BASE,
   [ThemeEnum.SONARR]: SONARR,
   [ThemeEnum.RADARR]: RADARR,
   [ThemeEnum.LIDARR]: LIDARR,

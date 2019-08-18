@@ -1,10 +1,16 @@
 import React from 'react'
-import { NavigationScreenProps, NavigationScreenConfig } from 'react-navigation'
+import {
+  NavigationScreenProps,
+  NavigationScreenConfig,
+  NavigationScreenProp,
+  NavigationParams,
+  NavigationProp,
+  NavigationRouter
+} from 'react-navigation'
 import { Epic } from 'redux-observable'
 import { RootState } from '../redux/reducers'
 import { ThemeActionsType, NavigationActionsType } from '../redux/actions'
 import { BASE } from './theme.util'
-import { RootNavigation } from './navigation.util'
 import { ScreenNames } from 'app.routes'
 import { ThemeEnum } from './enums.util'
 
@@ -28,6 +34,11 @@ export abstract class ScreenComponent<
 export type ScreenFComponent<P = {}, options = {}> = React.FC<P> & {
   navigationOptions?: NavigationScreenConfig<options>
 }
+export type TNavigation = NavigationScreenProp<{}, NavigationParams> &
+  NavigationProp<{}>
+export type CustomNavigator = React.FC<{
+  navigation: TNavigation
+}> & { router: NavigationRouter }
 
 /**
  * Generalize Epic type
@@ -36,7 +47,7 @@ export type ScreenFComponent<P = {}, options = {}> = React.FC<P> & {
  * Epic<InputActions, OutputActions, RootState, InjectedDependencies>
  */
 export type TActions = ThemeActionsType | NavigationActionsType
-type TDependencies = { RootNavigation: RootNavigation }
+type TDependencies = {}
 export type TEpic<A extends TActions> = Epic<A, A, RootState, TDependencies>
 
 export type TTheme = typeof BASE
