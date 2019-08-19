@@ -8,6 +8,8 @@ import Store from './redux/store'
 import AppContainer from './app.routes'
 import ADrawer from '@common/Drawer.component'
 import { AMenu } from './components'
+import { useScreens } from 'react-native-screens'
+useScreens()
 
 console.disableYellowBox = true
 
@@ -33,11 +35,6 @@ export default function App() {
       </PersistGate>
     </Provider>
   )
-}
-const log = (prevState: any, newState: any, action: any) => {
-  // console.info('PREV', prevState)
-  // console.info('NEW', newState)
-  // console.info('ACTION', action)
 }
 
 const _loadAssets = async () => {

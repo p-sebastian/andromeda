@@ -8,10 +8,11 @@ import {
 import { ShowsScreen, UpcomingScreen } from '@screens/index'
 import AHeader from '@common/Header.component'
 import { AMaterialTopTabBar } from './components'
-import HomeScreen from '@screens/Home.screen'
-import SettingsScreen from '@screens/Settings.screent'
+import HomeScreen from '@screens/Settings.screen'
 import { useASelector, useADispatch } from '@utils/recipes.util'
 import { createReduxContainer } from 'react-navigation-redux-helpers'
+import SettingsScreen from '@screens/Settings.screen'
+import { ServerNames } from '@utils/types.util'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -103,12 +104,6 @@ const AppNavigator: React.FC = () => {
 /**
  * Screen Names for typing the navigator
  */
-export type ScreenNames =
-  | 'sonarr'
-  | 'radarr'
-  | 'lidarr'
-  | 'sabnzbd'
-  | 'transmission'
-  | 'settings'
+export type ScreenNames = ServerNames | 'settings'
 
 export default AppNavigator

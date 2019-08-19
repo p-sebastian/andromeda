@@ -54,8 +54,14 @@ export type TTheme = typeof BASE
 // add theme prop for styled components
 export type StyledThemeP = { theme: TTheme }
 
+export type ServerNames =
+  | 'sonarr'
+  | 'radarr'
+  | 'lidarr'
+  | 'sabnzbd'
+  | 'transmission'
 export type TMenuItem = {
   key: ThemeEnum
-  title: ScreenNames
+  title: ServerNames
   isOnline: boolean
 }

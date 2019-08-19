@@ -16,9 +16,3 @@ export const COLORS = Object.freeze({
   [ThemeEnum.SABNZBD]: 'hsl(45, 94%, 49%)',
   [ThemeEnum.TRANSMISSION]: 'hsl(0, 100%, 29%)'
 })
-
-// export const NAME_TO_ENUM: {
-//   [key in ScreenNames]: ThemeEnum
-// } = AVAILABLE_SERVERS.map(s => ({
-//   [s.title]: s.key
-// })) as any

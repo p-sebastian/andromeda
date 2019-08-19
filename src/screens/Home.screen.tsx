@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { useASelector } from '@utils/recipes.util'
 
 const HomeScreen: React.FC = () => {
-  const title = useASelector(state => state.theme.title)
   return (
     <Container>
-      <STitle>{title}</STitle>
+      <STitle>Settings</STitle>
     </Container>
   )
 }

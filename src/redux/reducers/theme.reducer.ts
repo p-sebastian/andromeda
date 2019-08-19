@@ -1,10 +1,11 @@
-import { THEME_CHANGE } from '../actions/types'
+import { THEME_CHANGE, THEME_TITLE } from '../actions/types'
 import { ThemeActionsType } from '../actions'
-import { THEME } from '@utils/theme.util'
 import { ThemeEnum } from '@utils/enums.util'
+import { ScreenNames } from 'app.routes'
 
 const DEFAULT_STATE = {
-  ...THEME[ThemeEnum.SONARR]
+  selected: ThemeEnum.SONARR as ThemeEnum,
+  title: 'sonarr' as ScreenNames
 }
 
 export const themeReducer = (
@@ -13,7 +14,9 @@ export const themeReducer = (
 ) => {
   switch (action.type) {
     case THEME_CHANGE:
-      return { ...THEME[action.payload] }
+      return { ...state, selected: action.payload }
+    case THEME_TITLE:
+      return { ...state, title: action.payload }
     default:
       return state
   }

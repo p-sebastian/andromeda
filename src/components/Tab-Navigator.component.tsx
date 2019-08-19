@@ -1,23 +1,24 @@
 import React from 'react'
 import { MaterialTopTabBar, MaterialTopTabBarProps } from 'react-navigation'
 import styled from 'styled-components/native'
-import { useShallowSelector, extractStyleTheme } from '@utils/recipes.util'
+import { extractStyleTheme } from '@utils/recipes.util'
+import { useTheme } from '@hooks/useTheme'
 
 const AMaterialTopTabBar: React.FC<MaterialTopTabBarProps> = props => {
-  const THEME = useShallowSelector(state => state.theme)
+  const [theme] = useTheme()
   const modProps: MaterialTopTabBarProps = { ...props }
   // bottom bar
   modProps.indicatorStyle = {
-    backgroundColor: THEME.fontColor
+    backgroundColor: theme.fontColor
   }
   // text in tab
   modProps.labelStyle = {
-    fontFamily: THEME.fontBold,
+    fontFamily: theme.fontBold,
     letterSpacing: 3,
-    color: THEME.fontColor
+    color: theme.fontColor
   }
 
-  return <SMTTB theme={THEME} {...modProps} />
+  return <SMTTB theme={theme} {...modProps} />
 }
 
 const SMTTB = styled(MaterialTopTabBar)`

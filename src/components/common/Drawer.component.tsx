@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Animated, View } from 'react-native'
 import styled from 'styled-components/native'
-import { useShallowSelector, extractStyleTheme } from '@utils/recipes.util'
+import { extractStyleTheme } from '@utils/recipes.util'
 import { StyledThemeP } from '@utils/types.util'
 import { usePanResponder } from '@hooks/usePanResponder'
 import {
@@ -11,6 +11,7 @@ import {
   DRAWER_WIDTH,
   HIDDEN_WIDTH
 } from '@utils/dimensions.util'
+import { useTheme } from '@hooks/useTheme'
 
 type Extra = { position: Animated.Value }
 type Props = { Content?: React.FC }
@@ -37,7 +38,7 @@ ADrawer.position = new Animated.Value(OFFSET)
 
 type ContentProps = { Content?: React.FC; position: Animated.Value }
 const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
-  const THEME = useShallowSelector(state => state.theme)
+  const [theme] = useTheme()
   const [panResponder, title] = usePanResponder(position)
   // const [panResponder] = useState (createPanResponder (position));
   /**
@@ -56,9 +57,9 @@ const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
   }
 
   return (
-    <SDrawerView as={Animated.View} {...panResponder.panHandlers} theme={THEME}>
+    <SDrawerView as={Animated.View} {...panResponder.panHandlers} theme={theme}>
       <STitleContainer as={Animated.View} style={animate as any}>
-        <STitle theme={THEME}>{title}</STitle>
+        <STitle theme={theme}>{title}</STitle>
       </STitleContainer>
       <SContentContainer>{Content ? <Content /> : null}</SContentContainer>
     </SDrawerView>
@@ -67,7 +68,7 @@ const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
 
 type MainProps = { main: ReactNode; position: Animated.Value }
 const MainContent: React.FC<MainProps> = ({ main, position }) => {
-  const THEME = useShallowSelector(state => state.theme)
+  const [theme] = useTheme()
   // hide main content
   const animated = {
     opacity: position.interpolate({
@@ -77,7 +78,7 @@ const MainContent: React.FC<MainProps> = ({ main, position }) => {
   }
 
   return (
-    <SMainView as={Animated.View} theme={THEME}>
+    <SMainView as={Animated.View} theme={theme}>
       <STransparentOverlay as={Animated.View} style={animated as any}>
         {main}
       </STransparentOverlay>

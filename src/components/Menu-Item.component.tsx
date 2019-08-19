@@ -1,16 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import { TMenuItem, StyledThemeP } from '@utils/types.util'
-import {
-  useShallowSelector,
-  extractStyleTheme,
-  useADispatchC
-} from '@utils/recipes.util'
+import { extractStyleTheme, useADispatchC } from '@utils/recipes.util'
 import _ from 'lodash'
 import { Entypo } from '@expo/vector-icons'
 import { BETWEEN_WIDTH, OFFSET } from '@utils/dimensions.util'
 import { do_navigate } from '@actions/navigation.actions'
 import { COLORS } from '@utils/constants.util'
+import { useTheme } from '@hooks/useTheme'
 
 type Props = {
   item: TMenuItem
@@ -18,17 +15,17 @@ type Props = {
 const AMenuItem: React.FC<Props> = ({ item }) => {
   const { title, key, isOnline } = item
   const navigator = useADispatchC(do_navigate(title))
-  const THEME = useShallowSelector(state => state.theme)
+  const [theme, themeTitle] = useTheme()
   const isSelected = {
-    selected: title === THEME.title,
+    selected: title === themeTitle,
     isEven: Number(key) % 2 === 0,
     color: COLORS[key],
     isOnline
   }
 
   return (
-    <SItem onPress={navigator} theme={THEME} {...isSelected}>
-      <SText theme={THEME}>{title}</SText>
+    <SItem onPress={navigator} theme={theme} {...isSelected}>
+      <SText theme={theme}>{title}</SText>
       {isSelected.selected ? (
         <BtnIcon name="dot-single" size={32} color="white" />
       ) : null}

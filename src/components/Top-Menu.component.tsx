@@ -4,17 +4,17 @@ import { Dimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { BETWEEN_WIDTH } from '@utils/dimensions.util'
 import { StyledThemeP } from '@utils/types.util'
-import {
-  extractStyleTheme,
-  useASelector,
-  useADispatchC
-} from '@utils/recipes.util'
+import { extractStyleTheme, useADispatchC } from '@utils/recipes.util'
 import { do_navigate } from '@actions/navigation.actions'
+import { useTheme } from '@hooks/useTheme'
+import { ThemeEnum } from '@utils/enums.util'
 
 const { height } = Dimensions.get('window')
 const ATopMenu: React.FC = () => {
-  const toSettings = useADispatchC(do_navigate('settings'))
-  const fontRegular = useASelector(state => state.theme.fontRegular)
+  const toSettings = useADispatchC(
+    do_navigate('settings', { theme: ThemeEnum.LIDARR })
+  )
+  const [{ fontRegular }] = useTheme()
   return (
     <Container>
       <SSettingsButton onPress={toSettings}>
