@@ -9,7 +9,11 @@ import {
 } from 'react-navigation'
 import { Epic } from 'redux-observable'
 import { RootState } from '../redux/reducers'
-import { ThemeActionsType, NavigationActionsType } from '../redux/actions'
+import {
+  ThemeActionsType,
+  NavigationActionsType,
+  ServerActionsType
+} from '../redux/actions'
 import { BASE } from './theme.util'
 import { ScreenNames } from 'app.routes'
 import { ThemeEnum } from './enums.util'
@@ -46,7 +50,10 @@ export type CustomNavigator = React.FC<{
  *
  * Epic<InputActions, OutputActions, RootState, InjectedDependencies>
  */
-export type TActions = ThemeActionsType | NavigationActionsType
+export type TActions =
+  | ThemeActionsType
+  | NavigationActionsType
+  | ServerActionsType
 type TDependencies = {}
 export type TEpic<A extends TActions> = Epic<A, A, RootState, TDependencies>
 
@@ -60,8 +67,10 @@ export type ServerNames =
   | 'lidarr'
   | 'sabnzbd'
   | 'transmission'
+export type ServerStatus = 'online' | 'offline'
 export type TMenuItem = {
   key: ThemeEnum
   title: ServerNames
   isOnline: boolean
+  tabs: ScreenNames[]
 }

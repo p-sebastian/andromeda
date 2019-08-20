@@ -8,7 +8,7 @@ import {
 import { ShowsScreen, UpcomingScreen } from '@screens/index'
 import AHeader from '@common/Header.component'
 import { AMaterialTopTabBar } from './components'
-import HomeScreen from '@screens/Settings.screen'
+import HomeScreen from '@screens/Home.screen'
 import { useASelector, useADispatch } from '@utils/recipes.util'
 import { createReduxContainer } from 'react-navigation-redux-helpers'
 import SettingsScreen from '@screens/Settings.screen'
@@ -69,8 +69,10 @@ const ModalStack = createStackNavigator(
     Settings: SettingsScreen
   },
   {
-    mode: 'modal',
-    headerMode: 'none'
+    headerMode: 'none',
+    navigationOptions: {
+      gesturesEnabled: false
+    }
   }
 )
 /**
@@ -86,6 +88,7 @@ export const ScreenStack = createStackNavigator(
     Modal: ModalStack
   },
   {
+    mode: 'modal',
     defaultNavigationOptions: {
       header: AHeader as any
     }
@@ -104,6 +107,6 @@ const AppNavigator: React.FC = () => {
 /**
  * Screen Names for typing the navigator
  */
-export type ScreenNames = ServerNames | 'settings'
+export type ScreenNames = ServerNames | 'settings' | 'upcoming' | 'shows'
 
 export default AppNavigator

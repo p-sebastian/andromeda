@@ -1,5 +1,5 @@
 export enum ThemeEnum {
-  MAIN,
+  MAIN = 1,
   SONARR,
   RADARR,
   LIDARR,

@@ -12,7 +12,7 @@ import { ThemeEnum } from '@utils/enums.util'
 const { height } = Dimensions.get('window')
 const ATopMenu: React.FC = () => {
   const toSettings = useADispatchC(
-    do_navigate('settings', { theme: ThemeEnum.LIDARR })
+    do_navigate('settings', { theme: ThemeEnum.MAIN })
   )
   const [{ fontRegular }] = useTheme()
   return (

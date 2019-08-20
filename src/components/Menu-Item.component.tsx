@@ -8,6 +8,7 @@ import { BETWEEN_WIDTH, OFFSET } from '@utils/dimensions.util'
 import { do_navigate } from '@actions/navigation.actions'
 import { COLORS } from '@utils/constants.util'
 import { useTheme } from '@hooks/useTheme'
+import { withinScreen } from '@utils/helpers.util'
 
 type Props = {
   item: TMenuItem
@@ -17,7 +18,7 @@ const AMenuItem: React.FC<Props> = ({ item }) => {
   const navigator = useADispatchC(do_navigate(title))
   const [theme, themeTitle] = useTheme()
   const isSelected = {
-    selected: title === themeTitle,
+    selected: withinScreen(title, themeTitle),
     isEven: Number(key) % 2 === 0,
     color: COLORS[key],
     isOnline

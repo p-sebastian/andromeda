@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 const HomeScreen: React.FC = () => {
   return (
     <Container>
-      <STitle>Settings</STitle>
+      <STitle>Home</STitle>
     </Container>
   )
 }

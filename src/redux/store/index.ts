@@ -35,7 +35,7 @@ export default () => {
     applyMiddleware(navigationMiddleware, thunk, epicMiddleware)
   )
   const persistor = persistStore(store)
-  persistor.purge()
+  // persistor.purge()
   epicMiddleware.run(epics as any)
   return { store, persistor }
 }

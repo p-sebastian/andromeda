@@ -1,5 +1,5 @@
 import { isOfType } from 'typesafe-actions'
-import { filter, mergeMap } from 'rxjs/operators'
+import { filter, mergeMap, tap, map } from 'rxjs/operators'
 import { NavigationActionsType, ThemeActionsType } from '../actions'
 import { TEpic } from '@utils/types.util'
 import _ from 'lodash'
@@ -9,20 +9,18 @@ import { AVAILABLE_SERVERS } from '@utils/constants.util'
 import { concat, of, Observable } from 'rxjs'
 import { ScreenNames } from 'app.routes'
 import { ThemeEnum } from '@utils/enums.util'
+import { do_navigate_back_complete } from '@actions/navigation.actions'
 
 type NavAction = {
   type: NavigationActionsType
   params: any
   routeName: ScreenNames
 }
-const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = (
-  $action,
-  {}
-) =>
+const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = $action =>
   $action.pipe(
     filter(isOfType(NavigationActions.NAVIGATE)),
     mergeMap((action: any) => {
-      const { routeName, params } = action as NavAction
+      const { routeName, params = {} } = action as NavAction
       const screenName = routeName.toLocaleLowerCase() as ScreenNames
       const which = AVAILABLE_SERVERS.find(s => s.title === screenName)
       const actions = [of(do_theme_title(screenName))] as Observable<
@@ -36,4 +34,12 @@ const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = (
     })
   )
 
-export const NAVIGATION_EPICS = [navigateEpic]
+const onNavigationBackEpic: TEpic<
+  NavigationActionsType | ThemeActionsType
+> = $action =>
+  $action.pipe(
+    filter(isOfType(NavigationActions.BACK)),
+    tap(action => console.info(action)),
+    map(() => do_navigate_back_complete())
+  )
+export const NAVIGATION_EPICS = [navigateEpic, onNavigationBackEpic]

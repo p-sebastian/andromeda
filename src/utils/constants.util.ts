@@ -2,11 +2,21 @@ import { ThemeEnum } from './enums.util'
 import { TMenuItem } from './types.util'
 
 export const AVAILABLE_SERVERS: TMenuItem[] = [
-  { key: ThemeEnum.SONARR, title: 'sonarr', isOnline: false },
-  { key: ThemeEnum.RADARR, title: 'radarr', isOnline: true },
-  { key: ThemeEnum.LIDARR, title: 'lidarr', isOnline: false },
-  { key: ThemeEnum.SABNZBD, title: 'sabnzbd', isOnline: true },
-  { key: ThemeEnum.TRANSMISSION, title: 'transmission', isOnline: false }
+  {
+    key: ThemeEnum.SONARR,
+    title: 'sonarr',
+    isOnline: false,
+    tabs: ['upcoming', 'shows']
+  },
+  { key: ThemeEnum.RADARR, title: 'radarr', isOnline: true, tabs: [] },
+  { key: ThemeEnum.LIDARR, title: 'lidarr', isOnline: false, tabs: [] },
+  { key: ThemeEnum.SABNZBD, title: 'sabnzbd', isOnline: true, tabs: [] },
+  {
+    key: ThemeEnum.TRANSMISSION,
+    title: 'transmission',
+    isOnline: false,
+    tabs: []
+  }
 ]
 export const COLORS = Object.freeze({
   [ThemeEnum.MAIN]: 'hsla(225, 6%, 13%, 1)',
