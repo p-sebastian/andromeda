@@ -1,16 +1,18 @@
-import { ServerNames } from './types.util'
 import { ScreenNames } from 'app.routes'
 import { AVAILABLE_SERVERS } from './constants.util'
+import { ServerEnum } from './enums.util'
 
 /**
  * checks if navigation screen is within the screens of the current server
  * to maintain the check in the sidebar
  */
 export const withinScreen = (
-  serverName: ServerNames,
+  serverKey: ServerEnum,
   screenName: ScreenNames
-) =>
-  serverName === screenName ||
-  AVAILABLE_SERVERS.find(s => s.title === serverName)!.tabs.findIndex(
-    t => t === screenName
-  ) >= 0
+) => {
+  const server = AVAILABLE_SERVERS[serverKey]
+  return (
+    server.title === screenName ||
+    server.tabs.findIndex(name => name === screenName) > -1
+  )
+}

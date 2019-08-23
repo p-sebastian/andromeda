@@ -1,16 +1,16 @@
 import Reactotron from 'reactotron-react-native'
 
 export const logger = {
-  log(msg: any) {
-    Reactotron.log!(msg)
+  log(...args: any[]) {
+    Reactotron.log!(args)
   },
-  info(msg: any) {
-    Reactotron.logImportant!(msg)
+  info(...args: any[]) {
+    Reactotron.logImportant!(args)
   },
-  warn(msg: any) {
-    Reactotron.warn!(msg)
+  warn(...args: any[]) {
+    Reactotron.warn!(args)
   },
-  error(msg: any) {
-    Reactotron.error!(msg, '')
+  error(...args: any[]) {
+    Reactotron.error!(args, '')
   }
 }

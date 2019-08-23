@@ -18,7 +18,7 @@ const AMenuItem: React.FC<Props> = ({ item }) => {
   const navigator = useADispatchC(do_navigate(title))
   const [theme, themeTitle] = useTheme()
   const isSelected = {
-    selected: withinScreen(title, themeTitle),
+    selected: withinScreen(key, themeTitle),
     isEven: Number(key) % 2 === 0,
     color: COLORS[themeKey]
   }

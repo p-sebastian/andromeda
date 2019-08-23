@@ -93,7 +93,8 @@ export const ScreenStack = createStackNavigator(
     mode: 'modal',
     defaultNavigationOptions: {
       header: AHeader as any
-    }
+    },
+    initialRouteName: 'Modal'
   }
 )
 
