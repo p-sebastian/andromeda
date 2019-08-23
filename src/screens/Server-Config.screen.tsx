@@ -1,16 +1,163 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { ScreenFComponent } from '@utils/types.util'
+import { ScreenFComponent, TServer } from '@utils/types.util'
+import { THEME } from '@utils/theme.util'
+import { ThemeEnum, ColorEnum } from '@utils/enums.util'
+import ACard from '@common/Card.component'
+import { COLORS } from '@utils/constants.util'
+import AText from '@common/Text.component'
+import AInput from '@common/Input.component'
+import { logger } from '@utils/logger.util'
+import { MARGIN, BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
+import AInfo from '@common/Info-Text.component'
+import { extractProp } from '@utils/recipes.util'
 
-const ServerConfigScreen: ScreenFComponent = () => {
+const ServerConfigScreen: ScreenFComponent = props => {
+  const [authEnabled, setAuthEnabled] = useState(false)
+  const { title } = props.navigation.state.params as TServer
+
   return (
-    <Container>
-      <STitle>Home</STitle>
-    </Container>
+    <Avoid behavior="padding" keyboardVerticalOffset={40}>
+      <Container>
+        <ACard color={COLORS[ColorEnum.GRAY]}>
+          <Header>{title}</Header>
+          <DescriptionContainer>
+            <AInfo>
+              Will default to LAN in Wifi, if it fails will search on Remote
+            </AInfo>
+          </DescriptionContainer>
+        </ACard>
+        <ACard color={COLORS[ColorEnum.GRAY]}>
+          <STitle>LAN</STitle>
+          <AInput
+            autoCapitalize="none"
+            autoCompleteType="off"
+            labelText="URL"
+            placeholder="10.0.1.10"
+            keyboardType="decimal-pad"
+            onChangeText={onChangeText}
+            validate={['required']}
+          />
+          <AInput
+            autoCapitalize="none"
+            autoCompleteType="off"
+            labelText="PORT"
+            keyboardType="decimal-pad"
+            placeholder="8080"
+            validate={['required']}
+            onChangeText={onChangeText}
+          />
+          <Space />
+          <STitle>Remote</STitle>
+          <AInput
+            autoCapitalize="none"
+            autoCompleteType="off"
+            labelText="URL"
+            placeholder="example.domain.com"
+            keyboardType="url"
+            onChangeText={onChangeText}
+          />
+          <AInput
+            autoCapitalize="none"
+            autoCompleteType="off"
+            labelText="PORT"
+            keyboardType="decimal-pad"
+            placeholder="34512"
+            onChangeText={onChangeText}
+          />
+          <Space />
+          <STitle>Additional</STitle>
+          <AInput
+            autoCapitalize="none"
+            autoCompleteType="off"
+            labelText="API Key"
+            placeholder="3UYjciAJWGV9kcdLpJeXQHjf"
+            validate={['required']}
+            onChangeText={onChangeText}
+          />
+        </ACard>
+        <ACard color={COLORS[ColorEnum.GRAY]}>
+          <SwitchContainer>
+            <AuthTitle>Authentication</AuthTitle>
+            <Switch
+              onValueChange={v => setAuthEnabled(v)}
+              value={authEnabled}
+            />
+          </SwitchContainer>
+        </ACard>
+        <ButtonContainer>
+          <Button background={COLORS[ColorEnum.INFO]}>
+            <ButtonText>Test</ButtonText>
+          </Button>
+          <Button background={COLORS[ColorEnum.SUCCESS]}>
+            <ButtonText>Save</ButtonText>
+          </Button>
+        </ButtonContainer>
+      </Container>
+    </Avoid>
   )
 }
 
-const Container = styled.View``
-const STitle = styled.Text``
+const onChangeText = (text: string, isValid?: boolean) => {
+  logger.log('outside', text, isValid)
+}
+
+const Container = styled.ScrollView`
+  flex: 1;
+  background: ${THEME[ThemeEnum.MAIN].lighterDark};
+`
+const Avoid = styled.KeyboardAvoidingView`
+  flex: 1;
+`
+const Space = styled.View`
+  height: ${MARGIN};
+`
+const STitle = styled(AText)`
+  color: white;
+  font-size: 18;
+`
+const Header = styled(AText)`
+  font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
+  text-align: center;
+  color: white;
+  font-size: 22;
+  text-transform: capitalize;
+  margin-bottom: 5;
+`
+const DescriptionContainer = styled.View`
+  margin-top: 5;
+`
+const AuthTitle = styled(STitle)`
+  flex: 1;
+  align-self: center;
+`
+const SwitchContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+`
+const Switch = styled.Switch``
+const ButtonContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-bottom: ${MARGIN};
+  margin-left: ${MARGIN};
+  margin-right: ${MARGIN};
+`
+const Button = styled.TouchableOpacity`
+  flex-basis: 48%;
+  height: 40;
+  align-content: center;
+  justify-content: center;
+  background: ${extractProp<{ background: string }>('background')};
+  border-radius: ${BORDER_RADIUS};
+  box-shadow: ${BOX_SHADOW};
+`
+const ButtonText = styled(AText)`
+  font-family: ${THEME[ThemeEnum.MAIN].fontBold};
+  text-align: center;
+  font-size: 14;
+  text-transform: uppercase;
+`
 
 export default ServerConfigScreen

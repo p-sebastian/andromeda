@@ -35,7 +35,9 @@ export abstract class ScreenComponent<
   A = {}
 > extends React.Component<P & NavProps<A>, S> {}
 
-export type ScreenFComponent<P = {}, options = {}> = React.FC<P> & {
+export type ScreenFComponent<P = {}, options = {}> = React.FC<
+  P & NavProps<{}>
+> & {
   navigationOptions?: NavigationScreenConfig<options>
 }
 export type TNavigation = NavigationScreenProp<{}, NavigationParams> &

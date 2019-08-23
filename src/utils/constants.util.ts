@@ -1,4 +1,4 @@
-import { ThemeEnum, ServerEnum } from './enums.util'
+import { ThemeEnum, ServerEnum, ColorEnum } from './enums.util'
 import { TAvailableServers } from './types.util'
 
 export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
@@ -34,10 +34,15 @@ export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
   }
 })
 export const COLORS = Object.freeze({
-  [ThemeEnum.MAIN]: 'hsla(225, 6%, 13%, 1)',
-  [ThemeEnum.SONARR]: 'hsla(195, 93%, 39%, 1)',
-  [ThemeEnum.RADARR]: 'hsla(42, 99%, 53%, 1)',
-  [ThemeEnum.LIDARR]: 'hsl(154, 100%, 29%)',
-  [ThemeEnum.SABNZBD]: 'hsl(45, 94%, 49%)',
-  [ThemeEnum.TORRENT]: 'hsl(0, 100%, 29%)'
+  [ColorEnum.MAIN]: 'hsla(225, 6%, 13%, 1)',
+  [ColorEnum.SONARR]: 'hsla(195, 93%, 39%, 1)',
+  [ColorEnum.RADARR]: 'hsla(42, 99%, 53%, 1)',
+  [ColorEnum.LIDARR]: 'hsl(154, 100%, 29%)',
+  [ColorEnum.SABNZBD]: 'hsl(45, 94%, 49%)',
+  [ColorEnum.TORRENT]: 'hsl(0, 100%, 29%)',
+  [ColorEnum.GRAY]: 'hsla(228, 11%, 28%, 1)',
+  [ColorEnum.PLACEHOLDER]: 'hsla(0, 0%, 52%, 1)',
+  [ColorEnum.DANGER]: '#F44336',
+  [ColorEnum.SUCCESS]: '#1DE9B6',
+  [ColorEnum.INFO]: '#00B0FF'
 })

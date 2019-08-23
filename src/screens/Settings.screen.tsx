@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 import { ScreenFComponent, TServer, TActions } from '@utils/types.util'
 import { THEME } from '@utils/theme.util'
-import { ThemeEnum } from '@utils/enums.util'
+import { ThemeEnum, ColorEnum } from '@utils/enums.util'
 import ACard from '@common/Card.component'
 import AText from '@common/Text.component'
 import { ListRenderItem, ActionSheetIOS } from 'react-native'
@@ -24,7 +24,7 @@ const SettingsScreen: ScreenFComponent = () => {
 
   return (
     <Container>
-      <ACard color="hsla(228, 11%, 28%, 1)">
+      <ACard color={COLORS[ColorEnum.GRAY]}>
         <STitle>Servers</STitle>
         {verify(enabled)}
       </ACard>
