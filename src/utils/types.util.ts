@@ -74,3 +74,4 @@ export type TMenuItem = {
   isOnline: boolean
   tabs: ScreenNames[]
 }
+export type ThemeEnumKeys = keyof typeof ThemeEnum

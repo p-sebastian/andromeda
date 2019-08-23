@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScreenFComponent } from '@utils/types.util'
 import styled from 'styled-components/native'
-import { AText } from '@common/Text.component'
+import AText from '@common/Text.component'
 
 const UpcomingScreen: ScreenFComponent = () => {
   return (

@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { persistStore, persistReducer, PersistConfig } from 'redux-persist'
 import { createEpicMiddleware } from 'redux-observable'
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
@@ -8,6 +8,9 @@ import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2'
 
 import { rootReducer, RootState } from '../reducers'
 import epics from '../epics'
+
+// @note: DEVELOPMENT
+import Reactotron from '../../../Reactotron.config'
 
 /**
  * MAKE SURE TO TAKE THE INSTANCE NOT THE CLASS
@@ -32,7 +35,10 @@ export default () => {
   const store = createStore(
     persistedReducer,
     {},
-    applyMiddleware(navigationMiddleware, thunk, epicMiddleware)
+    compose(
+      applyMiddleware(navigationMiddleware, thunk, epicMiddleware),
+      Reactotron.createEnhancer!()
+    )
   )
   const persistor = persistStore(store)
   // persistor.purge()

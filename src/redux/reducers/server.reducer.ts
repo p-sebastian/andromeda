@@ -2,7 +2,11 @@ import { createReducer } from 'typesafe-actions'
 import { AVAILABLE_SERVERS } from '@utils/constants.util'
 import { ThemeEnum } from '@utils/enums.util'
 import { TMenuItem, TActions, ServerStatus } from '@utils/types.util'
-import { SERVER_SET_ENABLED, SERVER_SET_STATUS } from '@actions/types'
+import {
+  SERVER_SET_ENABLED,
+  SERVER_SET_STATUS,
+  SERVER_ENABLED
+} from '@actions/types'
 
 const flatten = (servers: TMenuItem[]) => {
   const obj: {
