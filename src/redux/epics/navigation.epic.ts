@@ -13,7 +13,7 @@ import { do_navigate_back_complete } from '@actions/navigation.actions'
 
 type NavAction = {
   type: NavigationActionsType
-  params: any
+  params?: { theme?: ThemeEnum }
   routeName: ScreenNames
 }
 const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = $action =>
@@ -22,13 +22,15 @@ const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = $action =>
     mergeMap((action: any) => {
       const { routeName, params = {} } = action as NavAction
       const screenName = routeName.toLocaleLowerCase() as ScreenNames
-      const which = AVAILABLE_SERVERS.find(s => s.title === screenName)
+      const which = Object.values(AVAILABLE_SERVERS).find(
+        v => v.title === screenName
+      )
       const actions = [of(do_theme_title(screenName))] as Observable<
         ThemeActionsType
       >[]
-      const theme = params.theme as ThemeEnum
+      const theme = params.theme
       if (theme || which) {
-        actions.push(of(do_theme_change(theme || which!.key)))
+        actions.push(of(do_theme_change(theme || which!.themeKey)))
       }
       return concat(...actions)
     })

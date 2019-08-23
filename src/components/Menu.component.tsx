@@ -4,16 +4,17 @@ import styled from 'styled-components/native'
 import { SafeAreaView } from 'react-navigation'
 import AMenuItem from './Menu-Item.component'
 import ATopMenu from './Top-Menu.component'
-import { TMenuItem } from '@utils/types.util'
+import { TServer } from '@utils/types.util'
 import { SCREEN_HEIGHT } from '@utils/dimensions.util'
-import { AVAILABLE_SERVERS } from '@utils/constants.util'
+import { useServer } from '@hooks/useServer'
 
 const AMenu: React.FC = () => {
+  const [enabled] = useServer()
   return (
     <SContainer>
       <ATopMenu />
       <FlatList
-        data={AVAILABLE_SERVERS}
+        data={enabled}
         renderItem={renderItem}
         keyExtractor={keyExtract}
       />
@@ -21,11 +22,11 @@ const AMenu: React.FC = () => {
   )
 }
 
-const renderItem: ListRenderItem<TMenuItem> = ({ item }) => (
+const renderItem: ListRenderItem<TServer> = ({ item }) => (
   <AMenuItem item={item} />
 )
 
-const keyExtract = (item: TMenuItem) => item.key.toString()
+const keyExtract = (item: TServer) => item.key.toString()
 
 const SContainer = styled(SafeAreaView)`
   height: ${SCREEN_HEIGHT - 60};

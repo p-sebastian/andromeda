@@ -4,5 +4,13 @@ export enum ThemeEnum {
   RADARR,
   LIDARR,
   SABNZBD,
-  TRANSMISSION
+  TORRENT
+}
+
+export enum ServerEnum {
+  SONARR = 100,
+  RADARR,
+  LIDARR,
+  SABNZBD,
+  TORRENT
 }

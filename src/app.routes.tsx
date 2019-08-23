@@ -6,13 +6,14 @@ import {
   TabNavigatorConfig
 } from 'react-navigation'
 import { ShowsScreen, UpcomingScreen } from '@screens/index'
-import AHeader from '@common/Header.component'
 import { AMaterialTopTabBar } from './components'
-import HomeScreen from '@screens/Home.screen'
 import { useASelector, useADispatch } from '@utils/recipes.util'
 import { createReduxContainer } from 'react-navigation-redux-helpers'
-import SettingsScreen from '@screens/Settings.screen'
 import { ServerNames } from '@utils/types.util'
+import AHeader from '@common/Header.component'
+import HomeScreen from '@screens/Home.screen'
+import SettingsScreen from '@screens/Settings.screen'
+import ServerConfigScreen from '@screens/Server-Config.screen'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -66,7 +67,8 @@ const AppSwitch = createSwitchNavigator({
 
 const ModalStack = createStackNavigator(
   {
-    Settings: SettingsScreen
+    Settings: SettingsScreen,
+    Config: ServerConfigScreen
   },
   {
     headerMode: 'none',
@@ -107,6 +109,11 @@ const AppNavigator: React.FC = () => {
 /**
  * Screen Names for typing the navigator
  */
-export type ScreenNames = ServerNames | 'settings' | 'upcoming' | 'shows'
+export type ScreenNames =
+  | ServerNames
+  | 'settings'
+  | 'upcoming'
+  | 'shows'
+  | 'config'
 
 export default AppNavigator

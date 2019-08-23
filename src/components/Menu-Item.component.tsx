@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { TMenuItem, StyledThemeP } from '@utils/types.util'
+import { TServer, StyledThemeP } from '@utils/types.util'
 import { extractStyleTheme, useADispatchC } from '@utils/recipes.util'
 import _ from 'lodash'
 import { Entypo } from '@expo/vector-icons'
@@ -11,17 +11,16 @@ import { useTheme } from '@hooks/useTheme'
 import { withinScreen } from '@utils/helpers.util'
 
 type Props = {
-  item: TMenuItem
+  item: TServer
 }
 const AMenuItem: React.FC<Props> = ({ item }) => {
-  const { title, key, isOnline } = item
+  const { title, key, themeKey } = item
   const navigator = useADispatchC(do_navigate(title))
   const [theme, themeTitle] = useTheme()
   const isSelected = {
     selected: withinScreen(title, themeTitle),
     isEven: Number(key) % 2 === 0,
-    color: COLORS[key],
-    isOnline
+    color: COLORS[themeKey]
   }
 
   return (
@@ -36,7 +35,6 @@ const AMenuItem: React.FC<Props> = ({ item }) => {
 type TSpecial = StyledThemeP & {
   selected: boolean
   isEven: boolean
-  isOnline: boolean
   color: string
 }
 const SItem = styled.TouchableOpacity<TSpecial>`

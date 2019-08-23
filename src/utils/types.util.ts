@@ -16,7 +16,7 @@ import {
 } from '../redux/actions'
 import { BASE } from './theme.util'
 import { ScreenNames } from 'app.routes'
-import { ThemeEnum } from './enums.util'
+import { ThemeEnum, ServerEnum } from './enums.util'
 
 /**
  * T: Navigation passed params interface
@@ -61,17 +61,14 @@ export type TTheme = typeof BASE
 // add theme prop for styled components
 export type StyledThemeP = { theme: TTheme }
 
-export type ServerNames =
-  | 'sonarr'
-  | 'radarr'
-  | 'lidarr'
-  | 'sabnzbd'
-  | 'transmission'
+export type ServerNames = 'sonarr' | 'radarr' | 'lidarr' | 'sabnzbd' | 'torrent'
 export type ServerStatus = 'online' | 'offline'
-export type TMenuItem = {
-  key: ThemeEnum
+export type TServer = {
+  key: ServerEnum
   title: ServerNames
-  isOnline: boolean
+  themeKey: ThemeEnum
   tabs: ScreenNames[]
 }
-export type ThemeEnumKeys = keyof typeof ThemeEnum
+export type TAvailableServers<R = TServer> = {
+  [key in ServerEnum]: R
+}
