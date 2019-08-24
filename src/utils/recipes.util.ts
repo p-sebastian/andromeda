@@ -51,4 +51,20 @@ export const extractStyleTheme: TExtract = key => ({ theme }) => theme[key]
  * @param key of Prop in styled component
  */
 export const extractProp = <P extends {}>(key: keyof P) => (props: P) =>
-  props[key]
+  props[key] as any
+
+/**
+ * Ternary condition for evaluation value in prop and getting to others within
+ * or passed value
+ * @param predicate value in prop that returns boolean
+ * @param onTrue value in prop or any other
+ * @param onFalse value in prop or any other
+ */
+export const extractCondition = <P extends {}, K1 = {}, K2 = {}>(
+  predicate: keyof P,
+  onTrue: keyof P | K1,
+  onFalse: keyof P | K2
+) => (props: P) =>
+  props[predicate]
+    ? props[onTrue as keyof P] || onTrue
+    : props[onFalse as keyof P] || onFalse

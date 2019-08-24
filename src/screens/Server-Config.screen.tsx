@@ -14,8 +14,13 @@ import { extractProp } from '@utils/recipes.util'
 
 const ServerConfigScreen: ScreenFComponent = props => {
   const [authEnabled, setAuthEnabled] = useState(false)
-  const { title } = props.navigation.state.params as TServer
-
+  const { title, themeKey } = props.navigation.state.params as TServer
+  const shared = {
+    onChangeText,
+    selectedColor: THEME[themeKey].primary,
+    autoCapitalize: 'none' as any,
+    autoCompleteType: 'off' as any
+  }
   return (
     <Avoid behavior="padding" keyboardVerticalOffset={40}>
       <Container>
@@ -30,50 +35,40 @@ const ServerConfigScreen: ScreenFComponent = props => {
         <ACard color={COLORS[ColorEnum.GRAY]}>
           <STitle>LAN</STitle>
           <AInput
-            autoCapitalize="none"
-            autoCompleteType="off"
+            {...shared}
             labelText="URL"
             placeholder="10.0.1.10"
             keyboardType="decimal-pad"
-            onChangeText={onChangeText}
             validate={['required']}
           />
           <AInput
-            autoCapitalize="none"
-            autoCompleteType="off"
+            {...shared}
             labelText="PORT"
             keyboardType="decimal-pad"
             placeholder="8080"
             validate={['required']}
-            onChangeText={onChangeText}
           />
           <Space />
           <STitle>Remote</STitle>
           <AInput
-            autoCapitalize="none"
-            autoCompleteType="off"
+            {...shared}
             labelText="URL"
             placeholder="example.domain.com"
             keyboardType="url"
-            onChangeText={onChangeText}
           />
           <AInput
-            autoCapitalize="none"
-            autoCompleteType="off"
+            {...shared}
             labelText="PORT"
             keyboardType="decimal-pad"
             placeholder="34512"
-            onChangeText={onChangeText}
           />
           <Space />
           <STitle>Additional</STitle>
           <AInput
-            autoCapitalize="none"
-            autoCompleteType="off"
+            {...shared}
             labelText="API Key"
             placeholder="3UYjciAJWGV9kcdLpJeXQHjf"
             validate={['required']}
-            onChangeText={onChangeText}
           />
         </ACard>
         <ACard color={COLORS[ColorEnum.GRAY]}>
@@ -113,6 +108,7 @@ const Space = styled.View`
   height: ${MARGIN};
 `
 const STitle = styled(AText)`
+  align-self: flex-end;
   color: white;
   font-size: 18;
 `
