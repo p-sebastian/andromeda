@@ -74,3 +74,5 @@ export type TServer = {
 export type TAvailableServers<R = TServer> = {
   [key in ServerEnum]: R
 }
+
+export type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U

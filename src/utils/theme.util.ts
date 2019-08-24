@@ -53,10 +53,10 @@ const SABNZBD = Object.freeze({
   primaryDark: 'hsla(42, 100%, 42%, 1)',
   title: 'sabnzbd'
 })
-const TRANSMISSION = Object.freeze({
+const TORRENT = Object.freeze({
   ...BASE,
   fontColor: COLORS[ThemeEnum.MAIN],
-  primary: COLORS[ThemeEnum.TRANSMISSION],
+  primary: COLORS[ThemeEnum.TORRENT],
   primaryDark: 'hsla(42, 100%, 42%, 1)',
   title: 'transmission'
 })
@@ -67,5 +67,5 @@ export const THEME = Object.freeze({
   [ThemeEnum.RADARR]: RADARR,
   [ThemeEnum.LIDARR]: LIDARR,
   [ThemeEnum.SABNZBD]: SABNZBD,
-  [ThemeEnum.TRANSMISSION]: TRANSMISSION
+  [ThemeEnum.TORRENT]: TORRENT
 })

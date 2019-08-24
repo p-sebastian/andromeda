@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components/native'
 import { TextInputProps } from 'react-native'
 import { extractProp, extractCondition } from '@utils/recipes.util'
@@ -6,8 +6,8 @@ import AText from './Text.component'
 import { THEME } from '@utils/theme.util'
 import { ThemeEnum, ColorEnum } from '@utils/enums.util'
 import { COLORS } from '@utils/constants.util'
-import { logger } from '@utils/logger.util'
 import { validator } from '@utils/validators.util'
+import { FormContext } from '../../context/Form.context'
 
 type Extra = {
   textColor?: string
@@ -19,9 +19,9 @@ type Extra = {
 }
 type Fns = {
   readonly isInputValid?: (isValid: boolean) => void
-  readonly onChangeText: (text: string, isValid?: boolean) => void
+  readonly onChangeText?: (text: string, isValid?: boolean) => void
 }
-type Props = TextInputProps & Extra & Fns
+type Props = TextInputProps & Extra & Fns & { accessibilityLabel: string }
 const AInput: React.FC<Props> = props => {
   const [focused, setFocused] = useState(false)
   // @todo dont pass all the props to useValidate
@@ -55,7 +55,8 @@ const AInput: React.FC<Props> = props => {
   )
 }
 
-const useValidate = ({ onChangeText, validate }: Props) => {
+const useValidate = ({ onChangeText, validate, accessibilityLabel }: Props) => {
+  const { setValidity } = useContext(FormContext)
   const [pristine, setPristine] = useState(true)
   const [errors, setErrors] = useState([] as string[])
 
@@ -65,7 +66,14 @@ const useValidate = ({ onChangeText, validate }: Props) => {
     if (_errors.length) {
       setErrors(_errors.map(e => e.error))
     }
-    onChangeText(value, _errors.length === 0)
+    setValidity(accessibilityLabel, {
+      value,
+      errors: [..._errors],
+      isValid: _errors.length === 0
+    })
+    if (onChangeText) {
+      onChangeText(value, _errors.length === 0)
+    }
   }
   return [pristine, errors, _onChange] as [boolean, string[], typeof _onChange]
 }
@@ -102,11 +110,12 @@ const TextInput = styled.TextInput<Props>`
   font-family: ${THEME[ThemeEnum.MAIN].fontRegular};
 `
 const ErrorLabel = styled(AText)`
-  padding-left: 12;
+  padding: 0 12px;
   font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
   font-size: 10;
   color: ${COLORS[ColorEnum.DANGER]};
   height: 16;
+  align-self: flex-end;
 `
 
 export default AInput

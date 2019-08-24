@@ -11,12 +11,14 @@ import { logger } from '@utils/logger.util'
 import { MARGIN, BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import AInfo from '@common/Info-Text.component'
 import { extractProp } from '@utils/recipes.util'
+import AForm, { TInputs } from '@common/Form.component'
+import { withSubmit } from '@components/hoc/withSubmit.hoc'
 
 const ServerConfigScreen: ScreenFComponent = props => {
   const [authEnabled, setAuthEnabled] = useState(false)
+  const [formValid, setFormValid] = useState(false)
   const { title, themeKey } = props.navigation.state.params as TServer
   const shared = {
-    onChangeText,
     selectedColor: THEME[themeKey].primary,
     autoCapitalize: 'none' as any,
     autoCompleteType: 'off' as any
@@ -24,77 +26,88 @@ const ServerConfigScreen: ScreenFComponent = props => {
   return (
     <Avoid behavior="padding" keyboardVerticalOffset={40}>
       <Container>
-        <ACard color={COLORS[ColorEnum.GRAY]}>
-          <Header>{title}</Header>
-          <DescriptionContainer>
-            <AInfo>
-              Will default to LAN in Wifi, if it fails will search on Remote
-            </AInfo>
-          </DescriptionContainer>
-        </ACard>
-        <ACard color={COLORS[ColorEnum.GRAY]}>
-          <STitle>LAN</STitle>
-          <AInput
-            {...shared}
-            labelText="URL"
-            placeholder="10.0.1.10"
-            keyboardType="decimal-pad"
-            validate={['required']}
-          />
-          <AInput
-            {...shared}
-            labelText="PORT"
-            keyboardType="decimal-pad"
-            placeholder="8080"
-            validate={['required']}
-          />
-          <Space />
-          <STitle>Remote</STitle>
-          <AInput
-            {...shared}
-            labelText="URL"
-            placeholder="example.domain.com"
-            keyboardType="url"
-          />
-          <AInput
-            {...shared}
-            labelText="PORT"
-            keyboardType="decimal-pad"
-            placeholder="34512"
-          />
-          <Space />
-          <STitle>Additional</STitle>
-          <AInput
-            {...shared}
-            labelText="API Key"
-            placeholder="3UYjciAJWGV9kcdLpJeXQHjf"
-            validate={['required']}
-          />
-        </ACard>
-        <ACard color={COLORS[ColorEnum.GRAY]}>
-          <SwitchContainer>
-            <AuthTitle>Authentication</AuthTitle>
-            <Switch
-              onValueChange={v => setAuthEnabled(v)}
-              value={authEnabled}
+        <AForm isValid={setFormValid}>
+          <ACard color={COLORS[ColorEnum.GRAY]}>
+            <Header>{title}</Header>
+            <DescriptionContainer>
+              <AInfo>
+                Will default to LAN in Wifi, if it fails will search on Remote
+              </AInfo>
+            </DescriptionContainer>
+          </ACard>
+          <ACard color={COLORS[ColorEnum.GRAY]}>
+            <STitle>LAN</STitle>
+            <AInput
+              {...shared}
+              labelText="URL"
+              placeholder="10.0.1.10"
+              keyboardType="decimal-pad"
+              validate={['required']}
+              accessibilityLabel="lanUrl"
             />
-          </SwitchContainer>
-        </ACard>
-        <ButtonContainer>
-          <Button background={COLORS[ColorEnum.INFO]}>
-            <ButtonText>Test</ButtonText>
-          </Button>
-          <Button background={COLORS[ColorEnum.SUCCESS]}>
-            <ButtonText>Save</ButtonText>
-          </Button>
-        </ButtonContainer>
+            <AInput
+              {...shared}
+              labelText="PORT"
+              keyboardType="decimal-pad"
+              placeholder="8080"
+              validate={['required']}
+              accessibilityLabel="lanPort"
+            />
+            <Space />
+            <STitle>Remote</STitle>
+            <AInput
+              {...shared}
+              labelText="URL"
+              placeholder="example.domain.com"
+              keyboardType="url"
+              accessibilityLabel="remoteUrl"
+            />
+            <AInput
+              {...shared}
+              labelText="PORT"
+              keyboardType="decimal-pad"
+              placeholder="34512"
+              accessibilityLabel="remotePort"
+            />
+            <Space />
+            <STitle>Additional</STitle>
+            <AInput
+              {...shared}
+              labelText="API Key"
+              placeholder="3UYjciAJWGV9kcdLpJeXQHjf"
+              validate={['required']}
+              accessibilityLabel="apiKey"
+            />
+          </ACard>
+          <ACard color={COLORS[ColorEnum.GRAY]}>
+            <SwitchContainer>
+              <AuthTitle>Authentication</AuthTitle>
+              <Switch
+                onValueChange={v => setAuthEnabled(v)}
+                value={authEnabled}
+              />
+            </SwitchContainer>
+          </ACard>
+          <ButtonContainer>
+            <Button background={COLORS[ColorEnum.INFO]}>
+              <ButtonText>Test</ButtonText>
+            </Button>
+            <Submit
+              disabled={!formValid}
+              background={COLORS[ColorEnum.SUCCESS]}
+              onPress={onPress}
+            >
+              <ButtonText>Save</ButtonText>
+            </Submit>
+          </ButtonContainer>
+        </AForm>
       </Container>
     </Avoid>
   )
 }
 
-const onChangeText = (text: string, isValid?: boolean) => {
-  logger.log('outside', text, isValid)
+const onPress = (inputs: TInputs) => {
+  logger.log(inputs)
 }
 
 const Container = styled.ScrollView`
@@ -155,5 +168,6 @@ const ButtonText = styled(AText)`
   font-size: 14;
   text-transform: uppercase;
 `
+const Submit = withSubmit(Button)
 
 export default ServerConfigScreen

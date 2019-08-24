@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-type TError = {
+export type TError = {
   error: string
   type: string
 }
