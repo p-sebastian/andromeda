@@ -17,7 +17,7 @@ type NavAction = {
   params?: { theme?: ThemeEnum }
   routeName: ScreenNames
 }
-const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = action$ =>
+const navigateEpic: TEpic = action$ =>
   action$.pipe(
     filter(isOfType(NavigationActions.NAVIGATE)),
     mergeMap((action: any) => {
@@ -37,10 +37,7 @@ const navigateEpic: TEpic<NavigationActionsType | ThemeActionsType> = action$ =>
     })
   )
 
-const onNavigationBackEpic: TEpic<NavigationActionsType | ThemeActionsType> = (
-  action$,
-  state$
-) =>
+const onNavigationBackEpic: TEpic = (action$, state$) =>
   action$.pipe(
     filter(isOfType(NavigationActions.BACK)),
     withLatestFrom(state$),

@@ -57,7 +57,7 @@ export type TActions =
   | NavigationActionsType
   | ServerActionsType
 type TDependencies = {}
-export type TEpic<A extends TActions> = Epic<A, A, RootState, TDependencies>
+export type TEpic = Epic<TActions, TActions, RootState, TDependencies>
 
 export type TTheme = typeof BASE
 // add theme prop for styled components

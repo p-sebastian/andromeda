@@ -10,14 +10,16 @@ import AInput from '@common/Input.component'
 import { logger } from '@utils/logger.util'
 import { MARGIN, BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import AInfo from '@common/Info-Text.component'
-import { extractProp } from '@utils/recipes.util'
+import { extractProp, useADispatch } from '@utils/recipes.util'
 import AForm, { TInputs } from '@common/Form.component'
 import { withSubmit } from '@components/hoc/withSubmit.hoc'
+import { do_server_modify } from '@actions/server.actions'
 
 const ServerConfigScreen: ScreenFComponent = props => {
+  const dispatch = useADispatch()
   const [authEnabled, setAuthEnabled] = useState(false)
   const [formValid, setFormValid] = useState(false)
-  const { title, themeKey } = props.navigation.state.params as TServer
+  const { title, themeKey, key } = props.navigation.state.params as TServer
   const shared = {
     selectedColor: THEME[themeKey].primary,
     autoCapitalize: 'none' as any,
@@ -95,7 +97,7 @@ const ServerConfigScreen: ScreenFComponent = props => {
             <Submit
               disabled={!formValid}
               background={COLORS[ColorEnum.SUCCESS]}
-              onPress={onPress}
+              onPress={inputs => dispatch(do_server_modify(inputs, key))}
             >
               <ButtonText>Save</ButtonText>
             </Submit>
@@ -104,10 +106,6 @@ const ServerConfigScreen: ScreenFComponent = props => {
       </Container>
     </Avoid>
   )
-}
-
-const onPress = (inputs: TInputs) => {
-  logger.log(inputs)
 }
 
 const Container = styled.ScrollView`

@@ -14,6 +14,7 @@ import AHeader from '@common/Header.component'
 import HomeScreen from '@screens/Home.screen'
 import SettingsScreen from '@screens/Settings.screen'
 import ServerConfigScreen from '@screens/Server-Config.screen'
+import { ThemeEnum } from '@utils/enums.util'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,

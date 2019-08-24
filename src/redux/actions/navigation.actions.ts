@@ -15,3 +15,4 @@ const _do_navigate = (screen: ScreenNames, params: Params = {}) =>
 export const do_navigate: typeof navigate = _do_navigate as any
 
 export const do_navigate_back_complete = () => action(NAVIGATE_BACK_COMPLETE)
+export const do_navigate_back = () => action(NavigationActions.BACK)

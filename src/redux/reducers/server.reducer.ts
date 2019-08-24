@@ -6,20 +6,48 @@ import {
   TAvailableServers,
   TServer
 } from '@utils/types.util'
-import { SERVER_SET_ENABLED, SERVER_SET_STATUS } from '@actions/types'
+import {
+  SERVER_SET_ENABLED,
+  SERVER_SET_STATUS,
+  SERVER_MODIFY,
+  SERVER_MODIFY_COMPLETE
+} from '@actions/types'
+import { logger } from '@utils/logger.util'
 
-type State = TAvailableServers<
-  TServer & { enabled: boolean; status: ServerStatus }
->
+export type TServerConfig = {
+  enabled: boolean
+  status: ServerStatus
+  apiKey: string
+  lanUrl: string
+  lanPort: string
+  remoteUrl: string
+  remotePort: string
+}
+type State = TAvailableServers<TServer & TServerConfig>
 const flatten = (servers: TAvailableServers) => {
   const obj: State = Object.assign({}, servers) as any
   Object.values(servers).forEach(({ key }) => {
-    obj[key].enabled = false
-    obj[key].status = 'offline'
+    obj[key] = {
+      ...obj[key],
+      enabled: false,
+      status: 'offline',
+      apiKey: '',
+      lanUrl: '',
+      lanPort: '',
+      remoteUrl: '',
+      remotePort: ''
+    }
   })
   return obj
 }
 
+/**
+ * {
+ *    [ServerEnum]: {
+ *      ...[TServer & ...]
+ *    }
+ * }
+ */
 const DEFAULT_STATE = flatten(AVAILABLE_SERVERS)
 export const serverReducer = createReducer<typeof DEFAULT_STATE, TActions>(
   DEFAULT_STATE
@@ -31,4 +59,9 @@ export const serverReducer = createReducer<typeof DEFAULT_STATE, TActions>(
   .handleAction(SERVER_SET_STATUS, (state, action) => {
     const { status, which } = action.payload
     return { ...state, [which]: { ...state[which], status } }
+  })
+  .handleAction(SERVER_MODIFY_COMPLETE, (state, action) => {
+    const { serverKey, value } = action.payload
+    const withPrev = { ...state[serverKey], ...value, enabled: true }
+    return { ...state, [serverKey]: withPrev }
   })
