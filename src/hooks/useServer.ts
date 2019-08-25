@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { useShallowSelector } from '@utils/recipes.util'
 import { ServerState } from '@reducers/index'
-import { TServer } from '@utils/types.util'
+import { TServerState } from '@reducers/server.reducer'
 
 const separate = (servers: ServerState) => {
-  const enabled: TServer[] = []
-  const disabled: TServer[] = []
+  const enabled: TServerState[] = []
+  const disabled: TServerState[] = []
   Object.values(servers).forEach(v =>
     v.enabled ? enabled.push(v) : disabled.push(v)
   )

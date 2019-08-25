@@ -31,7 +31,6 @@ const persistConfig: PersistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export default () => {
-  console.info('CREATED STORE')
   const store = createStore(
     persistedReducer,
     {},

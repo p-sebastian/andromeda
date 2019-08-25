@@ -7,19 +7,20 @@ import ACard from '@common/Card.component'
 import { COLORS } from '@utils/constants.util'
 import AText from '@common/Text.component'
 import AInput from '@common/Input.component'
-import { logger } from '@utils/logger.util'
 import { MARGIN, BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import AInfo from '@common/Info-Text.component'
 import { extractProp, useADispatch } from '@utils/recipes.util'
-import AForm, { TInputs } from '@common/Form.component'
+import AForm from '@common/Form.component'
 import { withSubmit } from '@components/hoc/withSubmit.hoc'
 import { do_server_modify } from '@actions/server.actions'
+import { logger } from '@utils/logger.util'
 
 const ServerConfigScreen: ScreenFComponent = props => {
   const dispatch = useADispatch()
   const [authEnabled, setAuthEnabled] = useState(false)
   const [formValid, setFormValid] = useState(false)
   const { title, themeKey, key } = props.navigation.state.params as TServer
+  logger.info(props.navigation.state.params)
   const shared = {
     selectedColor: THEME[themeKey].primary,
     autoCapitalize: 'none' as any,

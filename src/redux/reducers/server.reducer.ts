@@ -9,10 +9,8 @@ import {
 import {
   SERVER_SET_ENABLED,
   SERVER_SET_STATUS,
-  SERVER_MODIFY,
   SERVER_MODIFY_COMPLETE
 } from '@actions/types'
-import { logger } from '@utils/logger.util'
 
 export type TServerConfig = {
   enabled: boolean
@@ -23,7 +21,8 @@ export type TServerConfig = {
   remoteUrl: string
   remotePort: string
 }
-type State = TAvailableServers<TServer & TServerConfig>
+export type TServerState = TServer & TServerConfig
+type State = TAvailableServers<TServerState>
 const flatten = (servers: TAvailableServers) => {
   const obj: State = Object.assign({}, servers) as any
   Object.values(servers).forEach(({ key }) => {
