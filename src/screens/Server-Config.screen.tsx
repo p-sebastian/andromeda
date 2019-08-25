@@ -14,12 +14,14 @@ import AForm from '@common/Form.component'
 import { withSubmit } from '@components/hoc/withSubmit.hoc'
 import { do_server_modify } from '@actions/server.actions'
 import { logger } from '@utils/logger.util'
+import { TServerState } from '@reducers/server.reducer'
 
 const ServerConfigScreen: ScreenFComponent = props => {
   const dispatch = useADispatch()
   const [authEnabled, setAuthEnabled] = useState(false)
   const [formValid, setFormValid] = useState(false)
-  const { title, themeKey, key } = props.navigation.state.params as TServer
+  const params = props.navigation.state.params as TServerState
+  const { title, themeKey, key } = params
   logger.info(props.navigation.state.params)
   const shared = {
     selectedColor: THEME[themeKey].primary,
@@ -47,6 +49,7 @@ const ServerConfigScreen: ScreenFComponent = props => {
               keyboardType="decimal-pad"
               validate={['required']}
               accessibilityLabel="lanUrl"
+              defaultValue={params['lanUrl']}
             />
             <AInput
               {...shared}
@@ -55,6 +58,7 @@ const ServerConfigScreen: ScreenFComponent = props => {
               placeholder="8080"
               validate={['required']}
               accessibilityLabel="lanPort"
+              defaultValue={params['lanPort']}
             />
             <Space />
             <STitle>Remote</STitle>
@@ -64,6 +68,7 @@ const ServerConfigScreen: ScreenFComponent = props => {
               placeholder="example.domain.com"
               keyboardType="url"
               accessibilityLabel="remoteUrl"
+              defaultValue={params['remoteUrl']}
             />
             <AInput
               {...shared}
@@ -71,6 +76,7 @@ const ServerConfigScreen: ScreenFComponent = props => {
               keyboardType="decimal-pad"
               placeholder="34512"
               accessibilityLabel="remotePort"
+              defaultValue={params['remotePort']}
             />
             <Space />
             <STitle>Additional</STitle>
@@ -80,6 +86,7 @@ const ServerConfigScreen: ScreenFComponent = props => {
               placeholder="3UYjciAJWGV9kcdLpJeXQHjf"
               validate={['required']}
               accessibilityLabel="apiKey"
+              defaultValue={params['apiKey']}
             />
           </ACard>
           <ACard color={COLORS[ColorEnum.GRAY]}>

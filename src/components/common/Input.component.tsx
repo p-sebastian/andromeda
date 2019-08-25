@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components/native'
 import { TextInputProps } from 'react-native'
 import { extractProp, extractCondition } from '@utils/recipes.util'
@@ -8,6 +8,7 @@ import { ThemeEnum, ColorEnum } from '@utils/enums.util'
 import { COLORS } from '@utils/constants.util'
 import { validator } from '@utils/validators.util'
 import { FormContext } from '../../context/Form.context'
+import { logger } from '@utils/logger.util'
 
 type Extra = {
   textColor?: string
@@ -55,17 +56,19 @@ const AInput: React.FC<Props> = props => {
   )
 }
 
-const useValidate = ({ onChangeText, validate, accessibilityLabel }: Props) => {
+const useValidate = ({
+  onChangeText,
+  validate,
+  accessibilityLabel,
+  defaultValue
+}: Props) => {
   const { setValidity } = useContext(FormContext)
   const [pristine, setPristine] = useState(true)
   const [errors, setErrors] = useState([] as string[])
-
   const _onChange = (value: string) => {
     const _errors = validator(value, validate)
     setPristine(false)
-    if (_errors.length) {
-      setErrors(_errors.map(e => e.error))
-    }
+    setErrors(_errors.length ? _errors.map(e => e.error) : [])
     setValidity(accessibilityLabel, {
       value,
       errors: [..._errors],
@@ -75,6 +78,14 @@ const useValidate = ({ onChangeText, validate, accessibilityLabel }: Props) => {
       onChangeText(value, _errors.length === 0)
     }
   }
+  /**
+   * if it has an initial value it will trigger all events as if typed
+   */
+  useEffect(() => {
+    if (defaultValue) {
+      _onChange(defaultValue)
+    }
+  }, [defaultValue])
   return [pristine, errors, _onChange] as [boolean, string[], typeof _onChange]
 }
 

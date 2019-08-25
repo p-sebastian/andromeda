@@ -9,8 +9,6 @@ import { AVAILABLE_SERVERS } from '@utils/constants.util'
 import { concat, of, Observable } from 'rxjs'
 import { ScreenNames, ScreenStack } from '../../app.routes'
 import { ThemeEnum } from '@utils/enums.util'
-import { do_navigate_back_complete } from '@actions/navigation.actions'
-import { logger } from '@utils/logger.util'
 
 type NavAction = {
   type: NavigationActionsType

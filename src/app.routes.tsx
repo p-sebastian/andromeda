@@ -14,7 +14,6 @@ import AHeader from '@common/Header.component'
 import HomeScreen from '@screens/Home.screen'
 import SettingsScreen from '@screens/Settings.screen'
 import ServerConfigScreen from '@screens/Server-Config.screen'
-import { ThemeEnum } from '@utils/enums.util'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -72,9 +71,23 @@ const ModalStack = createStackNavigator(
     Config: ServerConfigScreen
   },
   {
-    headerMode: 'none',
-    navigationOptions: {
-      gesturesEnabled: false
+    mode: 'modal',
+    defaultNavigationOptions: {
+      header: AHeader as any
+    }
+  }
+)
+/**
+ * Puts a header in all tabs, can only be done
+ * in a stacknavigator
+ */
+const withHeaderStack = createStackNavigator(
+  {
+    Tabs: AppSwitch
+  },
+  {
+    defaultNavigationOptions: {
+      header: AHeader as any
     }
   }
 )
@@ -85,16 +98,12 @@ const ModalStack = createStackNavigator(
  * This is a stack because screens navigated from the tabs
  * will be rendered on top of everything to use all the screen
  */
-export const ScreenStack = createStackNavigator(
+export const ScreenStack = createSwitchNavigator(
   {
-    Main: AppSwitch,
+    Main: withHeaderStack,
     Modal: ModalStack
   },
   {
-    mode: 'modal',
-    defaultNavigationOptions: {
-      header: AHeader as any
-    },
     initialRouteName: 'Modal'
   }
 )

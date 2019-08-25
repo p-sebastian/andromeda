@@ -74,11 +74,17 @@ const verify = (enabled: TServerState[], dispatch: Dispatch) => {
   )
 }
 
+// @todo add chevron icon to list item, to know its swipable
 const renderItem: (
   dispatch: Dispatch
 ) => // eslint-disable-next-line react/display-name
-ListRenderItem<TServer> = dispatch => ({ item }) => (
-  <ItemRow disableRightSwipe rightOpenValue={-100} stopRightSwipe={-125}>
+ListRenderItem<TServerState> = dispatch => ({ item, index }) => (
+  <ItemRow
+    disableRightSwipe
+    rightOpenValue={-100}
+    stopRightSwipe={-125}
+    preview={index === 0}
+  >
     <ItemBack>
       <ItemButton isFirst>
         <ButtonIcon name="ios-sync" size={28} />
