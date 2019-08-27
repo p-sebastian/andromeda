@@ -20,6 +20,7 @@ export type TServerConfig = {
   lanPort: string
   remoteUrl: string
   remotePort: string
+  endpoint: 'lan' | 'remote'
 }
 export type TServerState = TServer & TServerConfig
 type State = TAvailableServers<TServerState>
@@ -34,7 +35,8 @@ const flatten = (servers: TAvailableServers) => {
       lanUrl: '',
       lanPort: '',
       remoteUrl: '',
-      remotePort: ''
+      remotePort: '',
+      endpoint: 'lan'
     }
   })
   return obj

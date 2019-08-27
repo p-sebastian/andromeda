@@ -12,7 +12,10 @@ import { RootState } from '../redux/reducers'
 import {
   ThemeActionsType,
   NavigationActionsType,
-  ServerActionsType
+  ServerActionsType,
+  ApiActionsType,
+  GeneralActionsType,
+  ApiSuccessActionsType
 } from '../redux/actions'
 import { BASE } from './theme.util'
 import { ScreenNames } from 'app.routes'
@@ -56,6 +59,9 @@ export type TActions =
   | ThemeActionsType
   | NavigationActionsType
   | ServerActionsType
+  | ApiActionsType
+  | GeneralActionsType
+  | ApiSuccessActionsType
 type TDependencies = {}
 export type TEpic = Epic<TActions, TActions, RootState, TDependencies>
 

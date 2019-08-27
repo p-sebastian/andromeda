@@ -1,7 +1,7 @@
 import { isOfType } from 'typesafe-actions'
 import { TEpic } from '@utils/types.util'
 import { SERVER_MODIFY } from '@actions/types'
-import { mergeMap, filter } from 'rxjs/operators'
+import { mergeMap, filter, map } from 'rxjs/operators'
 import { concat, of } from 'rxjs'
 import { do_navigate_back } from '@actions/navigation.actions'
 import { ServerEnum } from '@utils/enums.util'
@@ -20,9 +20,12 @@ const modifyEpic: TEpic = action$ =>
         serverKey
       }
       return concat(
-        ...[of(do_server_modify_complete(server)), of(do_navigate_back())]
+        of(do_server_modify_complete(server)),
+        of(do_navigate_back())
       )
     })
   )
+
+// const
 
 export const SERVER_EPICS = [modifyEpic]
