@@ -5,13 +5,12 @@ import { Observable, OperatorFunction, of, iif } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { RootState } from '@reducers/index'
 import { StateObservable } from 'redux-observable'
-import { withLatestFrom, map, catchError, mergeMap, tap } from 'rxjs/operators'
+import { withLatestFrom, map, mergeMap, tap } from 'rxjs/operators'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
-import { ApiActionsType, ApiSuccessActionsType } from '@actions/index'
-import { do_api_ajax_fail } from '@actions/general.actions'
+import { ApiActionsType } from '@actions/index'
+import { isOfType } from 'typesafe-actions'
+import { logger } from './logger.util'
 import { TActions } from './types.util'
-import { isOfType, getType } from 'typesafe-actions'
-import { API_AJAX_FAIL } from '@actions/types'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type AjaxCreator = (
@@ -27,18 +26,27 @@ const _ajaxConfig = ({
   status,
   ...usable
 }: TServerState): AjaxCreator => (endpoint, method, body) => {
-  const memo = memoize(formUrl, (...args) => values(args).join('_'))
+  const memo = memoize(formUrl, args => values(args).join('_'))
   const [baseURL, headers] = memo(usable as any)
-  const url = `${baseURL}${endpoint}`
-  return ajax({ headers, body, method, url })
+  let url = `${baseURL}${endpoint}`
+  if (method === 'GET') {
+    url += `?${queryString(body)}`
+  }
+  logger.log(url)
+  // sending anything in the body on a GET
+  // breaks the request
+  return ajax({
+    headers,
+    method,
+    url,
+    body: method === 'GET' ? undefined : body,
+    timeout: 5000
+  })
 }
 type WithApi = (
   state$: StateObservable<RootState>,
   method: Method
-) => OperatorFunction<
-  ApiActionsType,
-  Observable<[ApiActionsType, AjaxResponse]>
->
+) => OperatorFunction<ApiActionsType, Observable<[ApiActionsType, any]>>
 /**
  * returns mapped tuple [action, responseObservable]
  * all actions merging this MUST HAVE meta with ServerEnum
@@ -56,28 +64,18 @@ export const withApi: WithApi = (state$, method) => action$ =>
         method,
         params
       ).pipe(
-        map(response => [action, response] as [ApiActionsType, AjaxResponse])
-        // catchError(error => of(do_api_ajax_fail(error)))
+        tap(res => logger.log('AJAX_RESPONSE', res)),
+        map(res => [action, res.response] as [ApiActionsType, any])
       )
     })
   )
 /**
  * [C] type constant
- * [I] incoming action
- * [R] result of callback
+ * [A] incoming action
  */
-type OnCase<
-  C = string,
-  I = ApiActionsType,
-  R = ApiSuccessActionsType | AjaxResponse
-> = (
+type OnCase<C = string, A = TActions> = (
   CONSTANT: C
-) => (
-  callback: (response: AjaxResponse) => R
-) => OperatorFunction<
-  [I, AjaxResponse],
-  [I, ApiSuccessActionsType | AjaxResponse]
->
+) => (callback: (response: any) => A) => OperatorFunction<[A, any], [A, any]>
 /**
  *
  * @param CONSTANT Action constant
@@ -89,11 +87,10 @@ export const onCase: OnCase = CONSTANT => callback => action$ =>
         // iif must return an Observable
         iif(
           () => isOfType(CONSTANT, action),
-          of([action, callback(response)]),
+          of([callback(response), response]),
           of([action, response])
-        ) as Observable<[ApiActionsType, ApiSuccessActionsType | AjaxResponse]>
-    ),
-    tap(([a, r]) => {})
+        ) as Observable<[TActions, any]>
+    )
   )
 
 type FormUrl = (
@@ -122,3 +119,8 @@ const formUrl: FormUrl = (
       return ['', { '0': '0' }]
   }
 }
+
+const queryString = (body: any = {}) =>
+  Object.keys(body)
+    .map(key => `${key}=${body[key]}`)
+    .join('&')

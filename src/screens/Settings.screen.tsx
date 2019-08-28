@@ -18,6 +18,10 @@ import { do_navigate } from '@actions/navigation.actions'
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import { Ionicons } from '@expo/vector-icons'
 import { TServerState } from '@reducers/server.reducer'
+import {
+  do_api_sonarr_get_series,
+  do_api_sonarr_get_calendar
+} from '@actions/api.actions'
 
 type Dispatch = React.Dispatch<TActions>
 const SettingsScreen: ScreenFComponent = () => {
@@ -86,7 +90,10 @@ ListRenderItem<TServerState> = dispatch => ({ item, index }) => (
     preview={index === 0}
   >
     <ItemBack>
-      <ItemButton isFirst>
+      <ItemButton
+        onPress={() => dispatch(do_api_sonarr_get_calendar())}
+        isFirst
+      >
         <ButtonIcon name="ios-sync" size={28} />
       </ItemButton>
       <ItemButton>
@@ -102,8 +109,6 @@ ListRenderItem<TServerState> = dispatch => ({ item, index }) => (
     </ItemFront>
   </ItemRow>
 )
-
-const onEdit = (item: TServerState) => {}
 
 const keyExtract = (item: TServerState) => item.key.toString()
 const ItemRow = styled(SwipeRow)`

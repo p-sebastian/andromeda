@@ -1,7 +1,18 @@
 import { isOfType, isActionOf } from 'typesafe-actions'
 import { TEpic, TActions } from '@utils/types.util'
-import { SERVER_MODIFY, API_SONARR_GET_SERIES } from '@actions/types'
-import { mergeMap, filter, map, mapTo, catchError } from 'rxjs/operators'
+import {
+  SERVER_MODIFY,
+  API_SONARR_GET_SERIES,
+  API_SONARR_GET_CALENDAR
+} from '@actions/types'
+import {
+  mergeMap,
+  filter,
+  map,
+  mapTo,
+  catchError,
+  concatMap
+} from 'rxjs/operators'
 import { concat, of, Observable } from 'rxjs'
 import { do_navigate_back } from '@actions/navigation.actions'
 import { ServerEnum } from '@utils/enums.util'
@@ -12,14 +23,23 @@ import {
 } from '@actions/server.actions'
 import { withApi, onCase } from '@utils/api.util'
 import { logger } from '@utils/logger.util'
-import { do_api_ajax_fail } from '@actions/general.actions'
+import { do_api_ajax_fail, do_spinner_toggle } from '@actions/general.actions'
 import { ApiActionsType, ApiSuccessActionsType } from '@actions/index'
-import { AjaxResponse } from 'rxjs/ajax'
-import { on_api_sonarr_get_series_success } from '@actions/api.success.actions'
+import {
+  on_api_sonarr_get_series_success,
+  on_api_sonarr_get_calendar_success
+} from '@actions/api.success.actions'
 
+const spinnerStartEpic: TEpic = action$ =>
+  action$.pipe(
+    filter(isOfType([API_SONARR_GET_SERIES, API_SONARR_GET_CALENDAR])),
+    mapTo(do_spinner_toggle(true))
+  )
+
+// @todo add retry switch to remote on timeout error
 const apiGetEpic: TEpic = (action$, state$) =>
   action$.pipe(
-    filter(isOfType([API_SONARR_GET_SERIES])),
+    filter(isOfType([API_SONARR_GET_SERIES, API_SONARR_GET_CALENDAR])),
     withApi(state$, 'GET'),
     mergeMap(ajax =>
       ajax
@@ -28,21 +48,20 @@ const apiGetEpic: TEpic = (action$, state$) =>
          * (TYPE_CONSTANT) => (ajax_response => successAction)
          */
         .pipe(
-          onCase(API_SONARR_GET_SERIES)(response =>
-            on_api_sonarr_get_series_success(response)
-          ),
+          onCase(API_SONARR_GET_SERIES)(on_api_sonarr_get_series_success),
+          onCase(API_SONARR_GET_CALENDAR)(on_api_sonarr_get_calendar_success),
           /**
            * Maps successAction to stream
            */
-          map(([, success]) => success as TActions)
-        )
-        .pipe(
+          map(([success]) => success as ApiSuccessActionsType),
           catchError(error => {
             logger.error(error)
             return of(do_api_ajax_fail(error))
           })
         )
-    )
+    ),
+    // finish loading
+    mergeMap(action => concat(...[of(action), of(do_spinner_toggle(false))]))
   )
 // const apiPostEpic: TEpic
 // const apiPutEpic: TEpic
@@ -52,4 +71,4 @@ const apiGetEpic: TEpic = (action$, state$) =>
 // @note make responseEpic call helper functions to organize state before sending to reducer
 // since its called by all requests it should be generalized, but function calls spetialized
 
-export const API_EPICS = [apiGetEpic]
+export const API_EPICS = [spinnerStartEpic, apiGetEpic]
