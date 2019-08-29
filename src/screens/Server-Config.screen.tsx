@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { ScreenFComponent, TServer } from '@utils/types.util'
+import { ScreenFComponent } from '@utils/types.util'
 import { THEME } from '@utils/theme.util'
 import { ThemeEnum, ColorEnum } from '@utils/enums.util'
 import ACard from '@common/Card.component'

@@ -1,30 +1,12 @@
-import { isOfType, isActionOf } from 'typesafe-actions'
-import { TEpic, TActions } from '@utils/types.util'
-import {
-  SERVER_MODIFY,
-  API_SONARR_GET_SERIES,
-  API_SONARR_GET_CALENDAR
-} from '@actions/types'
-import {
-  mergeMap,
-  filter,
-  map,
-  mapTo,
-  catchError,
-  concatMap
-} from 'rxjs/operators'
-import { concat, of, Observable } from 'rxjs'
-import { do_navigate_back } from '@actions/navigation.actions'
-import { ServerEnum } from '@utils/enums.util'
-import { TServerConfig } from '@reducers/server.reducer'
-import {
-  do_server_modify_complete,
-  do_server_enabled
-} from '@actions/server.actions'
+import { isOfType } from 'typesafe-actions'
+import { TEpic } from '@utils/types.util'
+import { API_SONARR_GET_SERIES, API_SONARR_GET_CALENDAR } from '@actions/types'
+import { mergeMap, filter, map, mapTo, catchError } from 'rxjs/operators'
+import { concat, of } from 'rxjs'
 import { withApi, onCase } from '@utils/api.util'
 import { logger } from '@utils/logger.util'
 import { do_api_ajax_fail, do_spinner_toggle } from '@actions/general.actions'
-import { ApiActionsType, ApiSuccessActionsType } from '@actions/index'
+import { ApiSuccessActionsType } from '@actions/index'
 import {
   on_api_sonarr_get_series_success,
   on_api_sonarr_get_calendar_success

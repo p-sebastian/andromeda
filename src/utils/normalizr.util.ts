@@ -1,4 +1,29 @@
 import { normalize, schema } from 'normalizr'
-import { ApiSuccessActionsType } from '@actions/index'
+import { API_SONARR_GET_CALENDAR, API_SONARR_GET_SERIES } from '@actions/types'
+import { logger } from './logger.util'
 
-const nrmlz = (action: ApiSuccessActionsType) => {}
+// constant => AjaxResponse => normalizedRes
+type Nrmlzr = (CONSTANT: string, json: any) => any
+export const nrmlz: Nrmlzr = (CONSTANT, json) => {
+  logger.warn('CALLED', CONSTANT)
+  switch (CONSTANT) {
+    case API_SONARR_GET_SERIES:
+      return sonarrGetSeries(json)
+    case API_SONARR_GET_SERIES:
+      return sonarrGetCalendar(json)
+    default:
+      return json
+  }
+}
+
+const sonarrGetSeries = (json: any) => {
+  const series = new schema.Entity('series')
+  const normal = normalize(json, [series])
+  logger.info('normal', normal)
+  return normal
+}
+
+const sonarrGetCalendar = (json: any) => {
+  const calendar = new schema.Entity('calendar')
+  return normalize(json, [calendar])
+}

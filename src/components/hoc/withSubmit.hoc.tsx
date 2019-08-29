@@ -7,7 +7,7 @@ type WithSubmitProps = {
   onPress: (inputs: TInputs) => void
 }
 export const withSubmit = <P extends {}>(Component: React.ComponentType<P>) => {
-  const Temp: React.FC<P & WithSubmitProps> = props => {
+  const Temp: React.FC<Overwrite<P, WithSubmitProps>> = props => {
     const { inputs } = useContext(FormContext)
     const onPress = () => {
       props.onPress(inputs)
@@ -16,7 +16,7 @@ export const withSubmit = <P extends {}>(Component: React.ComponentType<P>) => {
       ...props,
       onPress
     }
-    return <Component {..._props} />
+    return <Component {...(_props as any)} />
   }
   Temp.displayName = `withSubmit(${Component.displayName})`
   return Temp as React.FC<Overwrite<P, WithSubmitProps>>

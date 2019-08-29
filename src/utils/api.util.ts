@@ -11,6 +11,7 @@ import { ApiActionsType } from '@actions/index'
 import { isOfType } from 'typesafe-actions'
 import { logger } from './logger.util'
 import { TActions } from './types.util'
+import { nrmlz } from './normalizr.util'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type AjaxCreator = (
@@ -87,10 +88,11 @@ export const onCase: OnCase = CONSTANT => callback => action$ =>
         // iif must return an Observable
         iif(
           () => isOfType(CONSTANT, action),
-          of([callback(response), response]),
+          of([callback(nrmlz(CONSTANT, response)), response]),
           of([action, response])
         ) as Observable<[TActions, any]>
     )
+    // tap(([, res]) => logger.info('normalized', res))
   )
 
 type FormUrl = (

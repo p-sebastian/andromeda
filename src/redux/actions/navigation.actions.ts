@@ -1,4 +1,4 @@
-import { action, createAction } from 'typesafe-actions'
+import { createAction } from 'typesafe-actions'
 import { ScreenNames } from '../../app.routes'
 import { NavigationActions } from 'react-navigation'
 import _ from 'lodash'
@@ -9,7 +9,7 @@ type Params = { theme?: ThemeEnum } & any
 // This definition is for type safety
 const navigate = createAction(
   NavigationActions.NAVIGATE,
-  action => (screen: ScreenNames, params: Params) =>
+  action => (screen: ScreenNames, params: Params = {}) =>
     action({
       screen,
       params
