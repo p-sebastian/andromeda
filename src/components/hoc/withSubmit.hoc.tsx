@@ -19,5 +19,5 @@ export const withSubmit = <P extends {}>(Component: React.ComponentType<P>) => {
     return <Component {..._props} />
   }
   Temp.displayName = `withSubmit(${Component.displayName})`
-  return Temp as ComponentType<Overwrite<P, WithSubmitProps>>
+  return Temp as React.FC<Overwrite<P, WithSubmitProps>>
 }

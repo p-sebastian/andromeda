@@ -7,7 +7,7 @@ module.exports = function(api) {
     // isTest ? 'metro-react-native-babel-preset' : ''
   ].filter(Boolean)
 
-  api.cache(true)
+  api.cache(false)
   return {
     presets,
     plugins: [
@@ -22,7 +22,8 @@ module.exports = function(api) {
             '@reducers': './src/redux/reducers',
             '@epics': './src/redux/epics',
             '@actions': './src/redux/actions',
-            '@hooks': './src/hooks'
+            '@hooks': './src/hooks',
+            '@interfaces': './src/interfaces'
           }
         }
       ]

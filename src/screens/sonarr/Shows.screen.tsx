@@ -1,22 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components/native'
 import { View, Text, TouchableHighlight } from 'react-native'
 import { ScreenFComponent } from '../../utils/types.util'
-import { useADispatch } from '@utils/recipes.util'
-import { do_navigate } from '@actions/navigation.actions'
+import { useADispatch, useADispatchC } from '@utils/recipes.util'
+import ABackground from '@common/Background.component'
+// import { ISeries } from '@interfaces/index'
+import { do_api_sonarr_get_series } from '@actions/api.actions'
 
 const SonarrHomeScreen: ScreenFComponent = () => {
-  const dispatch = useADispatch()
-  const toSettings = () => dispatch(do_navigate('settings'))
   return (
-    <View>
+    <ABackground>
       <Text>Sonarr</Text>
-      <TouchableHighlight onPress={toSettings}>
-        <Text>test</Text>
-      </TouchableHighlight>
-    </View>
+    </ABackground>
   )
 }
-
 SonarrHomeScreen.navigationOptions = {}
+
+const useSeries = () => {
+  // const [series, setSeries] = useState<ISeries[]>([])
+  // const series = us
+  const fetch = useADispatchC(do_api_sonarr_get_series())
+  useEffect(() => {
+    fetch()
+  }, [])
+}
 
 export default SonarrHomeScreen

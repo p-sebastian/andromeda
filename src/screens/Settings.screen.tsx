@@ -5,6 +5,7 @@ import { THEME } from '@utils/theme.util'
 import { ThemeEnum, ColorEnum } from '@utils/enums.util'
 import ACard from '@common/Card.component'
 import AText from '@common/Text.component'
+import ABackground from '@common/Background.component'
 import { ListRenderItem, ActionSheetIOS } from 'react-native'
 import AInfo from '@common/Info-Text.component'
 import AFAB from '@common/FAB.component'
@@ -30,13 +31,13 @@ const SettingsScreen: ScreenFComponent = () => {
   const onPress = useCallback(() => _onPress(disabled, dispatch), [disabled])
 
   return (
-    <Container>
+    <ABackground>
       <ACard color={COLORS[ColorEnum.GRAY]}>
         <STitle>Servers</STitle>
         {verify(enabled, dispatch)}
       </ACard>
       <AFAB onPress={onPress} />
-    </Container>
+    </ABackground>
   )
 }
 
@@ -152,10 +153,6 @@ const ButtonIcon = styled(Ionicons)`
 `
 const MessageView = styled.View`
   margin-top: ${MARGIN};
-`
-const Container = styled.View`
-  flex: 1;
-  background: ${THEME[ThemeEnum.MAIN].lighterDark};
 `
 const STitle = styled(AText)`
   font-size: 18px;

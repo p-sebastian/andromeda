@@ -2,11 +2,10 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "prettier", "react"],
   "extends": [
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "prettier/@typescript-eslint",
-    "prettier/react",
-    "prettier"
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "sourceType": "module",
@@ -19,7 +18,7 @@
     "tsconfigRootDir": "./"
   },
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "off",
     "no-unused-vars": "off",
     "no-console": "off",
     "react/prop-types": "off",
