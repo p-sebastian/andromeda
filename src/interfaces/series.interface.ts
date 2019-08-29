@@ -1,7 +1,7 @@
 import { ISeriesValue } from './common.interface'
 
 export interface ISeries {
-  entities: Entities | undefined
+  entities: Entities
   result: number[]
 }
 

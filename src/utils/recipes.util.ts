@@ -4,7 +4,7 @@ import { TActions, StyledThemeP } from './types.util'
 import { Dispatch, useCallback } from 'react'
 import { TTheme } from '@utils/types.util'
 
-type Selector<R, S> = (state: S) => R
+export type Selector<R, S> = (state: S) => R
 
 /**
  * Uses a shallow equal so that it doesnt trigger a

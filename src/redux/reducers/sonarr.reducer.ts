@@ -7,15 +7,20 @@ import {
 import { ISeries } from '@interfaces/series.interface'
 import { ICalendar } from '@interfaces/calendar.interface'
 
-const DEFAULT_STATE = {
+type State = { series: ISeries; calendar: ICalendar }
+const DEFAULT_STATE: State = {
   series: {
-    entities: undefined,
+    entities: {
+      series: {}
+    },
     result: []
-  } as ISeries,
+  },
   calendar: {
-    entities: null,
+    entities: {
+      calendar: {}
+    },
     result: []
-  } as ICalendar
+  }
 }
 
 export const sonarrReducer = createReducer<typeof DEFAULT_STATE, TActions>(

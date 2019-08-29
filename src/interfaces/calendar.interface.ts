@@ -1,7 +1,7 @@
 import { ISeriesValue } from './common.interface'
 
 export interface ICalendar {
-  entities: Entities | null
+  entities: Entities
   result: number[]
 }
 

@@ -5,11 +5,10 @@ import { logger } from './logger.util'
 // constant => AjaxResponse => normalizedRes
 type Nrmlzr = (CONSTANT: string, json: any) => any
 export const nrmlz: Nrmlzr = (CONSTANT, json) => {
-  logger.warn('CALLED', CONSTANT)
   switch (CONSTANT) {
     case API_SONARR_GET_SERIES:
       return sonarrGetSeries(json)
-    case API_SONARR_GET_SERIES:
+    case API_SONARR_GET_CALENDAR:
       return sonarrGetCalendar(json)
     default:
       return json
@@ -19,7 +18,6 @@ export const nrmlz: Nrmlzr = (CONSTANT, json) => {
 const sonarrGetSeries = (json: any) => {
   const series = new schema.Entity('series')
   const normal = normalize(json, [series])
-  logger.info('normal', normal)
   return normal
 }
 

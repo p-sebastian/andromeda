@@ -15,6 +15,10 @@
     "skipDefaultLibCheck": true,
     "declaration": true,
     "strict": true,
+    "allowJs": false,
+    "noEmitOnError": true,
+    "noUnusedLocals": false,
+    "allowUnusedLabels": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -43,6 +47,6 @@
   ],
   "exclude": [
     "node_modules",
-    "./src/__tests__"
+    "./src/__tests__/**/*"
   ]
 }

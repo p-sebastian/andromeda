@@ -5,7 +5,7 @@ import { Observable, OperatorFunction, of, iif } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { RootState } from '@reducers/index'
 import { StateObservable } from 'redux-observable'
-import { withLatestFrom, map, mergeMap, tap } from 'rxjs/operators'
+import { withLatestFrom, map, mergeMap, tap, delay } from 'rxjs/operators'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
 import { ApiActionsType } from '@actions/index'
 import { isOfType } from 'typesafe-actions'
@@ -66,6 +66,7 @@ export const withApi: WithApi = (state$, method) => action$ =>
         params
       ).pipe(
         tap(res => logger.log('AJAX_RESPONSE', res)),
+        delay(2000),
         map(res => [action, res.response] as [ApiActionsType, any])
       )
     })
