@@ -1,47 +1,44 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 import { FlatList } from 'react-native'
 import { ScreenFComponent } from '../../utils/types.util'
-import { useShallowSelector } from '@utils/recipes.util'
 import ABackground from '@common/Background.component'
 import { do_api_sonarr_get_series } from '@actions/api.actions'
-import AText from '@common/Text.component'
 import { useApi } from '@hooks/useApi'
-import { ISeriesValue } from '@interfaces/common.interface'
+import { ISeriesValue, IEntity } from '@interfaces/common.interface'
 import { logger } from '@utils/logger.util'
+import SeriesItem from '@components/Series-Item.component'
+import { useShallowSelector } from '@utils/recipes.util'
 
 const SonarrHomeScreen: ScreenFComponent = () => {
-  const [{ result, entities }, refreshing, doRefresh] = useApi(
+  const series = useShallowSelector(state => state.sonarr.entities.series)
+  const [result, refreshing, doRefresh] = useApi(
     do_api_sonarr_get_series(),
-    state => state.sonarr.series
+    state => state.sonarr.result.series
   )
   return (
     <ABackground>
-      <FlatList
-        onRefresh={doRefresh}
-        refreshing={refreshing}
-        keyExtractor={keyExtractor}
-        data={result}
-        renderItem={renderItem(entities.series)}
-      />
+      <Container>
+        <FlatList
+          onRefresh={doRefresh}
+          refreshing={refreshing}
+          keyExtractor={keyExtractor}
+          data={result}
+          renderItem={renderItem(series)}
+        />
+      </Container>
     </ABackground>
   )
 }
 SonarrHomeScreen.navigationOptions = {}
 
 const keyExtractor = (key: number) => key.toString()
-const renderItem = (series: { [key: number]: ISeriesValue }) => ({
-  item
-}: any) => (
-  <Item>
-    <Text>{series[item].title}</Text>
-  </Item>
+const renderItem = (series: IEntity<ISeriesValue>) => ({ item }: any) => (
+  <SeriesItem series={series[item]} />
 )
-const Item = styled.View`
-  height: 40;
-`
-const Text = styled(AText)`
-  color: white;
+
+const Container = styled.View`
+  padding: 10px;
 `
 
 export default SonarrHomeScreen

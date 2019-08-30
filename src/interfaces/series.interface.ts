@@ -1,10 +1,3 @@
-import { ISeriesValue } from './common.interface'
+import { ISeriesValue, IEntity } from './common.interface'
 
-export interface ISeries {
-  entities: Entities
-  result: number[]
-}
-
-interface Entities {
-  series: { [key: number]: ISeriesValue }
-}
+export type TSeries = IEntity<ISeriesValue>

@@ -1,15 +1,8 @@
-import { ISeriesValue } from './common.interface'
+import { IEntity } from './common.interface'
 
-export interface ICalendar {
-  entities: Entities
-  result: number[]
-}
+export type TCalendar = IEntity<CalendarValue>
 
-interface Entities {
-  calendar: { [key: string]: CalendarValue }
-}
-
-interface CalendarValue {
+export interface CalendarValue {
   seriesId: number
   episodeFileId: number
   seasonNumber: number
@@ -24,7 +17,6 @@ interface CalendarValue {
   sceneEpisodeNumber?: number
   sceneSeasonNumber?: number
   unverifiedSceneNumbering: boolean
-  series: ISeriesValue
   id: number
   overview?: string
   episodeFile?: EpisodeFile

@@ -3,19 +3,19 @@ import {
   API_SONARR_GET_SERIES_SUCCESS,
   API_SONARR_GET_CALENDAR_SUCCESS
 } from './types'
-import { ISeries } from '@interfaces/series.interface'
-import { ICalendar } from '@interfaces/calendar.interface'
+import { TNrmlzResponse } from '@interfaces/common.interface'
 
 /**
  * Success calls, managed by epics
  */
 
+type SeriesResponse = TNrmlzResponse<'images' | 'series'>
 export const on_api_sonarr_get_series_success = createAction(
   API_SONARR_GET_SERIES_SUCCESS,
-  action => (payload: ISeries) => action(payload)
+  action => (payload: SeriesResponse) => action(payload)
 )
 
 export const on_api_sonarr_get_calendar_success = createAction(
   API_SONARR_GET_CALENDAR_SUCCESS,
-  action => (payload: ICalendar) => action(payload)
+  action => (payload: TNrmlzResponse<'calendar'>) => action(payload)
 )

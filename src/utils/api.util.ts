@@ -123,6 +123,11 @@ const formUrl: FormUrl = (
   }
 }
 
+export const uriForImage = (server: TServerState, imagePath: string) => {
+  const [baseUrl] = formUrl(server)
+  return `${baseUrl}${imagePath}&${queryString({ apikey: server.apiKey })}`
+}
+
 const queryString = (body: any = {}) =>
   Object.keys(body)
     .map(key => `${key}=${body[key]}`)

@@ -1,5 +1,6 @@
 import { normalize, schema } from 'normalizr'
 import { API_SONARR_GET_CALENDAR, API_SONARR_GET_SERIES } from '@actions/types'
+import { omit } from 'lodash'
 import { logger } from './logger.util'
 
 // constant => AjaxResponse => normalizedRes
@@ -17,11 +18,27 @@ export const nrmlz: Nrmlzr = (CONSTANT, json) => {
 
 const sonarrGetSeries = (json: any) => {
   const series = new schema.Entity('series')
+  const images = new schema.Entity(
+    'images',
+    {},
+    {
+      idAttribute: (entity, parent) => `${parent.id}-${entity.coverType}`
+    }
+  )
+  series.define({
+    images: [images]
+  })
   const normal = normalize(json, [series])
   return normal
 }
 
 const sonarrGetCalendar = (json: any) => {
-  const calendar = new schema.Entity('calendar')
+  const calendar = new schema.Entity(
+    'calendar',
+    {},
+    {
+      processStrategy: entity => omit(entity, 'series')
+    }
+  )
   return normalize(json, [calendar])
 }

@@ -1,4 +1,12 @@
-export interface IImage {
+type Keys = number | string
+export type IEntity<T> = { [k in Keys]: T }
+export type TImage = IEntity<IImageValue>
+export type TNrmlzResponse<Name extends string> = {
+  entities: { [key in Name]: any }
+  result: []
+}
+
+export interface IImageValue {
   coverType: CoverTypeEnum
   url: string
 }
@@ -55,7 +63,7 @@ export interface ISeriesValue {
   previousAiring?: Date
   network: string
   airTime?: string
-  images: IImage[]
+  images: TImage[]
   seasons: ISeason[]
   year: number
   path: string

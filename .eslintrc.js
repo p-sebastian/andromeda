@@ -13,7 +13,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
       impliedStrict: true
-    }
+    },
+    project: undefined
   },
   rules: {
     radix: ['error', 'as-needed'],
@@ -39,7 +40,13 @@ module.exports = {
         args: 'after-used',
         ignoreRestSiblings: false
       }
-    ]
+    ],
+    // For improving eslint performance
+    '@typescript-eslint/no-for-in-array': 'off',
+    '@typescript-eslint/no-unnecessary-qualifier': 'off',
+    '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+    '@typescript-eslint/promise-function-async': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off'
   },
   settings: {
     react: {

@@ -4,33 +4,50 @@ import {
   API_SONARR_GET_SERIES_SUCCESS,
   API_SONARR_GET_CALENDAR_SUCCESS
 } from '@actions/types'
-import { ISeries } from '@interfaces/series.interface'
-import { ICalendar } from '@interfaces/calendar.interface'
+import { TSeries } from '@interfaces/series.interface'
+import { TCalendar } from '@interfaces/calendar.interface'
+import { TImage } from '@interfaces/common.interface'
 
-type State = { series: ISeries; calendar: ICalendar }
+type State = {
+  entities: { series: TSeries; calendar: TCalendar; images: TImage }
+  result: {
+    series: number[]
+    calendar: number[]
+  }
+}
 const DEFAULT_STATE: State = {
-  series: {
-    entities: {
-      series: {}
-    },
-    result: []
+  entities: {
+    series: {},
+    calendar: {},
+    images: {}
   },
-  calendar: {
-    entities: {
-      calendar: {}
-    },
-    result: []
+  result: {
+    series: [],
+    calendar: []
   }
 }
 
 export const sonarrReducer = createReducer<typeof DEFAULT_STATE, TActions>(
   DEFAULT_STATE
 )
-  .handleAction(API_SONARR_GET_SERIES_SUCCESS, (state, action) => ({
-    ...state,
-    series: action.payload
-  }))
-  .handleAction(API_SONARR_GET_CALENDAR_SUCCESS, (state, action) => ({
-    ...state,
-    calendar: action.payload
-  }))
+  .handleAction(API_SONARR_GET_SERIES_SUCCESS, (state, action) => {
+    const { result, entities } = action.payload
+    return {
+      entities: {
+        ...state.entities,
+        series: { ...entities['series'] },
+        images: { ...entities['images'] }
+      },
+      result: { ...state.result, series: [...result] }
+    }
+  })
+  .handleAction(API_SONARR_GET_CALENDAR_SUCCESS, (state, action) => {
+    const { entities, result } = action.payload
+    return {
+      entities: {
+        ...state.entities,
+        calendar: { ...entities['calendar'] }
+      },
+      result: { ...state.result, series: [...result] }
+    }
+  })
