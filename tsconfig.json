@@ -17,7 +17,7 @@
     "strict": true,
     "allowJs": false,
     "noEmitOnError": true,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "allowUnusedLabels": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
