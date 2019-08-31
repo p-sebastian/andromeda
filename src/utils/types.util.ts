@@ -19,7 +19,7 @@ import {
 } from '../redux/actions'
 import { BASE } from './theme.util'
 import { ScreenNames } from 'app.routes'
-import { ThemeEnum, ServerEnum } from './enums.util'
+import { ThemeEnum, ServerEnum, GradientEnum } from './enums.util'
 
 /**
  * T: Navigation passed params interface
@@ -79,6 +79,14 @@ export type TServer = {
 }
 export type TAvailableServers<R = TServer> = {
   [key in ServerEnum]: R
+}
+export type TGradient = {
+  colors: string[]
+  start: [number, number]
+  end: [number, number]
+}
+export type TGradientConstants<G = TGradient> = {
+  [key in GradientEnum]: G
 }
 
 export type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U

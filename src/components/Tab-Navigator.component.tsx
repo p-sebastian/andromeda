@@ -13,7 +13,7 @@ const AMaterialTopTabBar: React.FC<MaterialTopTabBarProps> = props => {
   }
   // text in tab
   modProps.labelStyle = {
-    fontFamily: theme.fontBold,
+    fontFamily: 'roboto-bold',
     letterSpacing: 3,
     color: theme.fontColor
   }

@@ -20,6 +20,7 @@ const SonarrHomeScreen: ScreenFComponent = () => {
     <ABackground>
       <Container>
         <FlatList
+          initialNumToRender={8}
           onRefresh={doRefresh}
           refreshing={refreshing}
           keyExtractor={keyExtractor}

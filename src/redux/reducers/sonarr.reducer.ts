@@ -48,6 +48,6 @@ export const sonarrReducer = createReducer<typeof DEFAULT_STATE, TActions>(
         ...state.entities,
         calendar: { ...entities['calendar'] }
       },
-      result: { ...state.result, series: [...result] }
+      result: { ...state.result, calendar: [...result] }
     }
   })

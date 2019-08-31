@@ -41,6 +41,8 @@ const _loadAssets = async () => {
   await Font.loadAsync({
     'dank-mono': require('../assets/fonts/DankMono-Regular.ttf'),
     'dank-mono-italic': require('../assets/fonts/DankMono-Italic.ttf'),
-    'fira-code-bold': require('../assets/fonts/FiraCode-Bold.ttf')
+    'fira-code-bold': require('../assets/fonts/FiraCode-Bold.ttf'),
+    'roboto-bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
+    'oswald-semibold': require('../assets/fonts/Oswald-SemiBold.ttf')
   })
 }

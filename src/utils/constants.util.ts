@@ -1,5 +1,5 @@
 import { ThemeEnum, ServerEnum, ColorEnum, GradientEnum } from './enums.util'
-import { TAvailableServers } from './types.util'
+import { TAvailableServers, TGradientConstants } from './types.util'
 
 export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
   [ServerEnum.SONARR]: {
@@ -53,21 +53,21 @@ export const SERVER_GRADIENTS = Object.freeze({
   [ServerEnum.SABNZBD]: 'hsl(45, 94%, 49%)',
   [ServerEnum.TORRENT]: 'hsl(0, 100%, 29%)'
 })
-export const GRADIENTS = Object.freeze({
-  [GradientEnum.BLUE]: {
-    colors: ['#00C9FF', '#92FE9D'],
-    start: [0.5, 0] as [number, number],
-    end: [0.9, 1] as [number, number]
+export const GRADIENTS: TGradientConstants = Object.freeze({
+  [GradientEnum.ORANGE]: {
+    colors: ['#C6FFDD', '#FBD786', '#f7797d'],
+    start: [0, 0.5] as [number, number],
+    end: [1.3, 0.5] as [number, number]
   },
   [GradientEnum.GREEN]: {
     colors: ['#34e89e', '#218b6f', '#144f50', '#0f3443'],
     start: [0.2, 0] as [number, number],
     end: [0.9, 1] as [number, number]
   },
-  [GradientEnum.ORANGE]: {
-    colors: ['#ff8765', '#ff3f77'],
-    start: [0.3, 0] as [number, number],
-    end: [0.5, 1] as [number, number]
+  [GradientEnum.BLUE]: {
+    colors: ['#12c2e9', '#c471ed', '#f7797d'],
+    start: [0, 0.5] as [number, number],
+    end: [1, 0.5] as [number, number]
   },
   [GradientEnum.PURPLE]: {
     colors: ['#1096e1', '#6651e5', '#b214e8'],
@@ -75,8 +75,8 @@ export const GRADIENTS = Object.freeze({
     end: [0.6, 1] as [number, number]
   },
   [GradientEnum.RED]: {
-    colors: ['#870000', '#190A05'],
-    start: [0, 0] as [number, number],
-    end: [0.8, 2] as [number, number]
+    colors: ['#ee0979', '#ff6a00'],
+    start: [0, 0.5] as [number, number],
+    end: [1, 0.5] as [number, number]
   }
 })
