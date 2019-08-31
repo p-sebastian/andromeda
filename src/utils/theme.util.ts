@@ -7,8 +7,6 @@ import { COLORS } from './constants.util'
 // const lidarrMain = 'hsl(154, 100%, 29%)'
 // const sabnzbdMain = 'hsl(45, 94%, 49%)'
 // const transmissionMain = 'hsl(0, 100%, 29%)'
-COLORS
-
 export const BASE = Object.freeze({
   fontRegular: 'dank-mono',
   fontItalic: 'dank-mono-italic',

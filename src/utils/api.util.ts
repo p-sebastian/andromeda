@@ -66,7 +66,6 @@ export const withApi: WithApi = (state$, method) => action$ =>
         params
       ).pipe(
         tap(res => logger.log('AJAX_RESPONSE', res)),
-        delay(2000),
         map(res => [action, res.response] as [ApiActionsType, any])
       )
     })

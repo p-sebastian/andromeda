@@ -20,6 +20,13 @@ export enum ColorEnum {
   SUCCESS,
   INFO
 }
+export enum GradientEnum {
+  BLUE = 1,
+  GREEN,
+  ORANGE,
+  PURPLE,
+  RED
+}
 
 export enum ServerEnum {
   SONARR = 100,

@@ -38,7 +38,7 @@ const renderItem = (series: IEntity<ISeriesValue>) => ({ item }: any) => (
 )
 
 const Container = styled.View`
-  padding: 10px;
+  padding-top: 10;
 `
 
 export default SonarrHomeScreen

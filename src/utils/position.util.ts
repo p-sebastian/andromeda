@@ -6,3 +6,4 @@ export const LEFT_PADDING = 16
 export const TOP_PADDING = 20
 export const BORDER_RADIUS = 5
 export const BOX_SHADOW = `3px 3px 5px ${THEME[ThemeEnum.MAIN].primaryDark};`
+// export const BOX_SHADOW = `3px 3px 5px red;`

@@ -7,7 +7,7 @@ import { useTheme } from '@hooks/useTheme'
 
 const AHeader: React.FC = () => {
   const [theme] = useTheme()
-  return <SSafeView theme={theme} accessibilityLabel="header"></SSafeView>
+  return <SSafeView theme={theme} accessibilityLabel="header" />
 }
 
 const SSafeView = styled(SafeAreaView)`
