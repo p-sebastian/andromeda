@@ -17,16 +17,15 @@ const SonarrHomeScreen: ScreenFComponent = () => {
   )
   return (
     <ABackground>
-      <Container>
-        <FlatList
-          initialNumToRender={8}
-          onRefresh={doRefresh}
-          refreshing={refreshing}
-          keyExtractor={keyExtractor}
-          data={result}
-          renderItem={renderItem(series)}
-        />
-      </Container>
+      <FlatList
+        initialNumToRender={8}
+        onRefresh={doRefresh}
+        refreshing={refreshing}
+        keyExtractor={keyExtractor}
+        data={result}
+        renderItem={renderItem(series)}
+        ListHeaderComponent={Container}
+      />
     </ABackground>
   )
 }

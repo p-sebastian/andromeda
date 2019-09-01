@@ -19,10 +19,7 @@ import { do_navigate } from '@actions/navigation.actions'
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import { Ionicons } from '@expo/vector-icons'
 import { TServerState } from '@reducers/server.reducer'
-import {
-  do_api_sonarr_get_series,
-  do_api_sonarr_get_calendar
-} from '@actions/api.actions'
+import { do_api_sonarr_get_calendar } from '@actions/api.actions'
 
 type Dispatch = React.Dispatch<TActions>
 const SettingsScreen: ScreenFComponent = () => {

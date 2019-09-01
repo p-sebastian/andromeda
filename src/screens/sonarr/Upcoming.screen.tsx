@@ -12,6 +12,9 @@ import { IEntity } from '@interfaces/common.interface'
 import { CalendarValue } from '@interfaces/calendar.interface'
 import moment from 'moment'
 import { logger } from '@utils/logger.util'
+import { BOX_SHADOW, BORDER_RADIUS } from '@utils/position.util'
+import { COLORS } from '@utils/constants.util'
+import { ColorEnum } from '@utils/enums.util'
 
 const UpcomingScreen: ScreenFComponent = () => {
   const calendar = useShallowSelector(state => state.sonarr.entities.calendar)
@@ -22,16 +25,14 @@ const UpcomingScreen: ScreenFComponent = () => {
   const data = useMemo(() => arrangeSections(result, calendar), [result])
   return (
     <ABackground>
-      <Container>
-        <SectionList
-          onRefresh={doRefresh}
-          refreshing={refreshing}
-          keyExtractor={keyExtractor}
-          renderSectionHeader={renderSectionHeader}
-          sections={data}
-          renderItem={renderItem(calendar)}
-        />
-      </Container>
+      <SectionList
+        onRefresh={doRefresh}
+        refreshing={refreshing}
+        keyExtractor={keyExtractor}
+        renderSectionHeader={renderSectionHeader}
+        sections={data}
+        renderItem={renderItem(calendar)}
+      />
     </ABackground>
   )
 }
@@ -69,14 +70,20 @@ const arrangeSections = (
   return Object.keys(data).map(key => ({ title: key, data: data[key] }))
 }
 
-const Container = styled.View`
-  padding-top: 10;
-`
+const Container = styled.View``
 const Header = styled.View`
+  background: ${COLORS[ColorEnum.GRAY]};
   height: 40;
+  width: 100%;
+  box-shadow: ${BOX_SHADOW};
+  margin-bottom: 15;
+  justify-content: center;
+  border-radius: ${BORDER_RADIUS};
 `
 const Title = styled(AText)`
   color: white;
+  font-family: oswald-semibold;
+  padding-left: 10;
 `
 
 export default UpcomingScreen
