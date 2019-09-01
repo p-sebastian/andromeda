@@ -16,13 +16,17 @@ type Props = {
   title: string
   seriesId: number
   children: React.ReactNode
+  flexDirection?: 'row' | 'column'
+  justifyContent?: string
 }
 const SonarrListItem: React.FC<Props> = ({
   children,
   seriesId,
   gradient,
   gradientTextColor,
-  title
+  title,
+  flexDirection = 'row',
+  justifyContent = 'flex-end'
 }) => {
   const server = useASelector(selectServer(ServerEnum.SONARR))
   const poster = useASelector(selectImage(`${seriesId}-poster`))
@@ -43,7 +47,12 @@ const SonarrListItem: React.FC<Props> = ({
         </Gradient>
         <InfoView>
           <Fanart source={{ uri: uriFanart }} />
-          <Padding>{children}</Padding>
+          <Padding
+            flexDirection={flexDirection}
+            justifyContent={justifyContent}
+          >
+            {children}
+          </Padding>
         </InfoView>
       </ContentContainer>
     </Container>
@@ -100,9 +109,10 @@ const InfoView = styled.View`
   background: hsla(225, 4%, 20%, 1);
   border-radius: ${BORDER_RADIUS};
 `
+type Padding = { justifyContent: string; flexDirection: string }
 const Padding = styled.View`
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: ${extractProp<Padding>('flexDirection')};
+  justify-content: ${extractProp<Padding>('justifyContent')};
   align-items: flex-end;
   padding: 5px;
   flex: 1;

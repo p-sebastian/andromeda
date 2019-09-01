@@ -6,7 +6,6 @@ import ABackground from '@common/Background.component'
 import { do_api_sonarr_get_series } from '@actions/api.actions'
 import { useApi } from '@hooks/useApi'
 import { ISeriesValue, IEntity } from '@interfaces/common.interface'
-import { logger } from '@utils/logger.util'
 import SeriesItem from '@components/Series-Item.component'
 import { useShallowSelector } from '@utils/recipes.util'
 
@@ -35,7 +34,7 @@ SonarrHomeScreen.navigationOptions = {}
 
 const keyExtractor = (key: number) => key.toString()
 const renderItem = (series: IEntity<ISeriesValue>) => ({ item }: any) => (
-  <SeriesItem series={series[item]} />
+  <SeriesItem key={item} series={series[item]} />
 )
 
 const Container = styled.View`
