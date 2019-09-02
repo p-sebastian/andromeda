@@ -9,12 +9,14 @@ import AppContainer from './app.routes'
 import ADrawer from '@common/Drawer.component'
 import { AMenu } from './components'
 import { useScreens } from 'react-native-screens'
+import { withExpansion } from '@components/hoc/withExpansion.hoc'
 useScreens()
 
 console.disableYellowBox = true
 
 const { persistor, store } = Store()
 
+const DrawerWithExpansion = withExpansion(ADrawer)
 export default function App() {
   const [isReady, setReady] = useState(false)
   if (!isReady) {
@@ -29,9 +31,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ADrawer Content={AMenu}>
+        <DrawerWithExpansion Content={AMenu}>
           <AppContainer />
-        </ADrawer>
+        </DrawerWithExpansion>
       </PersistGate>
     </Provider>
   )

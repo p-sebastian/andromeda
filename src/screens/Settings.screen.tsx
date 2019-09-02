@@ -33,7 +33,9 @@ const SettingsScreen: ScreenFComponent = () => {
         <STitle>Servers</STitle>
         {verify(enabled, dispatch)}
       </ACard>
-      <AFAB onPress={onPress} />
+      <AFAB onPress={onPress}>
+        <Ionicons name="md-add" color="white" size={32} />
+      </AFAB>
     </ABackground>
   )
 }

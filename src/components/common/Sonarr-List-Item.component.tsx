@@ -8,8 +8,10 @@ import { selectServer, selectImage } from '@utils/selectors.util'
 import { ServerEnum } from '@utils/enums.util'
 import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
-import { View, MeasureOnSuccessCallback } from 'react-native'
+import { View } from 'react-native'
 import { ExpansionContext } from '../../context/Expansion.context'
+import { Image } from 'react-native-expo-image-cache'
+
 const WIDTH = SCREEN_WIDTH * 0.25
 
 type Props = {
@@ -44,8 +46,8 @@ const SonarrListItem: React.FC<Props> = ({
     container.current!.measure((x, y, elmWidth, elmHeight, offsetX, offsetY) =>
       setDimensions({
         elmHeight,
-        // remove sidebar width from offset
-        offsetX: offsetX - OFFSET,
+        elmWidth,
+        offsetX,
         offsetY,
         selected: true,
         seriesId,
@@ -58,9 +60,9 @@ const SonarrListItem: React.FC<Props> = ({
   return (
     <Container ref={container}>
       <Touchable onPress={_onPress as any}>
-        <Poster>
-          <Image source={{ uri: posterUri }} />
-        </Poster>
+        <PosterContainer>
+          <Poster uri={posterUri} />
+        </PosterContainer>
         <ContentContainer>
           <Gradient {...gradient}>
             <GradientText gradientTextColor={gradientTextColor}>
@@ -68,7 +70,7 @@ const SonarrListItem: React.FC<Props> = ({
             </GradientText>
           </Gradient>
           <InfoView>
-            <Fanart source={{ uri: fanartUri }} />
+            <Fanart uri={fanartUri} />
             <Padding
               flexDirection={flexDirection}
               justifyContent={justifyContent}
@@ -106,7 +108,7 @@ const GradientText = styled.Text`
   font-family: oswald-semibold;
   font-size: 14;
 `
-const Poster = styled.View`
+const PosterContainer = styled.View`
   width: ${WIDTH};
   height: ${WIDTH / 0.69};
   box-shadow: ${BOX_SHADOW};
@@ -117,14 +119,14 @@ const ContentContainer = styled.View`
   padding-left: 5;
   box-shadow: ${BOX_SHADOW};
 `
-const Fanart = styled.Image`
+const Fanart = styled(Image)`
   position: absolute;
   border-radius: ${BORDER_RADIUS};
   opacity: 0.2;
   width: 100%;
   height: 100%;
 `
-const Image = styled.Image`
+const Poster = styled(Image)`
   border-radius: ${BORDER_RADIUS};
   flex: 1;
 `

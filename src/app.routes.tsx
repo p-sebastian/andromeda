@@ -17,7 +17,6 @@ import { useASelector, useADispatch } from '@utils/recipes.util'
 import { createReduxContainer } from 'react-navigation-redux-helpers'
 import { ServerNames } from '@utils/types.util'
 import AHeader from '@common/Header.component'
-import { withExpansion } from '@components/hoc/withExpansion.hoc'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -133,4 +132,4 @@ export type ScreenNames =
   | 'shows'
   | 'config'
 
-export default withExpansion(AppNavigator)
+export default AppNavigator

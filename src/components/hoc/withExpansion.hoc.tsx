@@ -11,6 +11,7 @@ export const withExpansion = <P extends {}>(Component: ComponentType<P>) => {
       offsetX: 0,
       offsetY: 0,
       elmHeight: 0,
+      elmWidth: 0,
       selected: false,
       seriesId: 0,
       posterUri: '',
@@ -21,8 +22,8 @@ export const withExpansion = <P extends {}>(Component: ComponentType<P>) => {
       <Container>
         <ExpansionContext.Provider value={{ dimensions, setDimensions }}>
           <Component {...props} />
+          {selected ? <CardExpansion {..._props} /> : null}
         </ExpansionContext.Provider>
-        {selected ? <CardExpansion {..._props} /> : null}
       </Container>
     )
   }

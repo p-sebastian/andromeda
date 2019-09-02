@@ -5,6 +5,7 @@ export const ExpansionContext = createContext({
     offsetX: 0,
     offsetY: 0,
     elmHeight: 0,
+    elmWidth: 0,
     selected: false,
     seriesId: 0,
     posterUri: '',
@@ -14,6 +15,7 @@ export const ExpansionContext = createContext({
     offsetX: number
     offsetY: number
     elmHeight: number
+    elmWidth: number
     selected: boolean
     seriesId: number
     posterUri: string

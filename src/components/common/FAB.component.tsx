@@ -2,27 +2,44 @@ import React from 'react'
 import { GestureResponderEvent } from 'react-native'
 import styled from 'styled-components/native'
 import { MARGIN, BOX_SHADOW } from '@utils/position.util'
-import { Ionicons } from '@expo/vector-icons'
 
-type Props = { onPress?: (event: GestureResponderEvent) => void }
-const AFAB: React.FC<Props> = ({ onPress }) => {
+type Positions = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+type Props = {
+  onPress?: (event: GestureResponderEvent) => void
+  position?: Positions
+  children: React.ReactNode
+}
+const AFAB: React.FC<Props> = ({
+  children,
+  onPress,
+  position = 'bottom-right'
+}) => {
   return (
-    <Container>
-      <Button onPress={onPress}>
-        <Icon name="md-add" color="white" size={32} />
-      </Button>
+    <Container position={position}>
+      <Button onPress={onPress}>{children}</Button>
     </Container>
   )
 }
 
+const where = ({ position }: { position: Positions }) => {
+  switch (position) {
+    case 'top-left':
+      return `top: ${MARGIN}; left: ${MARGIN};`
+    case 'top-right':
+      return `top: ${MARGIN}; right: ${MARGIN};`
+    case 'bottom-left':
+      return `bottom: ${MARGIN}; left: ${MARGIN};`
+    default:
+      return `bottom: ${MARGIN}; right: ${MARGIN};`
+  }
+}
 /**
  * This circle in circle fixes, jagged edges of a
  * border in a circle
  */
-const Container = styled.View`
+const Container = styled.View<{ position: Positions }>`
   position: absolute;
-  right: ${MARGIN};
-  bottom: ${MARGIN};
+  ${where}
   height: 60;
   width: 60;
   border-radius: 50;
@@ -38,6 +55,5 @@ const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
 `
-const Icon = styled(Ionicons)``
 
 export default React.memo(AFAB)
