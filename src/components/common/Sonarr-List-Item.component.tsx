@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useCallback, useRef, useContext } from 'react'
 import styled from 'styled-components/native'
-import { SCREEN_WIDTH } from '@utils/dimensions.util'
+import { SCREEN_WIDTH, OFFSET } from '@utils/dimensions.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import { extractProp, useASelector } from '@utils/recipes.util'
@@ -8,6 +8,8 @@ import { selectServer, selectImage } from '@utils/selectors.util'
 import { ServerEnum } from '@utils/enums.util'
 import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
+import { View, MeasureOnSuccessCallback } from 'react-native'
+import { ExpansionContext } from '../../context/Expansion.context'
 const WIDTH = SCREEN_WIDTH * 0.25
 
 type Props = {
@@ -28,43 +30,66 @@ const SonarrListItem: React.FC<Props> = ({
   flexDirection = 'row',
   justifyContent = 'flex-end'
 }) => {
+  const { setDimensions } = useContext(ExpansionContext)
+  const container = useRef<View>(null)
   const server = useASelector(selectServer(ServerEnum.SONARR))
   const poster = useASelector(selectImage(`${seriesId}-poster`))
   const fanart = useASelector(selectImage(`${seriesId}-fanart`))
-  const uri = uriForImage(server, poster)
-  const uriFanart = uriForImage(server, fanart)
+  const posterUri = uriForImage(server, poster)
+  const fanartUri = uriForImage(server, fanart)
+  /**
+   * Open expansion card, whats withing withExpansion.hoc, in AppContainer
+   */
+  const _onPress = useCallback(() => {
+    container.current!.measure((x, y, elmWidth, elmHeight, offsetX, offsetY) =>
+      setDimensions({
+        elmHeight,
+        // remove sidebar width from offset
+        offsetX: offsetX - OFFSET,
+        offsetY,
+        selected: true,
+        seriesId,
+        posterUri,
+        fanartUri
+      })
+    )
+  }, [container])
 
   return (
-    <Container>
-      <Poster>
-        <Image source={{ uri }} />
-      </Poster>
-      <ContentContainer>
-        <Gradient {...gradient}>
-          <GradientText gradientTextColor={gradientTextColor}>
-            {title}
-          </GradientText>
-        </Gradient>
-        <InfoView>
-          <Fanart source={{ uri: uriFanart }} />
-          <Padding
-            flexDirection={flexDirection}
-            justifyContent={justifyContent}
-          >
-            {children}
-          </Padding>
-        </InfoView>
-      </ContentContainer>
+    <Container ref={container}>
+      <Touchable onPress={_onPress as any}>
+        <Poster>
+          <Image source={{ uri: posterUri }} />
+        </Poster>
+        <ContentContainer>
+          <Gradient {...gradient}>
+            <GradientText gradientTextColor={gradientTextColor}>
+              {title}
+            </GradientText>
+          </Gradient>
+          <InfoView>
+            <Fanart source={{ uri: fanartUri }} />
+            <Padding
+              flexDirection={flexDirection}
+              justifyContent={justifyContent}
+            >
+              {children}
+            </Padding>
+          </InfoView>
+        </ContentContainer>
+      </Touchable>
     </Container>
   )
 }
 
-const Container = styled.TouchableOpacity`
+const Container = styled.View`
   height: ${WIDTH / 0.69};
   margin-bottom: 15;
-  flex-direction: row;
   margin-left: 10;
   margin-right: 10;
+`
+const Touchable = styled.TouchableOpacity`
+  flex-direction: row;
 `
 const Gradient = styled(LinearGradient)`
   border-radius: ${BORDER_RADIUS};

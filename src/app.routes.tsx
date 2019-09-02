@@ -5,15 +5,19 @@ import {
   createSwitchNavigator,
   TabNavigatorConfig
 } from 'react-navigation'
-import { ShowsScreen, UpcomingScreen } from '@screens/index'
+import {
+  ShowsScreen,
+  UpcomingScreen,
+  HomeScreen,
+  SettingsScreen,
+  ServerConfigScreen
+} from '@screens/index'
 import { AMaterialTopTabBar } from './components'
 import { useASelector, useADispatch } from '@utils/recipes.util'
 import { createReduxContainer } from 'react-navigation-redux-helpers'
 import { ServerNames } from '@utils/types.util'
 import AHeader from '@common/Header.component'
-import HomeScreen from '@screens/Home.screen'
-import SettingsScreen from '@screens/Settings.screen'
-import ServerConfigScreen from '@screens/Server-Config.screen'
+import { withExpansion } from '@components/hoc/withExpansion.hoc'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
@@ -80,12 +84,14 @@ const ModalStack = createStackNavigator(
 /**
  * Puts a header in all tabs, can only be done
  * in a stacknavigator
+ * [screens] on top of tabs as modals, must be put here
  */
 const withHeaderStack = createStackNavigator(
   {
     Tabs: AppSwitch
   },
   {
+    mode: 'modal',
     defaultNavigationOptions: {
       header: AHeader as any
     }
@@ -113,7 +119,7 @@ export const ScreenStack = createSwitchNavigator(
  */
 const ReduxNavigationContainer = createReduxContainer(ScreenStack)
 const AppNavigator: React.FC = () => {
-  const state = useASelector(state => state.navigation)
+  const state = useASelector(_state => _state.navigation)
   const dispatch = useADispatch()
   return <ReduxNavigationContainer state={state} dispatch={dispatch} />
 }
@@ -127,4 +133,4 @@ export type ScreenNames =
   | 'shows'
   | 'config'
 
-export default AppNavigator
+export default withExpansion(AppNavigator)

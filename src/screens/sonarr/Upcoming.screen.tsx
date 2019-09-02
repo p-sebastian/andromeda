@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { FlatList, SectionList, SectionListData } from 'react-native'
 import { ScreenFComponent } from '@utils/types.util'
 import styled from 'styled-components/native'
@@ -15,8 +15,15 @@ import { logger } from '@utils/logger.util'
 import { BOX_SHADOW, BORDER_RADIUS } from '@utils/position.util'
 import { COLORS } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
+import { ExpansionContext } from '../../context/Expansion.context'
 
 const UpcomingScreen: ScreenFComponent = () => {
+  const [dimensions, setDimensions] = useState({
+    offsetX: 0,
+    offsetY: 0,
+    elmHeight: 0,
+    selected: false
+  })
   const calendar = useShallowSelector(state => state.sonarr.entities.calendar)
   const [result, refreshing, doRefresh] = useApi(
     do_api_sonarr_get_calendar(),
@@ -25,14 +32,16 @@ const UpcomingScreen: ScreenFComponent = () => {
   const data = useMemo(() => arrangeSections(result, calendar), [result])
   return (
     <ABackground>
-      <SectionList
-        onRefresh={doRefresh}
-        refreshing={refreshing}
-        keyExtractor={keyExtractor}
-        renderSectionHeader={renderSectionHeader}
-        sections={data}
-        renderItem={renderItem(calendar)}
-      />
+      <ExpansionContext.Provider value={{ dimensions, setDimensions } as any}>
+        <SectionList
+          onRefresh={doRefresh}
+          refreshing={refreshing}
+          keyExtractor={keyExtractor}
+          renderSectionHeader={renderSectionHeader}
+          sections={data}
+          renderItem={renderItem(calendar)}
+        />
+      </ExpansionContext.Provider>
     </ABackground>
   )
 }

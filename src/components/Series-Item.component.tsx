@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components/native'
 import AText from '@common/Text.component'
 import { ISeriesValue } from '@interfaces/common.interface'

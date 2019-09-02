@@ -1,2 +1,5 @@
 export { default as ShowsScreen } from './sonarr/Shows.screen'
 export { default as UpcomingScreen } from './sonarr/Upcoming.screen'
+export { default as ServerConfigScreen } from './Server-Config.screen'
+export { default as SettingsScreen } from './Settings.screen'
+export { default as HomeScreen } from './Home.screen'
