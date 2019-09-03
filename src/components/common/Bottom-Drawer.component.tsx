@@ -4,14 +4,17 @@ import { Animated } from 'react-native'
 import { makePan } from '@hooks/usePanBottomDrawer'
 import { SCREEN_HEIGHT } from '@utils/dimensions.util'
 import { logger } from '@utils/logger.util'
+import { COLORS } from '@utils/constants.util'
+import { ColorEnum } from '@utils/enums.util'
+import { MARGIN } from '@utils/position.util'
 
 const HALF_HEIGHT = SCREEN_HEIGHT * 0.5
 const DRAGGABLE_HEIGHT = SCREEN_HEIGHT * 0.125
 
 const usePanBottomDrawer = makePan(HALF_HEIGHT, DRAGGABLE_HEIGHT)
 
-type Props = {}
-const BottomDrawer: React.FC<Props> = () => {
+type Props = { children: React.ReactNode }
+const BottomDrawer: React.FC<Props> = ({ children }) => {
   const animatedValue = useMemo(
     () => new Animated.Value(HALF_HEIGHT - DRAGGABLE_HEIGHT),
     []
@@ -22,7 +25,8 @@ const BottomDrawer: React.FC<Props> = () => {
   return (
     <Container as={Animated.View} style={animated as any}>
       <Draggable as={Animated.View} {...panResponder.panHandlers} />
-      <Text>asdasd</Text>
+      <Bar />
+      <Content>{children}</Content>
     </Container>
   )
 }
@@ -30,7 +34,7 @@ const BottomDrawer: React.FC<Props> = () => {
 const Draggable = styled.View`
   height: ${SCREEN_HEIGHT * 0.125};
   width: 100%;
-  background: white;
+  background: #eeeef8;
 `
 const Container = styled.View`
   border-top-left-radius: 50;
@@ -38,10 +42,21 @@ const Container = styled.View`
   position: absolute;
   overflow: hidden;
   height: ${HALF_HEIGHT};
-  background: white;
+  background: #eeeef8;
   bottom: 0;
   width: 100%;
 `
-const Text = styled.Text``
+const Bar = styled.View`
+  position: absolute;
+  width: 35%;
+  height: 5;
+  border-radius: 50;
+  background: ${COLORS[ColorEnum.MAIN]};
+  align-self: center;
+  top: ${MARGIN};
+`
+const Content = styled.View`
+  flex: 1;
+`
 
 export default BottomDrawer

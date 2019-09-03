@@ -30,7 +30,9 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
         <PosterView>
           <Fanart uri={posterUri} />
         </PosterView>
-        <BottomDrawer />
+        <BottomDrawer>
+          <SomeText>asdasd</SomeText>
+        </BottomDrawer>
       </BottomContent>
     </ABackground>
   )
@@ -79,6 +81,9 @@ const Title = styled(AText)`
   margin-left: ${MARGIN};
   margin-right: ${MARGIN};
   color: white;
+`
+const SomeText = styled(AText)`
+  color: black;
 `
 
 export default ShowInfo
