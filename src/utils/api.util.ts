@@ -5,7 +5,7 @@ import { Observable, OperatorFunction, of, iif } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { RootState } from '@reducers/index'
 import { StateObservable } from 'redux-observable'
-import { withLatestFrom, map, mergeMap, tap, delay } from 'rxjs/operators'
+import { withLatestFrom, map, mergeMap } from 'rxjs/operators'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
 import { ApiActionsType } from '@actions/index'
 import { isOfType } from 'typesafe-actions'
@@ -33,7 +33,6 @@ const _ajaxConfig = ({
   if (method === 'GET') {
     url += `?${queryString(body)}`
   }
-  logger.log(url)
   // sending anything in the body on a GET
   // breaks the request
   return ajax({
@@ -65,7 +64,7 @@ export const withApi: WithApi = (state$, method) => action$ =>
         method,
         params
       ).pipe(
-        tap(res => logger.log('AJAX_RESPONSE', res)),
+        // tap(res => logger.log('AJAX_RESPONSE', res)),
         map(res => [action, res.response] as [ApiActionsType, any])
       )
     })

@@ -3,11 +3,9 @@ import styled from 'styled-components/native'
 import { Animated } from 'react-native'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import ShowInfo from '@components/Show-Info.component'
-import { logger } from '@utils/logger.util'
 import AFAB from '@common/FAB.component'
 import { Ionicons } from '@expo/vector-icons'
 import { ExpansionContext } from '../../context/Expansion.context'
-import { BORDER_RADIUS } from '@utils/position.util'
 
 type Props = {
   offsetX: number
@@ -51,15 +49,15 @@ const CardExpansion: React.FC<Props> = ({
   const animated = {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
-    borderRadius: interpolate([BORDER_RADIUS, 0]),
+    // overflow: 'hidden',
+    // borderRadius: interpolate([BORDER_RADIUS, 0]),
     transform: [{ translateX }, { translateY }, { scaleX }, { scaleY }],
     opacity: interpolate([0, 1])
   }
   const onPress = useCallback(() => {
-    Animated.timing(animatedValue, {
+    Animated.spring(animatedValue, {
       toValue: 0,
-      duration: 1000,
-      useNativeDriver: true
+      overshootClamping: true
     }).start(() => setDimensions({ ...dimensions, selected: false }))
   }, [animatedValue])
 
@@ -76,10 +74,8 @@ const CardExpansion: React.FC<Props> = ({
 const useAnimate = () => {
   const [animatedValue] = useState(new Animated.Value(0))
   useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true
+    Animated.spring(animatedValue, {
+      toValue: 1
     }).start()
   }, [])
   return animatedValue
