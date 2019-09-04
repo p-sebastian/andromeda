@@ -48,7 +48,7 @@ const UpcomingScreen: ScreenFComponent = () => {
 
 const keyExtractor = (key: number) => key.toString()
 const renderItem = (upcoming: IEntity<CalendarValue>) => ({ item }: any) => (
-  <CalendarItem key={item} upcoming={upcoming[item]} />
+  <CalendarItem upcoming={upcoming[item]} />
 )
 type RenderSectionHeader = (info: { section: SectionListData<any> }) => any
 const renderSectionHeader: RenderSectionHeader = ({ section: { title } }) => (

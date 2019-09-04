@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
 import ABackground from '@common/Background.component'
 import AText from '@common/Text.component'
@@ -15,8 +15,17 @@ import { do_api_sonarr_get_episodes } from '@actions/api.actions'
 import { do_clear_episodes } from '@actions/general.actions'
 import { IEpisode } from '@interfaces/episode.interface'
 import SeasonCard from '@components/Season-Card.component'
+import EpisodeItem from './Episodes-Item.component'
+import { LinearGradient } from 'expo-linear-gradient'
+import { GRADIENTS } from '@utils/constants.util'
+import { GradientEnum } from '@utils/enums.util'
+import { Ionicons } from '@expo/vector-icons'
 
 const WIDTH = SCREEN_WIDTH * 0.25
+const POSTER_HEIGHT = WIDTH / 0.69
+const B_GROUP_WIDTH = SCREEN_WIDTH * 0.75 - MARGIN * 2
+const B_GROUP_HEIGHT = POSTER_HEIGHT * 0.5
+const G = GRADIENTS[GradientEnum.BUTTONS]
 
 type Props = { seriesId: number; posterUri: string; fanartUri: string }
 const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
@@ -34,13 +43,16 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
    * elements are the size of the screen width, diving it by the width
    * gets the current on view item index in the list
    */
-  const onScrollEndDrag = useCallback((e: any) => {
-    setOnViewIndex(
-      offsets.findIndex(
-        v => Math.round(v) === Math.round(e.nativeEvent.targetContentOffset.x)
+  const onScrollEndDrag = useCallback(
+    (e: any) => {
+      setOnViewIndex(
+        offsets.findIndex(
+          v => Math.round(v) === Math.round(e.nativeEvent.targetContentOffset.x)
+        )
       )
-    )
-  }, [])
+    },
+    [data]
+  )
   logger.info(onViewIndex)
   return (
     <ABackground>
@@ -54,13 +66,28 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
         <PosterView>
           <Fanart uri={posterUri} />
         </PosterView>
+        <ButtonGroup>
+          <ForGradient>
+            <Gradient {...G}>
+              <Button>
+                <Icon name="md-sync" color="white" size={28} />
+              </Button>
+              <Button>
+                <Icon name="md-create" color="white" size={28} />
+              </Button>
+              <Button>
+                <Icon name="md-bookmark" color="white" size={28} />
+              </Button>
+            </Gradient>
+          </ForGradient>
+        </ButtonGroup>
         <InfoView />
         <ListContainer>
           <FlatList
             keyExtractor={keyExtractor}
             data={data}
             horizontal
-            renderItem={renderItem(episodes, data.length)}
+            renderItem={renderItem(episodes)}
             decelerationRate={0}
             snapToOffsets={offsets}
             snapToAlignment={'center'}
@@ -70,7 +97,11 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
           />
         </ListContainer>
         <BottomDrawer>
-          <SomeText>asdasd</SomeText>
+          <FlatList
+            keyExtractor={episodeKeyExtract}
+            data={selected}
+            renderItem={renderEpisodes}
+          />
         </BottomDrawer>
       </BottomContent>
     </ABackground>
@@ -88,20 +119,24 @@ const useEpisodes = (id: number) => {
 }
 
 const keyExtractor = (key: number) => key.toString()
-const renderItem = (
-  episodes: { [key: string]: IEpisode[] },
-  length: number
-) => ({ item }: any) => <SeasonCard key={item} episodes={episodes[item]} />
+const renderItem = (episodes: { [key: string]: IEpisode[] }) => ({
+  item
+}: any) => <SeasonCard episodes={episodes[item]} />
+
+const episodeKeyExtract = ({ id }: IEpisode) => id.toString()
+const renderEpisodes: ListRenderItem<IEpisode> = ({ item }) => (
+  <EpisodeItem episode={item} />
+)
 
 const FanartView = styled.View`
   height: ${SCREEN_HEIGHT / 2};
 `
 const PosterView = styled.View`
   position: absolute;
-  top: ${(-WIDTH * 0.5) / 0.69};
+  top: ${-POSTER_HEIGHT * 0.5};
   width: ${WIDTH};
   left: ${MARGIN};
-  height: ${WIDTH / 0.69};
+  height: ${POSTER_HEIGHT};
   box-shadow: ${BOX_SHADOW};
 `
 const Img = styled(Image)`
@@ -137,9 +172,36 @@ const Title = styled(AText)`
   margin-right: ${MARGIN};
   color: white;
 `
-const SomeText = styled(AText)`
-  color: black;
+/**
+ * Needed because shadow doesnt work on overflow hidden
+ * and gradient needs overflow hidden for border radius
+ */
+const ForGradient = styled.View`
+  flex: 1;
+  overflow: hidden;
+  border-bottom-left-radius: 50;
+  border-top-left-radius: 50;
 `
+const ButtonGroup = styled.View`
+  position: absolute;
+  top: ${-B_GROUP_HEIGHT * 0.5};
+  height: ${B_GROUP_HEIGHT};
+  width: ${B_GROUP_WIDTH};
+  border-bottom-left-radius: 50;
+  border-top-left-radius: 50;
+  right: 0;
+  box-shadow: ${BOX_SHADOW};
+`
+const Gradient = styled(LinearGradient)`
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
+const Icon = styled(Ionicons)`
+  color: ${COLORS[ColorEnum.MAIN]};
+`
+const Button = styled.TouchableOpacity``
 const ListContainer = styled.View`
   flex: 1;
 `

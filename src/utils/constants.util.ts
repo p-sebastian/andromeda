@@ -78,5 +78,10 @@ export const GRADIENTS: TGradientConstants = Object.freeze({
     colors: ['#ee0979', '#ff6a00'],
     start: [0, 0.5] as [number, number],
     end: [1, 0.5] as [number, number]
+  },
+  [GradientEnum.BUTTONS]: {
+    colors: ['#B2FEFA', '#0ed2f7'],
+    start: [0, 0.5] as [number, number],
+    end: [1, 0.5] as [number, number]
   }
 })

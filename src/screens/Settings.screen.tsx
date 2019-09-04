@@ -50,7 +50,6 @@ const _onPress = (disabled: TServerState[], dispatch: Dispatch) => {
       tintColor: COLORS[ThemeEnum.MAIN]
     },
     index => {
-      logger.info(index)
       if (index === disabled.length) {
         return
       }

@@ -33,7 +33,7 @@ SonarrHomeScreen.navigationOptions = {}
 
 const keyExtractor = (key: number) => key.toString()
 const renderItem = (series: IEntity<ISeriesValue>) => ({ item }: any) => (
-  <SeriesItem key={item} series={series[item]} />
+  <SeriesItem series={series[item]} />
 )
 
 const Container = styled.View`

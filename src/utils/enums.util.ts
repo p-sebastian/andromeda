@@ -25,7 +25,8 @@ export enum GradientEnum {
   GREEN,
   ORANGE,
   PURPLE,
-  RED
+  RED,
+  BUTTONS
 }
 
 export enum ServerEnum {
