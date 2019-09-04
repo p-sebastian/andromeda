@@ -7,7 +7,7 @@ import { logger } from '@utils/logger.util'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { Image } from 'react-native-expo-image-cache'
 import { COLORS } from '@utils/constants.util'
-import { ColorEnum } from '@utils/enums.util'
+import { ColorEnum, ThemeEnum } from '@utils/enums.util'
 import { BOX_SHADOW, BORDER_RADIUS, MARGIN } from '@utils/position.util'
 import { useShallowSelector, useADispatch } from '@utils/recipes.util'
 import BottomDrawer from '@common/Bottom-Drawer.component'
@@ -20,6 +20,8 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENTS } from '@utils/constants.util'
 import { GradientEnum } from '@utils/enums.util'
 import { Ionicons } from '@expo/vector-icons'
+import { ISeriesValue } from '@interfaces/common.interface'
+import { THEME } from '@utils/theme.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 const POSTER_HEIGHT = WIDTH / 0.69
@@ -81,7 +83,9 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
             </Gradient>
           </ForGradient>
         </ButtonGroup>
-        <InfoView />
+        <InfoView>
+          <Text>{info(show)}</Text>
+        </InfoView>
         <ListContainer>
           <FlatList
             keyExtractor={keyExtractor}
@@ -127,6 +131,11 @@ const episodeKeyExtract = ({ id }: IEpisode) => id.toString()
 const renderEpisodes: ListRenderItem<IEpisode> = ({ item }) => (
   <EpisodeItem episode={item} />
 )
+const info = ({ year, sizeOnDisk, network }: ISeriesValue) => {
+  const gb = 1073741824
+  const size = ((sizeOnDisk || 0) / gb).toFixed(1)
+  return `${year} - ${network} - ${sizeOnDisk ? size + 'GB' : '--'}`
+}
 
 const FanartView = styled.View`
   height: ${SCREEN_HEIGHT / 2};
@@ -141,7 +150,7 @@ const PosterView = styled.View`
 `
 const Img = styled(Image)`
   flex: 1;
-  opacity: 0.3;
+  opacity: 0.4;
 `
 const Fanart = styled(Img)`
   overflow: hidden;
@@ -192,6 +201,15 @@ const ButtonGroup = styled.View`
   right: 0;
   box-shadow: ${BOX_SHADOW};
 `
+const InfoView = styled.View`
+  position: absolute;
+  height: ${B_GROUP_HEIGHT * 0.5};
+  top: ${B_GROUP_HEIGHT * 0.5};
+  width: ${B_GROUP_WIDTH - MARGIN};
+  right: ${MARGIN};
+  /* align-items: center; */
+  justify-content: center;
+`
 const Gradient = styled(LinearGradient)`
   flex: 1;
   flex-direction: row;
@@ -205,11 +223,12 @@ const Button = styled.TouchableOpacity``
 const ListContainer = styled.View`
   flex: 1;
 `
-const InfoView = styled.View`
-  height: 30%;
-`
 const Empty = styled.View`
   width: ${SCREEN_WIDTH * 0.15};
+`
+const Text = styled(AText)`
+  color: white;
+  font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
 `
 
 export default ShowInfo
