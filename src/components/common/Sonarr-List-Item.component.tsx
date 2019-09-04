@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useContext } from 'react'
 import styled from 'styled-components/native'
-import { SCREEN_WIDTH, OFFSET } from '@utils/dimensions.util'
+import { SCREEN_WIDTH } from '@utils/dimensions.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import { extractProp, useASelector } from '@utils/recipes.util'

@@ -7,6 +7,7 @@ import { logger } from '@utils/logger.util'
 import { COLORS } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
 import { MARGIN } from '@utils/position.util'
+import AText from './Text.component'
 
 const HALF_HEIGHT = SCREEN_HEIGHT * 0.5
 const DRAGGABLE_HEIGHT = SCREEN_HEIGHT * 0.125
@@ -24,7 +25,9 @@ const BottomDrawer: React.FC<Props> = ({ children }) => {
 
   return (
     <Container as={Animated.View} style={animated as any}>
-      <Draggable as={Animated.View} {...panResponder.panHandlers} />
+      <Draggable as={Animated.View} {...panResponder.panHandlers}>
+        <Title>Episodes</Title>
+      </Draggable>
       <Bar />
       <Content>{children}</Content>
     </Container>
@@ -35,6 +38,8 @@ const Draggable = styled.View`
   height: ${SCREEN_HEIGHT * 0.125};
   width: 100%;
   background: #eeeef8;
+  justify-content: center;
+  align-items: center;
 `
 const Container = styled.View`
   border-top-left-radius: 50;
@@ -48,12 +53,16 @@ const Container = styled.View`
 `
 const Bar = styled.View`
   position: absolute;
-  width: 35%;
+  width: 15%;
   height: 5;
   border-radius: 50;
   background: ${COLORS[ColorEnum.MAIN]};
   align-self: center;
   top: ${MARGIN};
+`
+const Title = styled(AText)`
+  text-align: center;
+  font-size: 18;
 `
 const Content = styled.View`
   flex: 1;

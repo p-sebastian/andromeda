@@ -1,6 +1,10 @@
 import { normalize, schema } from 'normalizr'
-import { API_SONARR_GET_CALENDAR, API_SONARR_GET_SERIES } from '@actions/types'
-import { omit } from 'lodash'
+import {
+  API_SONARR_GET_CALENDAR,
+  API_SONARR_GET_SERIES,
+  API_SONARR_GET_EPISODES
+} from '@actions/types'
+import { omit, groupBy } from 'lodash'
 import { logger } from './logger.util'
 
 // constant => AjaxResponse => normalizedRes
@@ -11,6 +15,8 @@ export const nrmlz: Nrmlzr = (CONSTANT, json) => {
       return sonarrGetSeries(json)
     case API_SONARR_GET_CALENDAR:
       return sonarrGetCalendar(json)
+    case API_SONARR_GET_EPISODES:
+      return sonarrGetEpisodes(json)
     default:
       return json
   }
@@ -41,4 +47,8 @@ const sonarrGetCalendar = (json: any) => {
     }
   )
   return normalize(json, [calendar])
+}
+
+const sonarrGetEpisodes = (json: any) => {
+  return groupBy(json, v => v.seasonNumber)
 }

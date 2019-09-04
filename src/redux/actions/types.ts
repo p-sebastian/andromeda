@@ -21,9 +21,13 @@ export const API_AJAX_RESPONSE_ERROR = '@api/ajax_response_error'
 
 export const API_SONARR_GET_SERIES = '@api/sonarr_get_series'
 export const API_SONARR_GET_CALENDAR = '@api/sonarr_get_calendar'
+export const API_SONARR_GET_EPISODES = '@api/sonarr_get_episodes'
 
 export const API_SONARR_GET_SERIES_SUCCESS = '@api/sonarr_get_series_success'
 export const API_SONARR_GET_CALENDAR_SUCCESS =
   '@api/sonarr_get_calendar_success'
+export const API_SONARR_GET_EPISODES_SUCCESS =
+  '@api/sonarr_get_episodes_success'
 
+export const CLEAR_EPISODES = '@clear/episodes'
 export const SPINNER_TOGGLE = '@spinner/toggle'

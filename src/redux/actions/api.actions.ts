@@ -3,7 +3,8 @@ import {
   API_AJAX_GET,
   API_SONARR_GET_SERIES,
   API_SONARR_GET_SERIES_SUCCESS,
-  API_SONARR_GET_CALENDAR
+  API_SONARR_GET_CALENDAR,
+  API_SONARR_GET_EPISODES
 } from './types'
 import { ServerEnum } from '@utils/enums.util'
 import moment from 'moment'
@@ -41,4 +42,9 @@ export const do_api_sonarr_get_calendar = createAction(
     const end = today.add(7, 'd').format('YYYY-MM-DD')
     return action(..._config('/calendar', ServerEnum.SONARR, { start, end }))
   }
+)
+export const do_api_sonarr_get_episodes = createAction(
+  API_SONARR_GET_EPISODES,
+  action => (seriesId: number) =>
+    action(..._config('/episode', ServerEnum.SONARR, { seriesId }))
 )
