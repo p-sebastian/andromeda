@@ -24,7 +24,8 @@ const CardExpansion: React.FC<Props> = ({
   ..._props
 }) => {
   const { dimensions, setDimensions } = useContext(ExpansionContext)
-  const animatedValue = useAnimate()
+  const [animEnd, setAnimEnd] = useState(false)
+  const animatedValue = useAnimate(setAnimEnd)
   const interpolate = translate(animatedValue)
   // start shrinked down
   const initialScaleX = elmWidth / SCREEN_WIDTH
@@ -49,8 +50,6 @@ const CardExpansion: React.FC<Props> = ({
   const animated = {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
-    // overflow: 'hidden',
-    // borderRadius: interpolate([BORDER_RADIUS, 0]),
     transform: [{ translateX }, { translateY }, { scaleX }, { scaleY }],
     opacity: interpolate([0, 1])
   }
@@ -58,12 +57,15 @@ const CardExpansion: React.FC<Props> = ({
     Animated.spring(animatedValue, {
       toValue: 0,
       overshootClamping: true
-    }).start(() => setDimensions({ ...dimensions, selected: false }))
+    }).start(() => {
+      setDimensions({ ...dimensions, selected: false })
+      setAnimEnd(false)
+    })
   }, [animatedValue])
 
   return (
     <Expansion as={Animated.View} style={animated as any}>
-      <ShowInfo {..._props} />
+      <ShowInfo animEnd={animEnd} {..._props} />
       <AFAB position="top-left" onPress={onPress as any}>
         <Ionicons name="md-close" color="white" size={32} />
       </AFAB>
@@ -71,12 +73,16 @@ const CardExpansion: React.FC<Props> = ({
   )
 }
 
-const useAnimate = () => {
+const useAnimate = (
+  setAnimEnd: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const [animatedValue] = useState(new Animated.Value(0))
   useEffect(() => {
     Animated.spring(animatedValue, {
       toValue: 1
-    }).start()
+    }).start(() => {
+      setAnimEnd(true)
+    })
   }, [])
   return animatedValue
 }

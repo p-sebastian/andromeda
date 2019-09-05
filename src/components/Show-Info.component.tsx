@@ -34,26 +34,37 @@ const B_GROUP_WIDTH = SCREEN_WIDTH * 0.75 - MARGIN * 2
 const B_GROUP_HEIGHT = POSTER_HEIGHT * 0.5
 const G = GRADIENTS[GradientEnum.SEASONS]
 
-type Props = { seriesId: number; posterUri: string; fanartUri: string }
-const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
+type Props = {
+  seriesId: number
+  posterUri: string
+  fanartUri: string
+  animEnd: boolean
+}
+const ShowInfo: React.FC<Props> = ({
+  seriesId,
+  posterUri,
+  fanartUri,
+  animEnd
+}) => {
   const episodes = useEpisodes(seriesId)
-  const noSpecial = useRef(0)
   const [onViewIndex, setOnViewIndex] = useState(0)
+  const noSpecial = useRef(0)
   const show = useShallowSelector(
     state => state.sonarr.entities.series[seriesId]
   )
   const keys = Object.keys(episodes).map(Number)
   const data = keys.reverse()
+  const selected = episodes[onViewIndex + noSpecial.current]
+  const offsets = data.map(k => SCREEN_WIDTH * 0.84 * (k - noSpecial.current))
 
-  let selected = episodes[onViewIndex + noSpecial.current]
   useEffect(() => {
     if (!isEmpty(episodes)) {
+      // seasonNumber = 0; means specials season.
       noSpecial.current = keys.findIndex(k => k === 0) < 0 ? 1 : 0
       setOnViewIndex(data.length - 1)
     }
   }, [JSON.stringify(episodes)])
 
-  const offsets = data.map(k => SCREEN_WIDTH * 0.84 * (k - noSpecial.current))
   /**
    * targetContentOffset.x, is the distance it has moved, since all
    * elements are the size of the screen width, diving it by the width
@@ -67,9 +78,8 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
         )
       )
     },
-    [data]
+    [JSON.stringify(offsets)]
   )
-  logger.info(episodes, data, selected, onViewIndex, noSpecial.current)
   return (
     <ABackground>
       <FanartView>
@@ -100,27 +110,31 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
         <InfoView>
           <Text>{info(show)}</Text>
         </InfoView>
-        <ListContainer>
-          <FlatList
-            keyExtractor={keyExtractor}
-            data={data}
-            horizontal
-            renderItem={renderItem(episodes, show)}
-            decelerationRate={0}
-            snapToOffsets={offsets}
-            snapToAlignment={'center'}
-            onScrollEndDrag={onScrollEndDrag}
-            inverted
-            ListHeaderComponent={Empty}
-            ListFooterComponent={Empty}
-          />
-        </ListContainer>
+        {animEnd ? (
+          <ListContainer>
+            <FlatList
+              keyExtractor={keyExtractor}
+              data={data}
+              horizontal
+              renderItem={renderItem(episodes, show)}
+              decelerationRate={0}
+              snapToOffsets={offsets}
+              snapToAlignment={'center'}
+              onScrollEndDrag={onScrollEndDrag}
+              inverted
+              ListHeaderComponent={Empty}
+              ListFooterComponent={Empty}
+            />
+          </ListContainer>
+        ) : null}
         <BottomDrawer>
-          <FlatList
-            keyExtractor={episodeKeyExtract}
-            data={selected}
-            renderItem={renderEpisodes}
-          />
+          {animEnd ? (
+            <FlatList
+              keyExtractor={episodeKeyExtract}
+              data={selected}
+              renderItem={renderEpisodes}
+            />
+          ) : null}
         </BottomDrawer>
       </BottomContent>
     </ABackground>
