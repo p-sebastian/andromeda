@@ -7,26 +7,29 @@ import { GRADIENTS } from '@utils/constants.util'
 import { GradientEnum } from '@utils/enums.util'
 import { IEpisode } from '@interfaces/episode.interface'
 
-type Props = { episodes: IEpisode[] }
-const SeasonCard: React.FC<Props> = ({}) => {
-  const gradient = GRADIENTS[GradientEnum.ORANGE]
+const gradient = GRADIENTS[GradientEnum.SEASONS]
+type Props = { episodes: IEpisode[]; season: any }
+const SeasonCard: React.FC<Props> = ({ season = {} }) => {
+  const { seasonNumber } = season
   return (
     <Container>
       <Border>
         <Gradient {...gradient}>
-          <Text>asdas</Text>
+          <Title>{title(seasonNumber)}</Title>
         </Gradient>
       </Border>
     </Container>
   )
 }
 
+const title = (num: number) => (num === 0 ? 'Specials' : `Season ${num}`)
+
 const Container = styled.View`
-  width: ${SCREEN_WIDTH * 0.5};
+  width: ${SCREEN_WIDTH * 0.7};
   height: ${SCREEN_HEIGHT * 0.375 -
     MARGIN}; /* 0.375 lines with the bottom drawer*/
-  margin-left: ${SCREEN_WIDTH * 0.1};
-  margin-right: ${SCREEN_WIDTH * 0.1};
+  margin-left: ${SCREEN_WIDTH * 0.07};
+  margin-right: ${SCREEN_WIDTH * 0.07};
   top: ${SCREEN_HEIGHT * 0.125};
   box-shadow: ${BOX_SHADOW};
 `
@@ -39,6 +42,13 @@ const Border = styled.View`
 const Gradient = styled(LinearGradient)`
   flex: 1;
 `
-const Text = styled.Text``
+const Title = styled.Text`
+  width: 100%;
+  top: ${MARGIN};
+  font-size: 20;
+  text-align: center;
+  font-family: oswald-semibold;
+  /* color: white; */
+`
 
-export default SeasonCard
+export default React.memo(SeasonCard)

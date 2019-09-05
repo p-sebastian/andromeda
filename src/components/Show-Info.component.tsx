@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { FlatList, ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
 import ABackground from '@common/Background.component'
@@ -9,7 +9,11 @@ import { Image } from 'react-native-expo-image-cache'
 import { COLORS } from '@utils/constants.util'
 import { ColorEnum, ThemeEnum } from '@utils/enums.util'
 import { BOX_SHADOW, BORDER_RADIUS, MARGIN } from '@utils/position.util'
-import { useShallowSelector, useADispatch } from '@utils/recipes.util'
+import {
+  useShallowSelector,
+  useADispatch,
+  useASelector
+} from '@utils/recipes.util'
 import BottomDrawer from '@common/Bottom-Drawer.component'
 import { do_api_sonarr_get_episodes } from '@actions/api.actions'
 import { do_clear_episodes } from '@actions/general.actions'
@@ -22,24 +26,34 @@ import { GradientEnum } from '@utils/enums.util'
 import { Ionicons } from '@expo/vector-icons'
 import { ISeriesValue } from '@interfaces/common.interface'
 import { THEME } from '@utils/theme.util'
+import { isEmpty } from 'lodash'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 const POSTER_HEIGHT = WIDTH / 0.69
 const B_GROUP_WIDTH = SCREEN_WIDTH * 0.75 - MARGIN * 2
 const B_GROUP_HEIGHT = POSTER_HEIGHT * 0.5
-const G = GRADIENTS[GradientEnum.BUTTONS]
+const G = GRADIENTS[GradientEnum.SEASONS]
 
 type Props = { seriesId: number; posterUri: string; fanartUri: string }
 const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
+  const episodes = useEpisodes(seriesId)
+  const noSpecial = useRef(0)
   const [onViewIndex, setOnViewIndex] = useState(0)
   const show = useShallowSelector(
     state => state.sonarr.entities.series[seriesId]
   )
-  const episodes = useEpisodes(show.id)
-  const data = Object.keys(episodes).map(Number)
-  const selected = episodes[onViewIndex]
-  const offsets = data.map(k => SCREEN_WIDTH * 0.7 * k)
-  // @todo start on the last index, make them 70% of screen_width
+  const keys = Object.keys(episodes).map(Number)
+  const data = keys.reverse()
+
+  let selected = episodes[onViewIndex + noSpecial.current]
+  useEffect(() => {
+    if (!isEmpty(episodes)) {
+      noSpecial.current = keys.findIndex(k => k === 0) < 0 ? 1 : 0
+      setOnViewIndex(data.length - 1)
+    }
+  }, [JSON.stringify(episodes)])
+
+  const offsets = data.map(k => SCREEN_WIDTH * 0.84 * (k - noSpecial.current))
   /**
    * targetContentOffset.x, is the distance it has moved, since all
    * elements are the size of the screen width, diving it by the width
@@ -55,7 +69,7 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
     },
     [data]
   )
-  logger.info(onViewIndex)
+  logger.info(episodes, data, selected, onViewIndex, noSpecial.current)
   return (
     <ABackground>
       <FanartView>
@@ -91,11 +105,12 @@ const ShowInfo: React.FC<Props> = ({ seriesId, posterUri, fanartUri }) => {
             keyExtractor={keyExtractor}
             data={data}
             horizontal
-            renderItem={renderItem(episodes)}
+            renderItem={renderItem(episodes, show)}
             decelerationRate={0}
             snapToOffsets={offsets}
             snapToAlignment={'center'}
             onScrollEndDrag={onScrollEndDrag}
+            inverted
             ListHeaderComponent={Empty}
             ListFooterComponent={Empty}
           />
@@ -123,9 +138,15 @@ const useEpisodes = (id: number) => {
 }
 
 const keyExtractor = (key: number) => key.toString()
-const renderItem = (episodes: { [key: string]: IEpisode[] }) => ({
-  item
-}: any) => <SeasonCard episodes={episodes[item]} />
+const renderItem = (
+  episodes: { [key: string]: IEpisode[] },
+  show: ISeriesValue
+) => ({ item }: any) => (
+  <SeasonCard
+    season={show.seasons.find(s => s.seasonNumber === Number(item))}
+    episodes={episodes[item]}
+  />
+)
 
 const episodeKeyExtract = ({ id }: IEpisode) => id.toString()
 const renderEpisodes: ListRenderItem<IEpisode> = ({ item }) => (
@@ -207,7 +228,6 @@ const InfoView = styled.View`
   top: ${B_GROUP_HEIGHT * 0.5};
   width: ${B_GROUP_WIDTH - MARGIN};
   right: ${MARGIN};
-  /* align-items: center; */
   justify-content: center;
 `
 const Gradient = styled(LinearGradient)`
@@ -224,7 +244,11 @@ const ListContainer = styled.View`
   flex: 1;
 `
 const Empty = styled.View`
-  width: ${SCREEN_WIDTH * 0.15};
+  /* quantities are the percentages
+   * 0.08 = (1 - (CardWidth + Margins(left,right))) / 2
+   * the divided by 2 is because its one size of 2
+   */
+  width: ${SCREEN_WIDTH * 0.08};
 `
 const Text = styled(AText)`
   color: white;
