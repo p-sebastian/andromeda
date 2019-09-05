@@ -27,6 +27,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { ISeriesValue } from '@interfaces/common.interface'
 import { THEME } from '@utils/theme.util'
 import { isEmpty } from 'lodash'
+import { byteToGB } from '@utils/helpers.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 const POSTER_HEIGHT = WIDTH / 0.69
@@ -63,7 +64,7 @@ const ShowInfo: React.FC<Props> = ({
       noSpecial.current = keys.findIndex(k => k === 0) < 0 ? 1 : 0
       setOnViewIndex(data.length - 1)
     }
-  }, [JSON.stringify(episodes)])
+  }, [JSON.stringify(keys)])
 
   /**
    * targetContentOffset.x, is the distance it has moved, since all
@@ -96,13 +97,13 @@ const ShowInfo: React.FC<Props> = ({
           <ForGradient>
             <Gradient {...G}>
               <Button>
-                <Icon name="md-sync" color="white" size={28} />
+                <Icon name="md-sync" size={28} />
               </Button>
               <Button>
-                <Icon name="md-create" color="white" size={28} />
+                <Icon name="md-create" size={28} />
               </Button>
               <Button>
-                <Icon name="md-bookmark" color="white" size={28} />
+                <Icon name="md-bookmark" size={28} />
               </Button>
             </Gradient>
           </ForGradient>
@@ -157,7 +158,7 @@ const renderItem = (
   show: ISeriesValue
 ) => ({ item }: any) => (
   <SeasonCard
-    season={show.seasons.find(s => s.seasonNumber === Number(item))}
+    season={show.seasons.find(s => s.seasonNumber === Number(item))!}
     episodes={episodes[item]}
   />
 )
@@ -167,8 +168,7 @@ const renderEpisodes: ListRenderItem<IEpisode> = ({ item }) => (
   <EpisodeItem episode={item} />
 )
 const info = ({ year, sizeOnDisk, network }: ISeriesValue) => {
-  const gb = 1073741824
-  const size = ((sizeOnDisk || 0) / gb).toFixed(1)
+  const size = byteToGB(sizeOnDisk)
   return `${year} - ${network} - ${sizeOnDisk ? size + 'GB' : '--'}`
 }
 

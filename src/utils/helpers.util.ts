@@ -16,3 +16,8 @@ export const withinScreen = (
     server.tabs.findIndex(name => name === screenName) > -1
   )
 }
+
+export const byteToGB = (size: number = 0) => {
+  const gb = 1073741824
+  return (size / gb).toFixed(1)
+}
