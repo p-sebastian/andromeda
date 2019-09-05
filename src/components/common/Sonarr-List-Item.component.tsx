@@ -10,7 +10,6 @@ import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
 import { View } from 'react-native'
 import { ExpansionContext } from '../../context/Expansion.context'
-import { Image } from 'react-native-expo-image-cache'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
@@ -61,7 +60,7 @@ const SonarrListItem: React.FC<Props> = ({
     <Container ref={container}>
       <Touchable onPress={_onPress as any}>
         <PosterContainer>
-          <Poster uri={posterUri} />
+          <Poster source={{ uri: posterUri }} />
         </PosterContainer>
         <ContentContainer>
           <Gradient {...gradient}>
@@ -70,7 +69,7 @@ const SonarrListItem: React.FC<Props> = ({
             </GradientText>
           </Gradient>
           <InfoView>
-            <Fanart uri={fanartUri} />
+            <Fanart source={{ uri: fanartUri }} />
             <Padding
               flexDirection={flexDirection}
               justifyContent={justifyContent}
@@ -119,14 +118,14 @@ const ContentContainer = styled.View`
   padding-left: 5;
   box-shadow: ${BOX_SHADOW};
 `
-const Fanart = styled(Image)`
+const Fanart = styled.Image`
   position: absolute;
   border-radius: ${BORDER_RADIUS};
   opacity: 0.2;
   width: 100%;
   height: 100%;
 `
-const Poster = styled(Image)`
+const Poster = styled.Image`
   border-radius: ${BORDER_RADIUS};
   flex: 1;
 `
