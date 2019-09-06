@@ -12,4 +12,33 @@ export interface IEpisode {
   absoluteEpisodeNumber: number
   unverifiedSceneNumbering: boolean
   id: number
+  episodeFile?: IEpisodeFile
+}
+
+export interface IEpisodeFile {
+  id: number
+  seriesId: number
+  seasonNumber: number
+  relativePath: string
+  path: string
+  size: number
+  dateAdded: Date
+  quality: {
+    quality: {
+      id: number
+      name: string
+      source: string
+      resolution: number
+    }
+    revision: {
+      version: number
+      real: number
+    }
+  }
+  mediaInfo: {
+    audioChannels: number
+    audioCodec: string
+    videoCodec: string
+  }
+  qualityCutoffNotMet: boolean
 }

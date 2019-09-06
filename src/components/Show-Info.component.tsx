@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { FlatList, ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
+import { SwipeListView } from 'react-native-swipe-list-view'
 import ABackground from '@common/Background.component'
 import AText from '@common/Text.component'
 import { logger } from '@utils/logger.util'
@@ -9,17 +10,13 @@ import { Image } from 'react-native-expo-image-cache'
 import { COLORS } from '@utils/constants.util'
 import { ColorEnum, ThemeEnum } from '@utils/enums.util'
 import { BOX_SHADOW, BORDER_RADIUS, MARGIN } from '@utils/position.util'
-import {
-  useShallowSelector,
-  useADispatch,
-  useASelector
-} from '@utils/recipes.util'
+import { useShallowSelector, useADispatch } from '@utils/recipes.util'
 import BottomDrawer from '@common/Bottom-Drawer.component'
 import { do_api_sonarr_get_episodes } from '@actions/api.actions'
 import { do_clear_episodes } from '@actions/general.actions'
 import { IEpisode } from '@interfaces/episode.interface'
 import SeasonCard from '@components/Season-Card.component'
-import EpisodeItem from './Episodes-Item.component'
+import EpisodeItem from './Episode-Item.component'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GRADIENTS } from '@utils/constants.util'
 import { GradientEnum } from '@utils/enums.util'
@@ -54,8 +51,10 @@ const ShowInfo: React.FC<Props> = ({
     state => state.sonarr.entities.series[seriesId]
   )
   const keys = Object.keys(episodes).map(Number)
-  const data = keys.reverse()
-  const selected = episodes[onViewIndex + noSpecial.current]
+  const data = keys.slice().reverse()
+  const selected = (episodes[onViewIndex + noSpecial.current] || [])
+    .slice()
+    .reverse()
   const offsets = data.map(k => SCREEN_WIDTH * 0.84 * (k - noSpecial.current))
 
   useEffect(() => {
@@ -130,7 +129,7 @@ const ShowInfo: React.FC<Props> = ({
         ) : null}
         <BottomDrawer>
           {animEnd ? (
-            <FlatList
+            <SwipeListView
               keyExtractor={episodeKeyExtract}
               data={selected}
               renderItem={renderEpisodes}
@@ -164,7 +163,7 @@ const renderItem = (
 )
 
 const episodeKeyExtract = ({ id }: IEpisode) => id.toString()
-const renderEpisodes: ListRenderItem<IEpisode> = ({ item }) => (
+const renderEpisodes: ListRenderItem<IEpisode> = ({ item, index }) => (
   <EpisodeItem episode={item} />
 )
 const info = ({ year, sizeOnDisk, network }: ISeriesValue) => {
