@@ -2,14 +2,16 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components/native'
 import { Animated } from 'react-native'
 import { makePan } from '@hooks/usePanBottomDrawer'
-import { SCREEN_HEIGHT } from '@utils/dimensions.util'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { logger } from '@utils/logger.util'
 import { COLORS } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
 import { MARGIN } from '@utils/position.util'
 import AText from './Text.component'
 
-const HALF_HEIGHT = SCREEN_HEIGHT * 0.5
+// from Show-Info
+const POSTER_HEIGHT = (SCREEN_WIDTH * 0.25) / 0.69
+const HALF_HEIGHT = SCREEN_HEIGHT * 0.625 - POSTER_HEIGHT / 2
 const DRAGGABLE_HEIGHT = SCREEN_HEIGHT * 0.125
 
 const usePanBottomDrawer = makePan(HALF_HEIGHT, DRAGGABLE_HEIGHT)

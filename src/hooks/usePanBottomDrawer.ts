@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react'
 import { PanResponder, Animated } from 'react-native'
 import { SCREEN_HEIGHT } from '@utils/dimensions.util'
+import { logger } from '@utils/logger.util'
 
 export const makePan = (container: number, draggable: number) => (
   position: Animated.Value
@@ -11,10 +12,10 @@ export const makePan = (container: number, draggable: number) => (
         onMoveShouldSetPanResponderCapture: (e, { dx, dy }) =>
           Math.abs(dy) > Math.abs(dx * 2),
         onPanResponderMove: (e, { dy, moveY }) => {
-          if (
-            moveY < SCREEN_HEIGHT - draggable &&
-            moveY > container + draggable
-          ) {
+          // _offset is the pixel value from the bottom of the screen
+          // to the top of the element
+          const { _offset } = position as any
+          if (container - draggable - _offset > dy && dy > -_offset) {
             position.setValue(dy)
           }
         },
