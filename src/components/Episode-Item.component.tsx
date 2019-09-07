@@ -9,11 +9,33 @@ import { byteToGB } from '@utils/helpers.util'
 import AText from '@common/Text.component'
 import { Ionicons } from '@expo/vector-icons'
 import { SwipeRow } from 'react-native-swipe-list-view'
-import { extractCondition } from '@utils/recipes.util'
+import { extractCondition, extractProp } from '@utils/recipes.util'
+import { MaterialIcons } from '@expo/vector-icons'
+import moment from 'moment'
 
-type Props = { episode: IEpisode }
-const EpisodeItem: React.FC<Props> = ({ episode }) => {
-  const { title, episodeNumber, episodeFile } = episode
+type Props = {
+  episode: IEpisode
+  toggle: (key: number) => void
+  isSelected: boolean
+}
+const EpisodeItem: React.FC<Props> = ({ episode, toggle, isSelected }) => {
+  const {
+    title,
+    episodeNumber,
+    episodeFile,
+    id,
+    airDateUtc,
+    monitored
+  } = episode
+  const bookmark = monitored ? 'bookmark' : 'bookmark-border'
+  const dText = downloaded(airDateUtc, episodeFile)
+  let dColor = '#00b0ff'
+  if (dText === 'Missing') {
+    dColor = COLORS[ColorEnum.DANGER]
+  }
+  if (dText === 'Unaired') {
+    dColor = COLORS[ColorEnum.RADARR]
+  }
 
   return (
     <ItemRow disableRightSwipe rightOpenValue={-100} stopRightSwipe={-125}>
@@ -22,31 +44,39 @@ const EpisodeItem: React.FC<Props> = ({ episode }) => {
           <Ionicons color="white" name="ios-person" size={28} />
         </ItemButton>
         <ItemButton>
-          <Ionicons color="white" name="ios-search" size={28} />
+          <MaterialIcons color="white" name={bookmark} size={28} />
         </ItemButton>
       </ItemBack>
-      <Container>
-        <Centered>{episodeNumber}</Centered>
-        <Center>
-          <Text>{title}</Text>
-          <Text>{downloaded(episodeFile)}</Text>
-        </Center>
-        <Ionicons name="ios-arrow-back" size={28} />
-      </Container>
+      <Content>
+        <Container onPress={() => toggle(id)}>
+          <Centered>{episodeNumber}</Centered>
+          <Center>
+            <Text>{title}</Text>
+            <ColoredText color={dColor}>{dText}</ColoredText>
+          </Center>
+          <Ionicons
+            name={isSelected ? 'ios-checkmark' : 'ios-arrow-back'}
+            size={28}
+          />
+        </Container>
+      </Content>
     </ItemRow>
   )
 }
 
-const downloaded = (file?: IEpisodeFile) => {
+const downloaded = (airDateUtc: Date, file?: IEpisodeFile) => {
+  const hasAired = moment().diff(airDateUtc) >= 0
+  if (!hasAired) {
+    return 'Unaired'
+  }
   if (!file) {
-    return `Missing`
+    return 'Missing'
   }
   return `${file.quality.quality.name}-${byteToGB(file.size)}GB`
 }
 
-const Container = styled.View`
-  min-height: 60;
-  width: 100%;
+const Container = styled.TouchableOpacity`
+  flex: 1;
   flex-direction: row;
   padding-left: ${MARGIN};
   padding-right: ${MARGIN};
@@ -55,6 +85,11 @@ const Container = styled.View`
   border-bottom-width: 1px;
   border-bottom-color: ${COLORS[ColorEnum.GRAY]};
   align-items: center;
+  background: #eeeef8;
+`
+const Content = styled.View`
+  min-height: 60;
+  width: 100%;
   background: #eeeef8;
 `
 const Center = styled.View`
@@ -67,6 +102,9 @@ const Centered = styled(AText)`
   font-family: oswald-semibold;
 `
 const Text = styled(AText)``
+const ColoredText = styled(Text)`
+  color: ${extractProp<{ color: string }>('color')};
+`
 
 const ItemRow = styled(SwipeRow)`
   border-bottom-width: 1;

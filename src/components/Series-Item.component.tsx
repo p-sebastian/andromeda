@@ -64,4 +64,7 @@ const Description = styled(AText)`
   border-radius: ${BORDER_RADIUS};
 `
 
-export default React.memo(SeriesItem)
+export default React.memo(
+  SeriesItem,
+  (prev, next) => prev.series.sizeOnDisk === next.series.sizeOnDisk
+)

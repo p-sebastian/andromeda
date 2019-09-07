@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import ABackground from '@common/Background.component'
 import AText from '@common/Text.component'
+import AFAB from '@common/FAB.component.tsx'
 import { logger } from '@utils/logger.util'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { Image } from 'react-native-expo-image-cache'
@@ -45,6 +46,7 @@ const ShowInfo: React.FC<Props> = ({
   animEnd
 }) => {
   const episodes = useEpisodes(seriesId)
+  const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
   const [onViewIndex, setOnViewIndex] = useState(0)
   const noSpecial = useRef(0)
   const show = useShallowSelector(
@@ -56,6 +58,9 @@ const ShowInfo: React.FC<Props> = ({
     .slice()
     .reverse()
   const offsets = data.map(k => SCREEN_WIDTH * 0.84 * (k - noSpecial.current))
+
+  const toggle = (key: number) =>
+    setIsSelected({ ...isSelected, [key]: !isSelected[key] })
 
   useEffect(() => {
     if (!isEmpty(episodes)) {
@@ -130,10 +135,16 @@ const ShowInfo: React.FC<Props> = ({
         <BottomDrawer>
           {animEnd ? (
             <SwipeListView
+              extraData={isSelected}
               keyExtractor={episodeKeyExtract}
               data={selected}
-              renderItem={renderEpisodes}
+              renderItem={renderEpisodes(toggle, isSelected)}
             />
+          ) : null}
+          {Object.values(isSelected).filter(Boolean).length ? (
+            <AFAB position="bottom-left">
+              <Ionicons name="md-search" size={24} color="white" />
+            </AFAB>
           ) : null}
         </BottomDrawer>
       </BottomContent>
@@ -163,8 +174,15 @@ const renderItem = (
 )
 
 const episodeKeyExtract = ({ id }: IEpisode) => id.toString()
-const renderEpisodes: ListRenderItem<IEpisode> = ({ item, index }) => (
-  <EpisodeItem episode={item} />
+const renderEpisodes: (
+  toggle: any,
+  isSelected: { [key: number]: boolean }
+) => ListRenderItem<IEpisode> = (toggle, isSelected) => ({ item }) => (
+  <EpisodeItem
+    episode={item}
+    toggle={toggle}
+    isSelected={!!isSelected[item.id]}
+  />
 )
 const info = ({ year, sizeOnDisk, network }: ISeriesValue) => {
   const size = byteToGB(sizeOnDisk)
@@ -266,6 +284,9 @@ const Empty = styled.View`
 const Text = styled(AText)`
   color: white;
   font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
+`
+const Search = styled.TouchableOpacity`
+  flex: 1;
 `
 
 export default ShowInfo

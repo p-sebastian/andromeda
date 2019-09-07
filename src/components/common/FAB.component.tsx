@@ -2,21 +2,26 @@ import React from 'react'
 import { GestureResponderEvent } from 'react-native'
 import styled from 'styled-components/native'
 import { MARGIN, BOX_SHADOW } from '@utils/position.util'
+import { extractProp } from '@utils/recipes.util'
 
 type Positions = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 type Props = {
   onPress?: (event: GestureResponderEvent) => void
   position?: Positions
   children: React.ReactNode
+  background?: string
 }
 const AFAB: React.FC<Props> = ({
   children,
   onPress,
-  position = 'bottom-right'
+  position = 'bottom-right',
+  background = 'hsla(228, 11%, 28%, 1)'
 }) => {
   return (
     <Container position={position}>
-      <Button onPress={onPress}>{children}</Button>
+      <Button onPress={onPress} background={background}>
+        {children}
+      </Button>
     </Container>
   )
 }
@@ -48,7 +53,7 @@ const Container = styled.View<{ position: Positions }>`
   box-shadow: ${BOX_SHADOW};
 `
 const Button = styled.TouchableOpacity`
-  background: hsla(228, 11%, 28%, 1);
+  background: ${extractProp<{ background: string }>('background')};
   border-radius: 40;
   height: 100%;
   width: 100%;

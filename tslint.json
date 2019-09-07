@@ -14,7 +14,7 @@
     "no-console": false,
     "ordered-imports": false,
     "member-ordering": false,
-    "variable-name",
+    "variable-name": false,
     "no-unnecessary-type-assertion": false,
     "interface-over-type-literal": false
   }
