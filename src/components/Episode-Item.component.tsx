@@ -51,7 +51,7 @@ const EpisodeItem: React.FC<Props> = ({ episode, toggle, isSelected }) => {
         <Container onPress={() => toggle(id)}>
           <Centered>{episodeNumber}</Centered>
           <Center>
-            <Text>{title}</Text>
+            <Text numberOfLines={2}>{title}</Text>
             <ColoredText color={dColor}>{dText}</ColoredText>
           </Center>
           <Ionicons
@@ -82,8 +82,6 @@ const Container = styled.TouchableOpacity`
   padding-right: ${MARGIN};
   padding-top: 5;
   padding-bottom: 5;
-  border-bottom-width: 1px;
-  border-bottom-color: ${COLORS[ColorEnum.GRAY]};
   align-items: center;
   background: #eeeef8;
 `
@@ -95,6 +93,7 @@ const Content = styled.View`
 const Center = styled.View`
   flex: 1;
   padding-left: 10;
+  padding-right: 10;
 `
 const Centered = styled(AText)`
   width: 10%;
@@ -107,8 +106,8 @@ const ColoredText = styled(Text)`
 `
 
 const ItemRow = styled(SwipeRow)`
-  border-bottom-width: 1;
-  border-bottom-color: white;
+  border-bottom-width: 1px;
+  border-bottom-color: ${COLORS[ColorEnum.GRAY]};
 `
 const ItemBack = styled.View`
   flex: 1;

@@ -115,7 +115,7 @@ const ShowInfo: React.FC<Props> = ({
         <InfoView>
           <Text>{info(show)}</Text>
         </InfoView>
-        {false ? (
+        {animEnd ? (
           <ListContainer>
             <FlatList
               keyExtractor={keyExtractor}
