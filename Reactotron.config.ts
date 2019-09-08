@@ -4,7 +4,7 @@ import { reactotronRedux } from 'reactotron-redux'
 const reactotron = Reactotron.configure({
   name: 'Andromeda',
   port: 9090,
-  host: '10.0.1.9'
+  host: '10.0.1.10'
 })
   .use(reactotronRedux())
   .useReactNative({

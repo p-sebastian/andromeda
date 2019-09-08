@@ -31,3 +31,6 @@ export const API_SONARR_GET_EPISODES_SUCCESS =
 
 export const CLEAR_EPISODES = '@clear/episodes'
 export const SPINNER_TOGGLE = '@spinner/toggle'
+export const ACTION_SHEET_OPEN = '@action_sheet/open'
+export const ACTION_SHEET_ON_SEASON = '@action_sheet/on_season'
+export const ACTION_SHEET_ON_EPISODE = '@action_sheet/on_episode'

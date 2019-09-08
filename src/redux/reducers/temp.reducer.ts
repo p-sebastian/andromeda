@@ -1,11 +1,7 @@
 import { createReducer } from 'typesafe-actions'
 import { TActions } from '@utils/types.util'
 import { IEpisode } from '@interfaces/episode.interface'
-import {
-  API_SONARR_GET_EPISODES_SUCCESS,
-  API_SONARR_GET_EPISODES,
-  CLEAR_EPISODES
-} from '@actions/types'
+import { API_SONARR_GET_EPISODES_SUCCESS, CLEAR_EPISODES } from '@actions/types'
 
 type State = { episodes: { [key: string]: IEpisode[] } }
 const DEFAULT_STATE: State = {

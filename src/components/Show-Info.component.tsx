@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { FlatList, ListRenderItem } from 'react-native'
+import { FlatList, ListRenderItem, ActionSheetIOS } from 'react-native'
 import styled from 'styled-components/native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import ABackground from '@common/Background.component'
@@ -14,7 +14,10 @@ import { BOX_SHADOW, BORDER_RADIUS, MARGIN } from '@utils/position.util'
 import { useShallowSelector, useADispatch } from '@utils/recipes.util'
 import BottomDrawer from '@common/Bottom-Drawer.component'
 import { do_api_sonarr_get_episodes } from '@actions/api.actions'
-import { do_clear_episodes } from '@actions/general.actions'
+import {
+  do_clear_episodes,
+  do_action_sheet_open
+} from '@actions/general.actions'
 import { IEpisode } from '@interfaces/episode.interface'
 import SeasonCard from '@components/Season-Card.component'
 import EpisodeItem from './Episode-Item.component'
@@ -45,6 +48,7 @@ const ShowInfo: React.FC<Props> = ({
   fanartUri,
   animEnd
 }) => {
+  const dispatch = useADispatch()
   const episodes = useEpisodes(seriesId)
   const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
   const [onViewIndex, setOnViewIndex] = useState(0)
@@ -139,10 +143,16 @@ const ShowInfo: React.FC<Props> = ({
               keyExtractor={episodeKeyExtract}
               data={selected}
               renderItem={renderEpisodes(toggle, isSelected)}
+              directionalLockEnabled
             />
           ) : null}
           {Object.values(isSelected).filter(Boolean).length ? (
-            <AFAB position="bottom-left">
+            <AFAB
+              onPress={() =>
+                dispatch(do_action_sheet_open(actionSheetOptions()))
+              }
+              position="bottom-left"
+            >
               <Ionicons name="md-search" size={24} color="white" />
             </AFAB>
           ) : null}
@@ -188,6 +198,17 @@ const info = ({ year, sizeOnDisk, network }: ISeriesValue) => {
   const size = byteToGB(sizeOnDisk)
   return `${year} - ${network} - ${sizeOnDisk ? size + 'GB' : '--'}`
 }
+
+const actionSheetOptions = (isSeason = false) =>
+  isSeason
+    ? {
+        title: 'Manage Season',
+        options: ['search all monitored', 'delete all']
+      }
+    : {
+        title: 'Selected Episodes',
+        options: ['force search', 'delete']
+      }
 
 const FanartView = styled.View`
   height: ${SCREEN_HEIGHT / 2};
