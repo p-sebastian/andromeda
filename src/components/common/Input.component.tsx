@@ -8,7 +8,6 @@ import { ThemeEnum, ColorEnum } from '@utils/enums.util'
 import { COLORS } from '@utils/constants.util'
 import { validator } from '@utils/validators.util'
 import { FormContext } from '../../context/Form.context'
-import { logger } from '@utils/logger.util'
 
 type Extra = {
   textColor?: string

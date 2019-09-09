@@ -62,6 +62,8 @@ const ShowInfo: React.FC<Props> = ({
     .slice()
     .reverse()
   const offsets = data.map(k => SCREEN_WIDTH * 0.84 * (k - noSpecial.current))
+  // Episodes toggled true
+  const episodesSelected = Object.values(isSelected).filter(Boolean).length
 
   const toggle = (key: number) =>
     setIsSelected({ ...isSelected, [key]: !isSelected[key] })
@@ -81,6 +83,8 @@ const ShowInfo: React.FC<Props> = ({
    */
   const onScrollEndDrag = useCallback(
     (e: any) => {
+      // clears on season change
+      setIsSelected({})
       setOnViewIndex(
         offsets.findIndex(
           v => Math.round(v) === Math.round(e.nativeEvent.targetContentOffset.x)
@@ -146,14 +150,14 @@ const ShowInfo: React.FC<Props> = ({
               directionalLockEnabled
             />
           ) : null}
-          {Object.values(isSelected).filter(Boolean).length ? (
+          {episodesSelected ? (
             <AFAB
               onPress={() =>
                 dispatch(do_action_sheet_open(actionSheetOptions()))
               }
               position="bottom-left"
             >
-              <Ionicons name="md-search" size={24} color="white" />
+              <FabText>{episodesSelected}</FabText>
             </AFAB>
           ) : null}
         </BottomDrawer>
@@ -308,6 +312,11 @@ const Text = styled(AText)`
 `
 const Search = styled.TouchableOpacity`
   flex: 1;
+`
+const FabText = styled.Text`
+  color: white;
+  font-size: 18;
+  font-family: oswald-semibold;
 `
 
 export default ShowInfo
