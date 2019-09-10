@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
-    "rootDir": ".",
+    "baseUrl": "./",
+    "rootDir": "./",
     "outDir": "build",
     "noEmit": true,
     "lib": ["esnext"],
@@ -26,20 +26,21 @@
     "typeRoots": ["./@types", "node_modules/@types"],
     "disableSizeLimit": true,
     "paths": {
-      "@common/*": ["components/common/*"],
-      "@components/*": ["components/*"],
-      "@screens/*": ["screens/*"],
-      "@utils/*": ["utils/*"],
-      "@reducers/*": ["redux/reducers/*"],
-      "@epics/*": ["redux/epics/*"],
-      "@actions/*": ["redux/actions/*"],
-      "@hooks/*": ["hooks/*"],
-      "@interfaces/*": ["interfaces/*"]
+      "@common/*": ["src/components/common/*"],
+      "@components/*": ["src/components/*"],
+      "@screens/*": ["src/screens/*"],
+      "@utils/*": ["src/utils/*"],
+      "@reducers/*": ["src/redux/reducers/*"],
+      "@epics/*": ["src/redux/epics/*"],
+      "@actions/*": ["src/redux/actions/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@interfaces/*": ["src/interfaces/*"]
     },
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["."],
-  "exclude": ["node_modules", ".jest", ".expo"]
+  "files": ["app.ts", "Reactotron.config.ts"],
+  "include": ["@types/**/*", "./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["node_modules", ".jest", ".expo", "./src/__tests__/**/*"]
 }

@@ -4,8 +4,13 @@ import {
   Dimensions,
   PanResponderInstance
 } from 'react-native'
-import { useState, useMemo, useCallback } from 'react'
-import { useASelector } from '@utils/recipes.util'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import {
+  useASelector,
+  useADispatch,
+  useShallowSelector
+} from '@utils/recipes.util'
+import { do_sidebar_toggle } from '@actions/general.actions'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 // Sidebar size
@@ -17,6 +22,10 @@ type usePanResponderFn = (
   position: Animated.Value
 ) => [PanResponderInstance, string]
 export const usePanResponder: usePanResponderFn = position => {
+  const dispatch = useADispatch()
+  const { watch, toggle } = useShallowSelector(
+    state => state.temp.sidebarToggle
+  )
   const themeTitle = useASelector(state => state.theme.title)
   const [isOpen, setIsOpen] = useState(false)
   const panResponder = useMemo(
@@ -36,7 +45,7 @@ export const usePanResponder: usePanResponderFn = position => {
             position.setValue(dx)
           }
         },
-        onPanResponderGrant: (e, { dx }) => {
+        onPanResponderGrant: () => {
           position.extractOffset()
         },
         onPanResponderRelease: (e, { dx }) => {
@@ -59,11 +68,20 @@ export const usePanResponder: usePanResponderFn = position => {
       duration: 400,
       useNativeDriver: true
     }).start(() => {
+      // dispatch(do_sidebar_toggle(open))
       setIsOpen(open)
       // reset offset when animation finishes
       position.setOffset(value)
       position.setValue(0)
     })
   }, [])
+
+  useEffect(() => {
+    // only if action is different
+    if (toggle !== isOpen) {
+      position.flattenOffset()
+      lock(toggle)
+    }
+  }, [watch])
   return [panResponder, isOpen ? 'Andromeda' : themeTitle]
 }

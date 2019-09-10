@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 import { TServer, StyledThemeP } from '@utils/types.util'
 import { extractStyleTheme, useADispatchC } from '@utils/recipes.util'
@@ -9,6 +9,7 @@ import { do_navigate } from '@actions/navigation.actions'
 import { COLORS } from '@utils/constants.util'
 import { useTheme } from '@hooks/useTheme'
 import { withinScreen } from '@utils/helpers.util'
+import { do_sidebar_toggle } from '@actions/general.actions'
 
 type Props = {
   item: TServer
@@ -16,15 +17,20 @@ type Props = {
 const AMenuItem: React.FC<Props> = ({ item }) => {
   const { title, key, themeKey } = item
   const navigator = useADispatchC(do_navigate(title))
+  const close = useADispatchC(do_sidebar_toggle(false))
   const [theme, themeTitle] = useTheme()
   const isSelected = {
     selected: withinScreen(key, themeTitle),
     isEven: Number(key) % 2 === 0,
     color: COLORS[themeKey]
   }
+  const closeAndNavigate = useCallback(() => {
+    navigator()
+    close()
+  }, [])
 
   return (
-    <SItem onPress={navigator} theme={theme} {...isSelected}>
+    <SItem onPress={closeAndNavigate} theme={theme} {...isSelected}>
       <SText theme={theme}>{title}</SText>
       {isSelected.selected ? (
         <BtnIcon name="dot-single" size={32} color="white" />
