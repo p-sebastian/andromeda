@@ -9,7 +9,6 @@ import { withLatestFrom, map, mergeMap } from 'rxjs/operators'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
 import { ApiActionsType } from '@actions/index'
 import { isOfType } from 'typesafe-actions'
-import { logger } from './logger.util'
 import { TActions } from './types.util'
 import { nrmlz } from './normalizr.util'
 
@@ -59,7 +58,7 @@ export const withApi: WithApi = (state$, method) => action$ =>
     withLatestFrom(state$),
     map(([action, state]) => {
       const { endpoint, params } = action.payload
-      return _ajaxConfig(state.server[action.meta])(
+      return _ajaxConfig(state.server[action.meta.serverKey])(
         endpoint,
         method,
         params
@@ -75,7 +74,9 @@ export const withApi: WithApi = (state$, method) => action$ =>
  */
 type OnCase<C = string, A = TActions> = (
   CONSTANT: C
-) => (callback: (response: any) => A) => OperatorFunction<[A, any], [A, any]>
+) => (
+  callback: (response: any, isOf: string) => A
+) => OperatorFunction<[A, any], [A, any]>
 /**
  *
  * @param CONSTANT Action constant
@@ -87,7 +88,13 @@ export const onCase: OnCase = CONSTANT => callback => action$ =>
         // iif must return an Observable
         iif(
           () => isOfType(CONSTANT, action),
-          of([callback(nrmlz(CONSTANT, response)), response]),
+          of([
+            callback(
+              nrmlz(CONSTANT, response),
+              (action as ApiActionsType).meta.isOf
+            ),
+            response
+          ]),
           of([action, response])
         ) as Observable<[TActions, any]>
     )

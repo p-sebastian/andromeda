@@ -16,7 +16,7 @@ export const do_api_ajax_fail = createAction(
 
 export const do_spinner_toggle = createAction(
   SPINNER_TOGGLE,
-  action => (toggle: boolean) => action(toggle)
+  action => (isOf: string, toggle: boolean) => action({ isOf, toggle })
 )
 
 export const do_clear_episodes = createAction(CLEAR_EPISODES)

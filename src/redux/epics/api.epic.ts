@@ -26,7 +26,7 @@ const spinnerStartEpic: TEpic = action$ =>
         API_SONARR_GET_EPISODES
       ])
     ),
-    mapTo(do_spinner_toggle(true))
+    map(action => do_spinner_toggle(action.meta.isOf, true))
   )
 
 // @todo add retry switch to remote on timeout error
@@ -61,7 +61,14 @@ const apiGetEpic: TEpic = (action$, state$) =>
         )
     ),
     // finish loading
-    mergeMap(action => concat(...[of(action), of(do_spinner_toggle(false))]))
+    mergeMap(action =>
+      concat(
+        ...[
+          of(action),
+          of(do_spinner_toggle((action as ApiSuccessActionsType).meta, false))
+        ]
+      )
+    )
   )
 // const apiPostEpic: TEpic
 // const apiPutEpic: TEpic

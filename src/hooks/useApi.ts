@@ -23,9 +23,11 @@ export const useApi = <TSelected>(
   selector: Selector<TSelected, RootState>
 ) => {
   const watch = useShallowSelector<TSelected>(selector)
-  const refreshing = useASelector(state => state.spinner.loading)
+  const refreshing = useASelector(
+    state => state.spinner[action.payload.endpoint]
+  )
   const doRefresh = _useFetch(action)
-  return [watch, refreshing, doRefresh] as [
+  return [watch, !!refreshing, doRefresh] as [
     TSelected,
     boolean,
     typeof doRefresh

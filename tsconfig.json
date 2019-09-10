@@ -24,6 +24,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "typeRoots": ["./@types", "node_modules/@types"],
+    "disableSizeLimit": true,
     "paths": {
       "@common/*": ["components/common/*"],
       "@components/*": ["components/*"],
@@ -39,13 +40,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./src/**/*.d.ts",
-    "./App.tsx",
-    "./Reactotron.config.ts"
-  ],
-  "exclude": ["node_modules", ".jest", ".expo"],
-  "compileOnSave": false
+  "include": ["."],
+  "exclude": ["node_modules", ".jest", ".expo"]
 }

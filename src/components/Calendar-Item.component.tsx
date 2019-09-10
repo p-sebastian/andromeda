@@ -7,6 +7,7 @@ import { GRADIENTS } from '@utils/constants.util'
 import { GradientEnum, ThemeEnum } from '@utils/enums.util'
 import { useShallowSelector } from '@utils/recipes.util'
 import { THEME } from '@utils/theme.util'
+import { isUndefined } from 'lodash'
 import moment from 'moment'
 
 type Props = { upcoming: CalendarValue }
@@ -22,6 +23,10 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
   const series = useShallowSelector(
     state => state.sonarr.entities.series[seriesId]
   )
+  // calendar might load before geting shows, so series might be empty
+  if (isUndefined(series)) {
+    return <Container />
+  }
   const gradient = hasFile
     ? GRADIENTS[GradientEnum.ORANGE]
     : GRADIENTS[GradientEnum.PURPLE]

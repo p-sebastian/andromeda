@@ -20,9 +20,9 @@ const _config = <T extends string, K extends ServerEnum>(
   serverKey: K,
   params: any = {}
 ) =>
-  [{ endpoint, params }, serverKey] as [
+  [{ endpoint, params }, { serverKey, isOf: endpoint }] as [
     { endpoint: T; params: any },
-    typeof serverKey
+    { serverKey: typeof serverKey; isOf: T }
   ]
 
 /**
