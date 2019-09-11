@@ -39,5 +39,6 @@ export interface IHDFailedD {
   message: string
 }
 export interface IHEFDeleted {
+  downloadClient?: string // not sent here
   reason: string
 }

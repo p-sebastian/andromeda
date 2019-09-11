@@ -49,6 +49,6 @@ export const do_api_sonarr_get_episodes = createAction(
 )
 export const do_api_sonarr_get_history = createAction(
   API_SONARR_GET_HISTORY,
-  action => (page = 1, pageSize = 25) =>
+  action => (page = 1, pageSize = 100) =>
     action(..._config('/history', ServerEnum.SONARR, { page, pageSize }))
 )

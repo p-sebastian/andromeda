@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components/native'
 import { FlatList } from 'react-native'
 import { ScreenFComponent } from '@utils/types.util'
 import ABackground from '@common/Background.component'
@@ -24,6 +25,7 @@ const HistoryScreen: ScreenFComponent = () => {
         keyExtractor={keyExtractor}
         data={result}
         renderItem={renderItem(history)}
+        ListHeaderComponent={Header}
       />
     </ABackground>
   )
@@ -33,5 +35,10 @@ const keyExtractor = (key: number) => key.toString()
 const renderItem = (history: IEntity<IHistory>) => ({ item }: any) => (
   <HistoryItem history={history[item]} />
 )
+
+const Header = styled.View`
+  height: 15;
+  width: 100%;
+`
 
 export default HistoryScreen

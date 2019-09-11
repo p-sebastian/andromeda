@@ -79,7 +79,6 @@ const arrangeSections = (
   return Object.keys(data).map(key => ({ title: key, data: data[key] }))
 }
 
-const Container = styled.View``
 const Header = styled.View`
   background: ${COLORS[ColorEnum.GRAY]};
   height: 40;
