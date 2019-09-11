@@ -2,7 +2,8 @@ import { normalize, schema } from 'normalizr'
 import {
   API_SONARR_GET_CALENDAR,
   API_SONARR_GET_SERIES,
-  API_SONARR_GET_EPISODES
+  API_SONARR_GET_EPISODES,
+  API_SONARR_GET_HISTORY
 } from '@actions/types'
 import { omit, groupBy } from 'lodash'
 import { logger } from './logger.util'
@@ -17,6 +18,8 @@ export const nrmlz: Nrmlzr = (CONSTANT, json) => {
       return sonarrGetCalendar(json)
     case API_SONARR_GET_EPISODES:
       return sonarrGetEpisodes(json)
+    case API_SONARR_GET_HISTORY:
+      return sonarrGetHistory(json)
     default:
       return json
   }
@@ -51,4 +54,8 @@ const sonarrGetCalendar = (json: any) => {
 
 const sonarrGetEpisodes = (json: any) => {
   return groupBy(json, v => v.seasonNumber)
+}
+const sonarrGetHistory = (json: { records: any[] }) => {
+  const history = new schema.Entity('history')
+  return normalize(json.records, [history])
 }

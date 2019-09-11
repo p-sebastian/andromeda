@@ -5,12 +5,13 @@ import { Observable, OperatorFunction, of, iif } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { RootState } from '@reducers/index'
 import { StateObservable } from 'redux-observable'
-import { withLatestFrom, map, mergeMap } from 'rxjs/operators'
+import { withLatestFrom, map, mergeMap, tap } from 'rxjs/operators'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
 import { ApiActionsType } from '@actions/index'
 import { isOfType } from 'typesafe-actions'
 import { TActions } from './types.util'
 import { nrmlz } from './normalizr.util'
+import { logger } from '@utils/logger.util'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type AjaxCreator = (
@@ -83,20 +84,16 @@ type OnCase<C = string, A = TActions> = (
  */
 export const onCase: OnCase = CONSTANT => callback => action$ =>
   action$.pipe(
-    mergeMap(
-      ([action, response]) =>
-        // iif must return an Observable
-        iif(
-          () => isOfType(CONSTANT, action),
-          of([
+    map(([action, response]) =>
+      !isOfType(CONSTANT, action)
+        ? [action, response]
+        : [
             callback(
               nrmlz(CONSTANT, response),
               (action as ApiActionsType).meta.isOf
             ),
             response
-          ]),
-          of([action, response])
-        ) as Observable<[TActions, any]>
+          ]
     )
     // tap(([, res]) => logger.info('normalized', res))
   )

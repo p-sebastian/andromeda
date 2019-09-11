@@ -6,7 +6,7 @@ export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
     key: ServerEnum.SONARR,
     title: 'sonarr',
     themeKey: ThemeEnum.SONARR,
-    tabs: ['upcoming', 'shows']
+    tabs: ['upcoming', 'shows', 'history']
   },
   [ServerEnum.RADARR]: {
     key: ServerEnum.RADARR,

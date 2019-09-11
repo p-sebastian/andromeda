@@ -3,9 +3,10 @@ import { TEpic } from '@utils/types.util'
 import {
   API_SONARR_GET_SERIES,
   API_SONARR_GET_CALENDAR,
-  API_SONARR_GET_EPISODES
+  API_SONARR_GET_EPISODES,
+  API_SONARR_GET_HISTORY
 } from '@actions/types'
-import { mergeMap, filter, map, mapTo, catchError } from 'rxjs/operators'
+import { mergeMap, filter, map, tap, catchError } from 'rxjs/operators'
 import { concat, of } from 'rxjs'
 import { withApi, onCase } from '@utils/api.util'
 import { logger } from '@utils/logger.util'
@@ -14,7 +15,8 @@ import { ApiSuccessActionsType } from '@actions/index'
 import {
   on_api_sonarr_get_series_success,
   on_api_sonarr_get_calendar_success,
-  on_api_sonarr_get_episodes_success
+  on_api_sonarr_get_episodes_success,
+  on_api_sonarr_get_history_success
 } from '@actions/api.success.actions'
 
 const spinnerStartEpic: TEpic = action$ =>
@@ -23,9 +25,11 @@ const spinnerStartEpic: TEpic = action$ =>
       isOfType([
         API_SONARR_GET_SERIES,
         API_SONARR_GET_CALENDAR,
-        API_SONARR_GET_EPISODES
+        API_SONARR_GET_EPISODES,
+        API_SONARR_GET_HISTORY
       ])
     ),
+    tap(action => logger.info('action', action)),
     map(action => do_spinner_toggle(action.meta.isOf, true))
   )
 
@@ -36,7 +40,8 @@ const apiGetEpic: TEpic = (action$, state$) =>
       isOfType([
         API_SONARR_GET_SERIES,
         API_SONARR_GET_CALENDAR,
-        API_SONARR_GET_EPISODES
+        API_SONARR_GET_EPISODES,
+        API_SONARR_GET_HISTORY
       ])
     ),
     withApi(state$, 'GET'),
@@ -50,6 +55,7 @@ const apiGetEpic: TEpic = (action$, state$) =>
           onCase(API_SONARR_GET_SERIES)(on_api_sonarr_get_series_success),
           onCase(API_SONARR_GET_CALENDAR)(on_api_sonarr_get_calendar_success),
           onCase(API_SONARR_GET_EPISODES)(on_api_sonarr_get_episodes_success),
+          onCase(API_SONARR_GET_HISTORY)(on_api_sonarr_get_history_success),
           /**
            * Maps successAction to stream
            */

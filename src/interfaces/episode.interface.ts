@@ -1,3 +1,4 @@
+import { IQuality } from './common.interface'
 export interface IEpisode {
   seriesId: number
   episodeFileId: number
@@ -23,18 +24,7 @@ export interface IEpisodeFile {
   path: string
   size: number
   dateAdded: Date
-  quality: {
-    quality: {
-      id: number
-      name: string
-      source: string
-      resolution: number
-    }
-    revision: {
-      version: number
-      real: number
-    }
-  }
+  quality: IQuality
   mediaInfo: {
     audioChannels: number
     audioCodec: string

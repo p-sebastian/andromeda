@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FlatList } from 'react-native'
-import { ScreenFComponent } from '../../utils/types.util'
+import { ScreenFComponent } from '@utils/types.util'
 import ABackground from '@common/Background.component'
 import { do_api_sonarr_get_series } from '@actions/api.actions'
 import { useApi } from '@hooks/useApi'

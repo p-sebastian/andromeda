@@ -10,7 +10,8 @@ import {
   UpcomingScreen,
   HomeScreen,
   SettingsScreen,
-  ServerConfigScreen
+  ServerConfigScreen,
+  HistoryScreen
 } from '@screens/index'
 import { AMaterialTopTabBar } from './components'
 import { useASelector, useADispatch } from '@utils/recipes.util'
@@ -27,7 +28,8 @@ const tabConfig: TabNavigatorConfig = {
 const SonarrTabs = createMaterialTopTabNavigator(
   {
     Shows: ShowsScreen,
-    Upcoming: UpcomingScreen
+    Upcoming: UpcomingScreen,
+    History: HistoryScreen
   },
   tabConfig
 )
@@ -131,5 +133,6 @@ export type ScreenNames =
   | 'upcoming'
   | 'shows'
   | 'config'
+  | 'history'
 
 export default AppNavigator

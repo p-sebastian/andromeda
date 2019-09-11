@@ -3,17 +3,18 @@
     "baseUrl": "./",
     "rootDir": "./",
     "outDir": "build",
-    "noEmit": true,
-    "lib": ["esnext"],
-    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-native",
+    "lib": ["dom", "esnext"],
     "moduleResolution": "node",
-    "module": "commonjs",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "target": "es6",
     "sourceMap": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "declaration": true,
     "strict": true,
     "allowJs": false,
     "noEmitOnError": true,
@@ -36,11 +37,10 @@
       "@hooks/*": ["src/hooks/*"],
       "@interfaces/*": ["src/interfaces/*"]
     },
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "esModuleInterop": true
   },
-  "files": ["app.ts", "Reactotron.config.ts"],
-  "include": ["@types/**/*", "./src/**/*.ts", "./src/**/*.tsx"],
-  "exclude": ["node_modules", ".jest", ".expo", "./src/__tests__/**/*"]
+  "files": ["App.ts", "Reactotron.config.ts"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["node_modules", ".jest", ".expo", "./src/__tests__/**/*"],
+  "compileOnSave": false
 }
