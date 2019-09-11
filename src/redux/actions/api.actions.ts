@@ -3,7 +3,8 @@ import {
   API_SONARR_GET_SERIES,
   API_SONARR_GET_CALENDAR,
   API_SONARR_GET_EPISODES,
-  API_SONARR_GET_HISTORY
+  API_SONARR_GET_HISTORY,
+  API_RADARR_GET_MOVIES
 } from './types'
 import { ServerEnum } from '@utils/enums.util'
 import moment from 'moment'
@@ -24,15 +25,13 @@ const _config = <T extends string, K extends ServerEnum>(
     { serverKey: typeof serverKey; isOf: T }
   ]
 
-/**
- * Requests calls
- */
+/************ Requests calls **************/
 
+/* SONARR */
 export const do_api_sonarr_get_series = createAction(
   API_SONARR_GET_SERIES,
   action => () => action(..._config('/series', ServerEnum.SONARR))
 )
-
 export const do_api_sonarr_get_calendar = createAction(
   API_SONARR_GET_CALENDAR,
   action => () => {
@@ -51,4 +50,10 @@ export const do_api_sonarr_get_history = createAction(
   API_SONARR_GET_HISTORY,
   action => (page = 1, pageSize = 100) =>
     action(..._config('/history', ServerEnum.SONARR, { page, pageSize }))
+)
+
+/* RADARR */
+export const do_api_radarr_get_movies = createAction(
+  API_RADARR_GET_MOVIES,
+  action => () => action(..._config('/movie', ServerEnum.RADARR))
 )

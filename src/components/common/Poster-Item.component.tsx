@@ -4,12 +4,17 @@ import { SCREEN_WIDTH } from '@utils/dimensions.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import { extractProp, useASelector } from '@utils/recipes.util'
-import { selectServer, selectImage } from '@utils/selectors.util'
+import {
+  selectServer,
+  selectImage,
+  ServersWithImages
+} from '@utils/selectors.util'
 import { ServerEnum } from '@utils/enums.util'
 import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
 import { View } from 'react-native'
 import { ExpansionContext } from '../../context/Expansion.context'
+import { logger } from '@utils/logger.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
@@ -17,14 +22,16 @@ type Props = {
   gradient: TGradient
   gradientTextColor: string
   title: string
-  seriesId: number
+  id: number
+  serverKey: ServersWithImages
   children: React.ReactNode
   flexDirection?: 'row' | 'column'
   justifyContent?: string
 }
-const SonarrListItem: React.FC<Props> = ({
+const PosterItem: React.FC<Props> = ({
   children,
-  seriesId,
+  id,
+  serverKey,
   gradient,
   gradientTextColor,
   title,
@@ -33,11 +40,11 @@ const SonarrListItem: React.FC<Props> = ({
 }) => {
   const { setDimensions } = useContext(ExpansionContext)
   const container = useRef<View>(null)
-  const server = useASelector(selectServer(ServerEnum.SONARR))
-  const poster = useASelector(selectImage(`${seriesId}-poster`))
-  const fanart = useASelector(selectImage(`${seriesId}-fanart`))
-  const posterUri = uriForImage(server, poster)
-  const fanartUri = uriForImage(server, fanart)
+  const server = useASelector(selectServer(serverKey))
+  const poster = useASelector(selectImage(serverKey, `${id}-poster`))
+  const fanart = useASelector(selectImage(serverKey, `${id}-fanart`))
+  const posterReq = uriForImage(server, poster)
+  const fanartReq = uriForImage(server, fanart)
   /**
    * Open expansion card, whats withing withExpansion.hoc, in AppContainer
    */
@@ -49,9 +56,9 @@ const SonarrListItem: React.FC<Props> = ({
         offsetX,
         offsetY,
         selected: true,
-        seriesId,
-        posterUri,
-        fanartUri
+        id,
+        posterReq,
+        fanartReq
       })
     )
   }, [container])
@@ -60,7 +67,7 @@ const SonarrListItem: React.FC<Props> = ({
     <Container ref={container}>
       <Touchable onPress={_onPress as any}>
         <PosterContainer>
-          <Poster source={{ uri: posterUri }} />
+          <Poster source={posterReq} />
         </PosterContainer>
         <ContentContainer>
           <Gradient {...gradient}>
@@ -69,7 +76,7 @@ const SonarrListItem: React.FC<Props> = ({
             </GradientText>
           </Gradient>
           <InfoView>
-            <Fanart source={{ uri: fanartUri }} />
+            <Fanart source={fanartReq} />
             <Padding
               flexDirection={flexDirection}
               justifyContent={justifyContent}
@@ -145,4 +152,4 @@ const Padding = styled.View`
   border-radius: ${BORDER_RADIUS};
 `
 
-export default React.memo(SonarrListItem)
+export default React.memo(PosterItem)

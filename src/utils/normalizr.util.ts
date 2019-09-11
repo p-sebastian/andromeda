@@ -3,7 +3,8 @@ import {
   API_SONARR_GET_CALENDAR,
   API_SONARR_GET_SERIES,
   API_SONARR_GET_EPISODES,
-  API_SONARR_GET_HISTORY
+  API_SONARR_GET_HISTORY,
+  API_RADARR_GET_MOVIES
 } from '@actions/types'
 import { omit, groupBy } from 'lodash'
 import { logger } from './logger.util'
@@ -20,11 +21,14 @@ export const nrmlz: Nrmlzr = (CONSTANT, json) => {
       return sonarrGetEpisodes(json)
     case API_SONARR_GET_HISTORY:
       return sonarrGetHistory(json)
+    case API_RADARR_GET_MOVIES:
+      return radarrGetMovies(json)
     default:
       return json
   }
 }
 
+/* SONARR */
 const sonarrGetSeries = (json: any) => {
   const series = new schema.Entity('series')
   const images = new schema.Entity(
@@ -58,4 +62,20 @@ const sonarrGetEpisodes = (json: any) => {
 const sonarrGetHistory = (json: { records: any[] }) => {
   const history = new schema.Entity('history')
   return normalize(json.records, [history])
+}
+
+/* RADARR */
+const radarrGetMovies = (json: any) => {
+  const movies = new schema.Entity('movies')
+  const images = new schema.Entity(
+    'images',
+    {},
+    {
+      idAttribute: (entity, parent) => `${parent.id}-${entity.coverType}`
+    }
+  )
+  movies.define({
+    images: [images]
+  })
+  return normalize(json, [movies])
 }

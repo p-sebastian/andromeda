@@ -31,9 +31,9 @@ export enum GradientEnum {
 }
 
 export enum ServerEnum {
-  SONARR = 100,
-  RADARR,
-  LIDARR,
-  SABNZBD,
-  TORRENT
+  SONARR = 'sonarr',
+  RADARR = 'radarr',
+  LIDARR = 'lidarr',
+  SABNZBD = 'sabnzbd',
+  TORRENT = 'torrent'
 }

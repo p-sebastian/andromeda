@@ -3,15 +3,15 @@ import {
   API_SONARR_GET_SERIES_SUCCESS,
   API_SONARR_GET_CALENDAR_SUCCESS,
   API_SONARR_GET_EPISODES_SUCCESS,
-  API_SONARR_GET_HISTORY_SUCCESS
+  API_SONARR_GET_HISTORY_SUCCESS,
+  API_RADARR_GET_MOVIES_SUCCESS
 } from './types'
 import { TNrmlzResponse } from '@interfaces/common.interface'
 import { IEpisode } from '@interfaces/episode.interface'
 
-/**
- * Success calls, managed by epics
- */
+/*********** Success calls, managed by epics **********/
 
+/* SONARR */
 type SeriesResponse = TNrmlzResponse<'images' | 'series'>
 export const on_api_sonarr_get_series_success = createAction(
   API_SONARR_GET_SERIES_SUCCESS,
@@ -32,4 +32,11 @@ export const on_api_sonarr_get_history_success = createAction(
   API_SONARR_GET_HISTORY_SUCCESS,
   action => (payload: TNrmlzResponse<'history'>, isOf: string) =>
     action(payload, isOf)
+)
+
+/* RADARR */
+type MoviesResponse = TNrmlzResponse<'images' | 'movies'>
+export const on_api_radarr_get_movies_success = createAction(
+  API_RADARR_GET_MOVIES_SUCCESS,
+  action => (payload: MoviesResponse, isOf: string) => action(payload, isOf)
 )

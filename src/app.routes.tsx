@@ -11,7 +11,8 @@ import {
   HomeScreen,
   SettingsScreen,
   ServerConfigScreen,
-  HistoryScreen
+  HistoryScreen,
+  MoviesScreen
 } from '@screens/index'
 import { AMaterialTopTabBar } from './components'
 import { useASelector, useADispatch } from '@utils/recipes.util'
@@ -35,7 +36,7 @@ const SonarrTabs = createMaterialTopTabNavigator(
 )
 const RadarrTabs = createMaterialTopTabNavigator(
   {
-    Home: HomeScreen
+    Movies: MoviesScreen
   },
   tabConfig
 )
@@ -134,5 +135,6 @@ export type ScreenNames =
   | 'shows'
   | 'config'
   | 'history'
+  | 'movies'
 
 export default AppNavigator

@@ -3,11 +3,15 @@ import { RootState } from '@reducers/index'
 import { TServerState } from '@reducers/server.reducer'
 import { ServerEnum } from './enums.util'
 
-type Select<TSelected, P> = (key: P) => Selector<TSelected, RootState>
-export const selectImage: Select<string, string> = key => state =>
-  state.sonarr.entities.images[key].url
+export type ServersWithImages = ServerEnum.SONARR | ServerEnum.RADARR
+type Select<TSelected, P> = (
+  serverKey: ServersWithImages,
+  key: P
+) => Selector<TSelected, RootState>
+export const selectImage: Select<string, string> = (serverKey, key) => state =>
+  state[serverKey].entities.images[key].url
 
 export const selectServer: Select<
   TServerState,
-  ServerEnum
+  ServersWithImages
 > = serverKey => state => state.server[serverKey]

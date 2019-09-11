@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 import AText from '@common/Text.component'
 import { ISeriesValue } from '@interfaces/common.interface'
 import moment from 'moment'
-import { GradientEnum, ThemeEnum } from '@utils/enums.util'
+import { GradientEnum, ThemeEnum, ServerEnum } from '@utils/enums.util'
 import { BORDER_RADIUS } from '@utils/position.util'
 import { GRADIENTS } from '@utils/constants.util'
 import { THEME } from '@utils/theme.util'
-import SonarrListItem from '@common/Sonarr-List-Item.component'
+import PosterItem from '@common/Poster-Item.component'
 
 type Props = { series: ISeriesValue }
 const SeriesItem: React.FC<Props> = ({ series }) => {
@@ -21,17 +21,18 @@ const SeriesItem: React.FC<Props> = ({ series }) => {
   const info = sideText(series)
 
   return (
-    <SonarrListItem
+    <PosterItem
       gradient={gradient}
       gradientTextColor={gradientTextColor}
       title={title}
-      seriesId={id}
+      id={id}
+      serverKey={ServerEnum.SONARR}
     >
       <Description>
         {seasonCount} {seasonCount > 1 ? 'Seasons' : 'Season'}
       </Description>
       <Description>{info}</Description>
-    </SonarrListItem>
+    </PosterItem>
   )
 }
 

@@ -12,7 +12,7 @@ export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
     key: ServerEnum.RADARR,
     title: 'radarr',
     themeKey: ThemeEnum.RADARR,
-    tabs: []
+    tabs: ['movies']
   },
   [ServerEnum.LIDARR]: {
     key: ServerEnum.LIDARR,

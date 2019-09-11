@@ -7,9 +7,9 @@ export const ExpansionContext = createContext({
     elmHeight: 0,
     elmWidth: 0,
     selected: false,
-    seriesId: 0,
-    posterUri: '',
-    fanartUri: ''
+    id: 0,
+    posterReq: { uri: '', headers: {} },
+    fanartReq: { uri: '', headers: {} }
   },
   setDimensions: (dimensions: {
     offsetX: number
@@ -17,8 +17,8 @@ export const ExpansionContext = createContext({
     elmHeight: number
     elmWidth: number
     selected: boolean
-    seriesId: number
-    posterUri: string
-    fanartUri: string
+    id: number
+    posterReq: { uri: string; headers: { [key: string]: string } }
+    fanartReq: { uri: string; headers: { [key: string]: string } }
   }) => {}
 })

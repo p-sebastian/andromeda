@@ -19,17 +19,27 @@ export const API_AJAX_SUCCESS = '@api/ajax_success'
 export const API_AJAX_FAIL = '@api/ajax_fail'
 export const API_AJAX_RESPONSE_ERROR = '@api/ajax_response_error'
 
+/* ******* GET REQUESTS ********* */
+/* SONARR */
 export const API_SONARR_GET_SERIES = '@api/sonarr_get_series'
 export const API_SONARR_GET_CALENDAR = '@api/sonarr_get_calendar'
 export const API_SONARR_GET_EPISODES = '@api/sonarr_get_episodes'
 export const API_SONARR_GET_HISTORY = '@api/sonarr_get_history'
 
+/* RADARR */
+export const API_RADARR_GET_MOVIES = '@api/radarr_get_movies'
+
+/* ******* SUCCESS CALLBACKS ********* */
+/* SONARR */
 export const API_SONARR_GET_SERIES_SUCCESS = '@api/sonarr_get_series_success'
 export const API_SONARR_GET_CALENDAR_SUCCESS =
   '@api/sonarr_get_calendar_success'
 export const API_SONARR_GET_EPISODES_SUCCESS =
   '@api/sonarr_get_episodes_success'
 export const API_SONARR_GET_HISTORY_SUCCESS = '@api/sonarr_get_history_success'
+
+/* RADARR */
+export const API_RADARR_GET_MOVIES_SUCCESS = '@api/radarr_get_movies_success'
 
 export const CLEAR_EPISODES = '@clear/episodes'
 export const SPINNER_TOGGLE = '@spinner/toggle'

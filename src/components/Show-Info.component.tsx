@@ -37,25 +37,18 @@ const B_GROUP_HEIGHT = POSTER_HEIGHT * 0.5
 const G = GRADIENTS[GradientEnum.SEASONS]
 
 type Props = {
-  seriesId: number
-  posterUri: string
-  fanartUri: string
+  id: number
+  posterReq: { uri: string; headers: { [key: string]: string } }
+  fanartReq: { uri: string; headers: { [key: string]: string } }
   animEnd: boolean
 }
-const ShowInfo: React.FC<Props> = ({
-  seriesId,
-  posterUri,
-  fanartUri,
-  animEnd
-}) => {
+const ShowInfo: React.FC<Props> = ({ id, fanartReq, posterReq, animEnd }) => {
   const dispatch = useADispatch()
-  const episodes = useEpisodes(seriesId)
+  const episodes = useEpisodes(id)
   const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
   const [onViewIndex, setOnViewIndex] = useState(0)
   const noSpecial = useRef(0)
-  const show = useShallowSelector(
-    state => state.sonarr.entities.series[seriesId]
-  )
+  const show = useShallowSelector(state => state.sonarr.entities.series[id])
   const keys = Object.keys(episodes).map(Number)
   const data = keys.slice().reverse()
   const selected = (episodes[onViewIndex + noSpecial.current] || [])
@@ -96,14 +89,17 @@ const ShowInfo: React.FC<Props> = ({
   return (
     <ABackground>
       <FanartView>
-        <Img uri={fanartUri} />
+        <Img uri={fanartReq.uri} options={{ headers: fanartReq.headers }} />
       </FanartView>
       <TopContent>
         <Title>{show.title}</Title>
       </TopContent>
       <BottomContent>
         <PosterView>
-          <Fanart uri={posterUri} />
+          <Fanart
+            uri={posterReq.uri}
+            options={{ headers: fanartReq.headers }}
+          />
         </PosterView>
         <ButtonGroup>
           <ForGradient>

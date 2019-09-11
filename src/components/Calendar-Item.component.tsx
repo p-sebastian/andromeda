@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import AText from '@common/Text.component'
-import SonarrListItem from '@common/Sonarr-List-Item.component'
+import PosterItem from '@common/Poster-Item.component'
 import { CalendarValue } from '@interfaces/calendar.interface'
 import { GRADIENTS } from '@utils/constants.util'
-import { GradientEnum, ThemeEnum } from '@utils/enums.util'
+import { GradientEnum, ThemeEnum, ServerEnum } from '@utils/enums.util'
 import { useShallowSelector } from '@utils/recipes.util'
 import { THEME } from '@utils/theme.util'
 import { isUndefined } from 'lodash'
@@ -32,11 +32,12 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
     : GRADIENTS[GradientEnum.PURPLE]
   const color = hasFile ? THEME[ThemeEnum.MAIN].primary : 'white'
   return (
-    <SonarrListItem
+    <PosterItem
       gradient={gradient}
       gradientTextColor={color}
       title={series.title}
-      seriesId={seriesId}
+      id={seriesId}
+      serverKey={ServerEnum.SONARR}
       flexDirection="column"
       justifyContent="flex-start"
     >
@@ -49,7 +50,7 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
           {moment(airDate).format('h:mm a')} on {series.network}
         </Text>
       </Container>
-    </SonarrListItem>
+    </PosterItem>
   )
 }
 

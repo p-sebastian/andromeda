@@ -13,9 +13,9 @@ export const withExpansion = <P extends {}>(Component: ComponentType<P>) => {
       elmHeight: 0,
       elmWidth: 0,
       selected: false,
-      seriesId: 0,
-      posterUri: '',
-      fanartUri: ''
+      id: 0,
+      posterReq: { uri: '', headers: {} },
+      fanartReq: { uri: '', headers: {} }
     })
     const { selected, ..._props } = dimensions
     return (

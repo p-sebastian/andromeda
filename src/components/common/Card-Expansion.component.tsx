@@ -12,9 +12,9 @@ type Props = {
   offsetY: number
   elmHeight: number
   elmWidth: number
-  seriesId: number
-  posterUri: string
-  fanartUri: string
+  id: number
+  posterReq: { uri: string; headers: { [key: string]: string } }
+  fanartReq: { uri: string; headers: { [key: string]: string } }
 }
 const CardExpansion: React.FC<Props> = ({
   offsetX,

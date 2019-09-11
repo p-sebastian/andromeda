@@ -120,14 +120,19 @@ const formUrl: FormUrl = (
         `http${ssl ? 's' : ''}://${url}:${port}/api`,
         { 'X-Api-Key': apiKey }
       ]
+    case ServerEnum.RADARR:
+      return [
+        `http${ssl ? 's' : ''}://${url}:${port}/api`,
+        { 'X-Api-Key': apiKey }
+      ]
     default:
       return ['', { '0': '0' }]
   }
 }
 
 export const uriForImage = (server: TServerState, imagePath: string) => {
-  const [baseUrl] = formUrl(server)
-  return `${baseUrl}${imagePath}&${queryString({ apikey: server.apiKey })}`
+  const [baseUrl, headers] = formUrl(server)
+  return { uri: `${baseUrl}${imagePath}`, headers }
 }
 
 const queryString = (body: any = {}) =>
