@@ -1,7 +1,7 @@
 import { createAction } from 'typesafe-actions'
 import { THEME_CHANGE, THEME_TITLE } from './types'
 import { ThemeEnum } from '@utils/enums.util'
-import { ScreenNames } from 'app.routes'
+import { ScreenNames } from '@src/app.routes'
 
 /**
  * Changes theme of app, based on server name

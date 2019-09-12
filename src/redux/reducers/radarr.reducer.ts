@@ -2,10 +2,11 @@ import { createReducer } from 'typesafe-actions'
 import { TActions } from '@utils/types.util'
 import { API_RADARR_GET_MOVIES_SUCCESS } from '@actions/types'
 import { TImage } from '@interfaces/common.interface'
+import { TMovie } from '@interfaces/movie.interface'
 
 type State = {
   entities: {
-    movies: any
+    movies: TMovie
     images: TImage
   }
   result: {

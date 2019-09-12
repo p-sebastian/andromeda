@@ -1,4 +1,4 @@
-import { ScreenNames } from 'app.routes'
+import { ScreenNames } from '@src/app.routes'
 import { AVAILABLE_SERVERS } from './constants.util'
 import { ServerEnum } from './enums.util'
 

@@ -60,7 +60,8 @@ export const GRADIENTS: TGradientConstants = Object.freeze({
     end: [1.3, 0.5] as [number, number]
   },
   [GradientEnum.GREEN]: {
-    colors: ['#34e89e', '#218b6f', '#144f50', '#0f3443'],
+    colors: ['#11998e', '#38ef7d'],
+    // colors: ['#34e89e', '#218b6f', '#144f50', '#0f3443'],
     start: [0.2, 0] as [number, number],
     end: [0.9, 1] as [number, number]
   },
@@ -86,6 +87,11 @@ export const GRADIENTS: TGradientConstants = Object.freeze({
   },
   [GradientEnum.SEASONS]: {
     colors: ['#ffffff', '#ece9e6'],
+    start: [0, 0.5] as [number, number],
+    end: [1, 0.5] as [number, number]
+  },
+  [GradientEnum.GRAY]: {
+    colors: ['#283048', '#859398'],
     start: [0, 0.5] as [number, number],
     end: [1, 0.5] as [number, number]
   }

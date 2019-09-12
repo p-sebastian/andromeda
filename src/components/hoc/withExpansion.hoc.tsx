@@ -3,6 +3,7 @@ import styled from 'styled-components/native'
 import { ExpansionContext } from '../../context/Expansion.context'
 import { Overwrite } from '@utils/types.util'
 import CardExpansion from '@common/Card-Expansion.component'
+import { ServerEnum } from '@src/utils/enums.util'
 
 type Props = {}
 export const withExpansion = <P extends {}>(Component: ComponentType<P>) => {
@@ -15,7 +16,8 @@ export const withExpansion = <P extends {}>(Component: ComponentType<P>) => {
       selected: false,
       id: 0,
       posterReq: { uri: '', headers: {} },
-      fanartReq: { uri: '', headers: {} }
+      fanartReq: { uri: '', headers: {} },
+      serverKey: ServerEnum.SONARR
     })
     const { selected, ..._props } = dimensions
     return (

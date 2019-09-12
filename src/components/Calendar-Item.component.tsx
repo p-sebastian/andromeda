@@ -28,7 +28,7 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
     return <Container />
   }
   const gradient = hasFile
-    ? GRADIENTS[GradientEnum.ORANGE]
+    ? GRADIENTS[GradientEnum.GREEN]
     : GRADIENTS[GradientEnum.PURPLE]
   const color = hasFile ? THEME[ThemeEnum.MAIN].primary : 'white'
   return (

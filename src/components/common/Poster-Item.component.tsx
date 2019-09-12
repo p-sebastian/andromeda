@@ -9,12 +9,10 @@ import {
   selectImage,
   ServersWithImages
 } from '@utils/selectors.util'
-import { ServerEnum } from '@utils/enums.util'
 import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
 import { View } from 'react-native'
 import { ExpansionContext } from '../../context/Expansion.context'
-import { logger } from '@utils/logger.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
@@ -58,7 +56,8 @@ const PosterItem: React.FC<Props> = ({
         selected: true,
         id,
         posterReq,
-        fanartReq
+        fanartReq,
+        serverKey
       })
     )
   }, [container])

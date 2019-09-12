@@ -12,18 +12,13 @@ import PosterItem from '@common/Poster-Item.component'
 type Props = { series: ISeriesValue }
 const SeriesItem: React.FC<Props> = ({ series }) => {
   const { id, title, status, seasonCount } = series
-  const continuing = status === 'continuing'
-  const gradient =
-    GRADIENTS[continuing ? GradientEnum.ORANGE : GradientEnum.RED]
-  const gradientTextColor = continuing
-    ? THEME[ThemeEnum.MAIN].lighterDark
-    : 'white'
+  const { gradient, text } = color(series)
   const info = sideText(series)
 
   return (
     <PosterItem
       gradient={gradient}
-      gradientTextColor={gradientTextColor}
+      gradientTextColor={text}
       title={title}
       id={id}
       serverKey={ServerEnum.SONARR}
@@ -34,6 +29,27 @@ const SeriesItem: React.FC<Props> = ({ series }) => {
       <Description>{info}</Description>
     </PosterItem>
   )
+}
+
+const color = ({
+  status,
+  monitored,
+  episodeFileCount,
+  episodeCount
+}: ISeriesValue) => {
+  if (status === 'ended' && episodeFileCount === episodeCount) {
+    // ended and has all monitored episodes
+    return { gradient: GRADIENTS[GradientEnum.GREEN], text: 'white' }
+  }
+  if (status === 'ended' && monitored && episodeFileCount !== episodeCount) {
+    // ended & monitored & doesnt have all monitored episodes
+    return { gradient: GRADIENTS[GradientEnum.RED], text: 'white' }
+  }
+  if (!monitored && (status === 'continuing' || status === 'ended')) {
+    // continuing || ended but not monitored
+    return { gradient: GRADIENTS[GradientEnum.GRAY], text: 'white' }
+  }
+  return { gradient: GRADIENTS[GradientEnum.PURPLE], text: 'white' }
 }
 
 const sideText = ({ network, nextAiring }: ISeriesValue) => {

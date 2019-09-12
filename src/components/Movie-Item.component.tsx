@@ -1,35 +1,69 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { logger } from '@utils/logger.util'
-import { GradientEnum, ThemeEnum, ServerEnum } from '@utils/enums.util'
-import { BORDER_RADIUS } from '@utils/position.util'
-import { GRADIENTS } from '@utils/constants.util'
+import { GradientEnum, ServerEnum, ColorEnum } from '@utils/enums.util'
+import { GRADIENTS, COLORS } from '@utils/constants.util'
 import PosterItem from '@common/Poster-Item.component'
+import { IMovie } from '@src/interfaces/movie.interface'
+import moment from 'moment'
 
-type Props = { movie: any }
+type Props = { movie: IMovie }
 const MovieItem: React.FC<Props> = ({ movie }) => {
   const { id, title } = movie
-  const gradient = GRADIENTS[GradientEnum.BLUE]
+  const { gradient, text } = color(movie)
 
   return (
     <PosterItem
       id={id}
       title={title}
       gradient={gradient}
-      gradientTextColor="white"
+      gradientTextColor={text}
       serverKey={ServerEnum.RADARR}
     >
       <Container>
-        <Title>asdasd</Title>
+        <Title>{release(movie)}</Title>
       </Container>
     </PosterItem>
   )
 }
 
+const release = ({ physicalRelease }: IMovie) => {
+  const date = moment(physicalRelease).format('MMM Do, YYYY')
+  return `Release: ${date}`
+}
+
+const color = ({ hasFile, monitored, isAvailable }: IMovie) => {
+  if (hasFile && monitored) {
+    // downloaded & monitored
+    return {
+      gradient: GRADIENTS[GradientEnum.GREEN],
+      text: 'white'
+    }
+  }
+  if (hasFile && !monitored) {
+    // downloaded not monitored
+    return { gradient: GRADIENTS[GradientEnum.GRAY], text: 'white' }
+  }
+  if (!hasFile && !monitored) {
+    // missing not monitored
+    return {
+      gradient: GRADIENTS[GradientEnum.ORANGE],
+      text: COLORS[ColorEnum.MAIN]
+    }
+  }
+  if (!hasFile && monitored && isAvailable) {
+    // missing & monitored & available
+    return { gradient: GRADIENTS[GradientEnum.RED], text: 'white' }
+  }
+  // missing - monitored - not available
+  return { gradient: GRADIENTS[GradientEnum.PURPLE], text: 'white' }
+}
+
 const Container = styled.View`
-  height: 60;
-  width: 100%;
+  flex: 1;
 `
-const Title = styled.Text``
+const Title = styled.Text`
+  color: white;
+  font-family: dank-mono-italic;
+`
 
 export default React.memo(MovieItem)

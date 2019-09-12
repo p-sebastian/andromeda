@@ -18,7 +18,7 @@ import {
   ApiSuccessActionsType
 } from '../redux/actions'
 import { BASE } from './theme.util'
-import { ScreenNames } from 'app.routes'
+import { ScreenNames } from '@src/app.routes'
 import { ThemeEnum, ServerEnum, GradientEnum } from './enums.util'
 
 /**

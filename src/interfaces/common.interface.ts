@@ -46,7 +46,8 @@ interface AlternateTitle {
   sceneSeasonNumber: number
 }
 enum Status {
-  Continuing = 'continuing'
+  Continuing = 'continuing',
+  Ended = 'ended'
 }
 export interface ISeriesValue {
   title: string

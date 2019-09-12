@@ -27,7 +27,8 @@ export enum GradientEnum {
   PURPLE,
   RED,
   BUTTONS,
-  SEASONS
+  SEASONS,
+  GRAY
 }
 
 export enum ServerEnum {
