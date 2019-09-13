@@ -24,9 +24,9 @@ const navigateEpic: TEpic = action$ =>
       const which = Object.values(AVAILABLE_SERVERS).find(
         v => v.title === screenName
       )
-      const actions = [of(do_theme_title(screenName))] as Observable<
-        ThemeActionsType
-      >[]
+      const actions = [
+        of(do_theme_title(params.title || screenName))
+      ] as Observable<ThemeActionsType>[]
       const theme = params.theme
       if (theme || which) {
         actions.push(of(do_theme_change(theme || which!.themeKey)))

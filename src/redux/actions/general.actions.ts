@@ -6,7 +6,8 @@ import {
   ACTION_SHEET_OPEN,
   ACTION_SHEET_ON_SEASON,
   ACTION_SHEET_ON_EPISODE,
-  SIDEBAR_TOGGLE
+  SIDEBAR_TOGGLE,
+  CLEAR_SEARCH_SERIES
 } from './types'
 import { capitalize } from 'lodash'
 
@@ -21,6 +22,8 @@ export const do_spinner_toggle = createAction(
 )
 
 export const do_clear_episodes = createAction(CLEAR_EPISODES)
+
+export const do_clear_search_series = createAction(CLEAR_SEARCH_SERIES)
 
 export const do_action_sheet_open = createAction(
   ACTION_SHEET_OPEN,
@@ -39,3 +42,4 @@ export const do_sidebar_toggle = createAction(
   SIDEBAR_TOGGLE,
   action => (toggle: boolean) => action(toggle)
 )
+

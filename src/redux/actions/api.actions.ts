@@ -4,7 +4,8 @@ import {
   API_SONARR_GET_CALENDAR,
   API_SONARR_GET_EPISODES,
   API_SONARR_GET_HISTORY,
-  API_RADARR_GET_MOVIES
+  API_RADARR_GET_MOVIES,
+  API_SONARR_GET_SEARCH
 } from './types'
 import { ServerEnum } from '@utils/enums.util'
 import moment from 'moment'
@@ -50,6 +51,16 @@ export const do_api_sonarr_get_history = createAction(
   API_SONARR_GET_HISTORY,
   action => (page = 1, pageSize = 100) =>
     action(..._config('/history', ServerEnum.SONARR, { page, pageSize }))
+)
+export const do_api_sonarr_get_search = createAction(
+  API_SONARR_GET_SEARCH,
+  action => (term: string) =>
+    // spaces must be replaced with % for lookup
+    action(
+      ..._config('/series/lookup', ServerEnum.SONARR, {
+        term: term.trim().replace(/\s/g, '%')
+      })
+    )
 )
 
 /* RADARR */

@@ -53,7 +53,7 @@ const SABNZBD = Object.freeze({
 })
 const TORRENT = Object.freeze({
   ...BASE,
-  fontColor: COLORS[ThemeEnum.MAIN],
+  fontColor: 'white',
   primary: COLORS[ThemeEnum.TORRENT],
   primaryDark: 'hsla(42, 100%, 42%, 1)',
   title: 'transmission'

@@ -49,7 +49,7 @@ enum Status {
   Continuing = 'continuing',
   Ended = 'ended'
 }
-export interface ISeriesValue {
+export interface IRawSeries<I> {
   title: string
   alternateTitles?: AlternateTitle[]
   sortTitle: string
@@ -64,7 +64,7 @@ export interface ISeriesValue {
   previousAiring?: Date
   network: string
   airTime?: string
-  images: TImage[]
+  images: I[]
   seasons: ISeason[]
   year: number
   path: string
@@ -89,6 +89,8 @@ export interface ISeriesValue {
   qualityProfileId: number
   id: number
 }
+export interface ISeriesValue extends IRawSeries<TImage> {}
+
 export interface IQuality {
   quality: {
     id: number

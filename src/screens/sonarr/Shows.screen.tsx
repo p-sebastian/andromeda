@@ -6,10 +6,14 @@ import { do_api_sonarr_get_series } from '@actions/api.actions'
 import { useApi } from '@hooks/useApi'
 import { ISeriesValue, IEntity } from '@interfaces/common.interface'
 import SeriesItem from '@components/Series-Item.component'
-import { useShallowSelector } from '@utils/recipes.util'
+import { useShallowSelector, useADispatchC } from '@utils/recipes.util'
 import SearchBar from '@common/Search-Bar.component'
+import AFAB from '@common/FAB.component'
+import { Ionicons } from '@expo/vector-icons'
+import { do_navigate } from '@src/redux/actions/navigation.actions'
 
 const SonarrHomeScreen: ScreenFComponent = () => {
+  const toAddSeries = useADispatchC(do_navigate('addseries', { title: 'add' }))
   const series = useShallowSelector(state => state.sonarr.entities.series)
   const [value, setValue] = useState('')
   const [result, refreshing, doRefresh] = useApi(
@@ -30,6 +34,9 @@ const SonarrHomeScreen: ScreenFComponent = () => {
         renderItem={renderItem(series)}
         ListHeaderComponent={renderHeader(setValue)}
       />
+      <AFAB onPress={toAddSeries}>
+        <Ionicons name="md-add" color="white" size={32} />
+      </AFAB>
     </ABackground>
   )
 }

@@ -12,7 +12,9 @@ import {
   SettingsScreen,
   ServerConfigScreen,
   HistoryScreen,
-  MoviesScreen
+  MoviesScreen,
+  TorrentAllScreen,
+  AddSeriesScreen
 } from '@screens/index'
 import { AMaterialTopTabBar } from './components'
 import { useASelector, useADispatch } from '@utils/recipes.util'
@@ -52,9 +54,9 @@ const SabnzbdTabs = createMaterialTopTabNavigator(
   },
   tabConfig
 )
-const TransmissionTabs = createMaterialTopTabNavigator(
+const TorrentTabs = createMaterialTopTabNavigator(
   {
-    Home: HomeScreen
+    All: TorrentAllScreen
   },
   tabConfig
 )
@@ -68,7 +70,7 @@ const AppSwitch = createSwitchNavigator({
   Radarr: RadarrTabs,
   Lidarr: LidarrTabs,
   Sabnzbd: SabnzbdTabs,
-  Transmission: TransmissionTabs
+  Torrent: TorrentTabs
 })
 
 const ModalStack = createStackNavigator(
@@ -90,7 +92,8 @@ const ModalStack = createStackNavigator(
  */
 const withHeaderStack = createStackNavigator(
   {
-    Tabs: AppSwitch
+    Tabs: AppSwitch,
+    Addseries: AddSeriesScreen
   },
   {
     mode: 'modal',
@@ -136,5 +139,8 @@ export type ScreenNames =
   | 'config'
   | 'history'
   | 'movies'
+  | 'addseries'
+  | 'add'
+  | 'all'
 
 export default AppNavigator

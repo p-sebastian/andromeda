@@ -4,24 +4,46 @@ import { Ionicons } from '@expo/vector-icons'
 import { BORDER_RADIUS } from '@utils/position.util'
 import { COLORS } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
+import { extractCondition } from '@src/utils/recipes.util'
 
 type Props = {
-  accessibilityLabel: string
+  readonly accessibilityLabel: string
   readonly onChange: (value: string) => void
+  onPress?: () => void
+  touchable?: boolean
+  placeholder?: string
 }
-const SearchBar: React.FC<Props> = ({ accessibilityLabel, onChange }) => {
+const SearchBar: React.FC<Props> = ({
+  accessibilityLabel,
+  onChange,
+  touchable = false,
+  onPress = () => {},
+  placeholder = 'Search'
+}) => {
   return (
     <Padding>
       <Container>
-        <IconContainer>
-          <Ionicons name="ios-search" color="white" size={28} />
-        </IconContainer>
+        {!touchable ? (
+          <IconContainer>
+            <Ionicons name="ios-search" color="white" size={28} />
+          </IconContainer>
+        ) : null}
         <Input
           accessibilityLabel={accessibilityLabel}
-          placeholder="Search"
-          placeholderTextColor="white"
+          placeholder={placeholder}
+          placeholderTextColor="#b0bec5"
           onChangeText={onChange}
+          touchable={touchable}
+          clearButtonMode="always"
+          clearTextOnFocus
+          enablesReturnKeyAutomatically
+          onSubmitEditing={onPress}
         />
+        {touchable ? (
+          <TouchableContainer onPress={onPress}>
+            <Text>SEARCH</Text>
+          </TouchableContainer>
+        ) : null}
       </Container>
     </Padding>
   )
@@ -43,11 +65,25 @@ const IconContainer = styled.View`
   justify-content: center;
   align-items: center;
 `
-
+const TouchableContainer = styled.TouchableOpacity`
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`
+const Text = styled.Text`
+  font-family: roboto;
+  color: white;
+  padding-right: 10;
+`
 const Input = styled.TextInput`
   flex: 1;
   color: white;
   font-size: 14;
+  padding-left: ${extractCondition<{ touchable: boolean }, any, any>(
+    'touchable',
+    10,
+    0
+  )};
 `
 
 export default SearchBar

@@ -5,12 +5,7 @@ import {
   PanResponderInstance
 } from 'react-native'
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import {
-  useASelector,
-  useADispatch,
-  useShallowSelector
-} from '@utils/recipes.util'
-import { do_sidebar_toggle } from '@actions/general.actions'
+import { useASelector, useShallowSelector } from '@utils/recipes.util'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 // Sidebar size
@@ -22,7 +17,6 @@ type usePanResponderFn = (
   position: Animated.Value
 ) => [PanResponderInstance, string]
 export const usePanResponder: usePanResponderFn = position => {
-  const dispatch = useADispatch()
   const { watch, toggle } = useShallowSelector(
     state => state.temp.sidebarToggle
   )

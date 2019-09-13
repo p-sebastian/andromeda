@@ -4,15 +4,20 @@ import { IEpisode } from '@interfaces/episode.interface'
 import {
   API_SONARR_GET_EPISODES_SUCCESS,
   CLEAR_EPISODES,
-  SIDEBAR_TOGGLE
+  SIDEBAR_TOGGLE,
+  API_SONARR_GET_SEARCH_SUCCESS,
+  CLEAR_SEARCH_SERIES
 } from '@actions/types'
+import { IRawSeries } from '@src/interfaces/common.interface'
 
 type State = {
   episodes: { [key: string]: IEpisode[] }
+  search: IRawSeries<{ coverType: string; url: string }>[]
   sidebarToggle: { watch: number; toggle: boolean }
 }
 const DEFAULT_STATE: State = {
   episodes: {},
+  search: [],
   sidebarToggle: {
     watch: 0,
     toggle: false
@@ -24,6 +29,7 @@ export const tempReducer = createReducer<typeof DEFAULT_STATE, TActions>(
 )
   // reset when calling episodes again
   .handleAction(CLEAR_EPISODES, state => ({ ...state, episodes: {} }))
+  .handleAction(CLEAR_SEARCH_SERIES, state => ({ ...state, search: [] }))
   .handleAction(API_SONARR_GET_EPISODES_SUCCESS, (state, action) => ({
     ...state,
     episodes: { ...action.payload }
@@ -34,4 +40,8 @@ export const tempReducer = createReducer<typeof DEFAULT_STATE, TActions>(
       watch: state.sidebarToggle.watch + 1,
       toggle: action.payload
     }
+  }))
+  .handleAction(API_SONARR_GET_SEARCH_SUCCESS, (state, action) => ({
+    ...state,
+    search: [...action.payload]
   }))

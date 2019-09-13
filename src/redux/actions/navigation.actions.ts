@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { ThemeEnum } from '@utils/enums.util'
 import { NAVIGATE_BACK_COMPLETE } from './types'
 
-type Params = { theme?: ThemeEnum } & any
+type Params = { theme?: ThemeEnum; title?: string } & any
 // This definition is for type safety
 const navigate = createAction(
   NavigationActions.NAVIGATE,

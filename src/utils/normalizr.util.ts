@@ -7,7 +7,6 @@ import {
   API_RADARR_GET_MOVIES
 } from '@actions/types'
 import { omit, groupBy } from 'lodash'
-import { logger } from './logger.util'
 
 // constant => AjaxResponse => normalizedRes
 type Nrmlzr = (CONSTANT: string, json: any) => any

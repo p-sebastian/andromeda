@@ -6,7 +6,7 @@ export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
     key: ServerEnum.SONARR,
     title: 'sonarr',
     themeKey: ThemeEnum.SONARR,
-    tabs: ['upcoming', 'shows', 'history']
+    tabs: ['upcoming', 'shows', 'history', 'add']
   },
   [ServerEnum.RADARR]: {
     key: ServerEnum.RADARR,
@@ -30,7 +30,7 @@ export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
     key: ServerEnum.TORRENT,
     title: 'torrent',
     themeKey: ThemeEnum.TORRENT,
-    tabs: []
+    tabs: ['all']
   }
 })
 export const COLORS = Object.freeze({
