@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { FlatList } from 'react-native'
 import { ScreenFComponent } from '@utils/types.util'
 import ABackground from '@common/Background.component'
@@ -11,6 +11,7 @@ import SearchBar from '@common/Search-Bar.component'
 import AFAB from '@common/FAB.component'
 import { Ionicons } from '@expo/vector-icons'
 import { do_navigate } from '@src/redux/actions/navigation.actions'
+import { fuzzySearch } from '@src/utils/helpers.util'
 
 const SonarrHomeScreen: ScreenFComponent = () => {
   const toAddSeries = useADispatchC(do_navigate('addseries', { title: 'add' }))
@@ -21,7 +22,8 @@ const SonarrHomeScreen: ScreenFComponent = () => {
     state => state.sonarr.result.series
   )
 
-  const data = result.filter(key => series[key].title.indexOf(value) > -1)
+  const fuse = useMemo(() => fuzzySearch(series), [JSON.stringify(result)])
+  const data = value === '' ? result : (fuse.search(value) as number[])
 
   return (
     <ABackground>

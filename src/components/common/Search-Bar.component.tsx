@@ -86,4 +86,4 @@ const Input = styled.TextInput`
   )};
 `
 
-export default SearchBar
+export default React.memo(SearchBar)
