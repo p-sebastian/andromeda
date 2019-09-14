@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Animated, View } from 'react-native'
 import styled from 'styled-components/native'
-import { extractStyleTheme } from '@utils/recipes.util'
+import { extractStyleTheme, useASelector } from '@utils/recipes.util'
 import { StyledThemeP } from '@utils/types.util'
 import { usePanResponder } from '@hooks/usePanResponder'
 import {
@@ -39,6 +39,7 @@ ADrawer.position = new Animated.Value(OFFSET)
 type ContentProps = { Content?: React.FC; position: Animated.Value }
 const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
   const [theme] = useTheme()
+  const loading = useASelector(state => state.spinner.loading)
   const [panResponder, title] = usePanResponder(position)
   // const [panResponder] = useState (createPanResponder (position));
   /**
@@ -58,9 +59,12 @@ const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
 
   return (
     <SDrawerView as={Animated.View} {...panResponder.panHandlers} theme={theme}>
-      <STitleContainer as={Animated.View} style={animate as any}>
-        <STitle theme={theme}>{title}</STitle>
-      </STitleContainer>
+      <SAnimatingTitleContainer as={Animated.View} style={animate as any}>
+        <SRotate>
+          <STitle theme={theme}>{title}</STitle>
+          <ActivityIndicator animating={loading} color={theme.primary} />
+        </SRotate>
+      </SAnimatingTitleContainer>
       <SContentContainer>{Content ? <Content /> : null}</SContentContainer>
     </SDrawerView>
   )
@@ -115,25 +119,32 @@ const SMainView = styled.View<StyledThemeP>`
   height: ${SCREEN_HEIGHT};
   background-color: ${extractStyleTheme('primary')};
 `
-const STitleContainer = styled.View`
+const SAnimatingTitleContainer = styled.View`
   position: absolute;
   z-index: 20;
   height: ${SCREEN_HEIGHT * 0.3};
-  width: 26px;
-  left: ${DRAWER_WIDTH - OFFSET - 26};
+  width: ${OFFSET};
+  left: ${DRAWER_WIDTH - OFFSET * 1.75};
   top: 0;
   justify-content: center;
   align-items: center;
 `
+const SRotate = styled.View`
+  position: relative;
+  flex-direction: row-reverse;
+  transform: rotate(270deg);
+`
+const ActivityIndicator = styled.ActivityIndicator`
+  align-self: center;
+`
 const STitle = styled.Text`
   color: white;
-  transform: rotate(270deg);
   text-transform: capitalize;
   /* this width sets the length available for the text
    * the one limiting it is the container which must have a fixed
    * width 
    */
-  width: 200;
+  width: ${SCREEN_HEIGHT * 0.35};
   text-align: center;
   font-family: ${extractStyleTheme('fontItalic')};
   font-size: 24px;
