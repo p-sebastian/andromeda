@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { Entypo } from '@expo/vector-icons'
 import { BETWEEN_WIDTH, OFFSET } from '@utils/dimensions.util'
 import { do_navigate } from '@actions/navigation.actions'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { useTheme } from '@hooks/useTheme'
 import { withinScreen } from '@utils/helpers.util'
 import { do_sidebar_toggle } from '@actions/general.actions'
@@ -62,7 +62,7 @@ const SText = styled.Text<StyledThemeP>`
   flex: 1;
   color: white;
   text-transform: capitalize;
-  font-family: ${extractStyleTheme('fontRegular')};
+  font-family: ${FONT.regular};
   font-size: 20px;
   text-align: center;
 `

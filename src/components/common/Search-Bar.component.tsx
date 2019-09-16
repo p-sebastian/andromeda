@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 import { Ionicons } from '@expo/vector-icons'
-import { BORDER_RADIUS } from '@utils/position.util'
-import { COLORS } from '@utils/constants.util'
+import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
 import { extractCondition } from '@src/utils/recipes.util'
+import { Keyboard } from 'react-native'
 
 type Props = {
   readonly accessibilityLabel: string
@@ -20,6 +21,10 @@ const SearchBar: React.FC<Props> = ({
   onPress = () => {},
   placeholder = 'Search'
 }) => {
+  const _onPress = useCallback(() => {
+    Keyboard.dismiss()
+    onPress()
+  }, [onPress])
   return (
     <Padding>
       <Container>
@@ -37,10 +42,10 @@ const SearchBar: React.FC<Props> = ({
           clearButtonMode="always"
           clearTextOnFocus
           enablesReturnKeyAutomatically
-          onSubmitEditing={onPress}
+          onSubmitEditing={_onPress}
         />
         {touchable ? (
-          <TouchableContainer onPress={onPress}>
+          <TouchableContainer onPress={_onPress}>
             <Text>SEARCH</Text>
           </TouchableContainer>
         ) : null}
@@ -58,6 +63,7 @@ const Container = styled.View`
   flex-direction: row;
   border-radius: ${BORDER_RADIUS};
   background: ${COLORS[ColorEnum.GRAY]};
+  box-shadow: ${BOX_SHADOW};
 `
 const IconContainer = styled.View`
   height: 100%;
@@ -71,7 +77,7 @@ const TouchableContainer = styled.TouchableOpacity`
   align-items: center;
 `
 const Text = styled.Text`
-  font-family: roboto;
+  font-family: ${FONT.regular};
   color: white;
   padding-right: 10;
 `

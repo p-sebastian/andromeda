@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components/native'
 import { IHistory, HistoryEventTypeEnum } from '@interfaces/history.interface'
 import AText from '@common/Text.component'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
 import { BORDER_RADIUS } from '@utils/position.util'
 import { extractProp } from '@utils/recipes.util'
@@ -108,7 +108,7 @@ const Center = styled.View`
 const Text = styled(AText)`
   color: ${extractProp<{ color: string }>('color')};
   font-size: 10;
-  font-family: roboto;
+  font-family: ${FONT.regular};
 `
 const Title = styled(Text)`
   font-size: 12;
@@ -120,7 +120,7 @@ const Empty = styled.View`
   flex: 1;
 `
 const Rotated = styled(Text)`
-  font-family: oswald-semibold;
+  font-family: ${FONT.bold};
   font-size: 10;
   transform: rotate(-45deg);
 `

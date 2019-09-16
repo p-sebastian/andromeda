@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { FlatList, SectionList, SectionListData } from 'react-native'
+import { SectionList, SectionListData } from 'react-native'
 import { ScreenFComponent } from '@utils/types.util'
 import styled from 'styled-components/native'
 import AText from '@common/Text.component'
@@ -11,9 +11,8 @@ import CalendarItem from '@components/Calendar-Item.component'
 import { IEntity } from '@interfaces/common.interface'
 import { CalendarValue } from '@interfaces/calendar.interface'
 import moment from 'moment'
-import { logger } from '@utils/logger.util'
 import { BOX_SHADOW, BORDER_RADIUS } from '@utils/position.util'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
 import { ExpansionContext } from '../../context/Expansion.context'
 
@@ -90,7 +89,7 @@ const Header = styled.View`
 `
 const Title = styled(AText)`
   color: white;
-  font-family: oswald-semibold;
+  font-family: ${FONT.bold};
   padding-left: 10;
 `
 

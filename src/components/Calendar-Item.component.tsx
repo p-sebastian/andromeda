@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import AText from '@common/Text.component'
 import PosterItem from '@common/Poster-Item.component'
 import { CalendarValue } from '@interfaces/calendar.interface'
-import { GRADIENTS } from '@utils/constants.util'
+import { GRADIENTS, FONT } from '@utils/constants.util'
 import { GradientEnum, ThemeEnum, ServerEnum } from '@utils/enums.util'
 import { useShallowSelector } from '@utils/recipes.util'
 import { THEME } from '@utils/theme.util'
@@ -66,7 +66,7 @@ const Title = styled(AText)`
   color: white;
 `
 const Text = styled(Title)`
-  font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
+  font-family: ${FONT.italic};
   align-self: flex-end;
   font-size: 12;
 `

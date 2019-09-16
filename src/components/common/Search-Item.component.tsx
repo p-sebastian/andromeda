@@ -6,7 +6,7 @@ import { extractProp } from '@src/utils/recipes.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { SCREEN_WIDTH } from '@src/utils/dimensions.util'
 import { GradientEnum } from '@src/utils/enums.util'
-import { GRADIENTS } from '@src/utils/constants.util'
+import { GRADIENTS, FONT } from '@src/utils/constants.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
@@ -62,7 +62,7 @@ const Gradient = styled(LinearGradient)`
 const GradientText = styled.Text`
   color: ${extractProp<{ gradientTextColor: string }>('gradientTextColor')};
   text-align: center;
-  font-family: oswald-semibold;
+  font-family: ${FONT.bold};
   font-size: 14;
 `
 const PosterContainer = styled.View`

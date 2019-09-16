@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components/native'
 import { IEpisode, IEpisodeFile } from '@interfaces/episode.interface'
 import { MARGIN } from '@utils/position.util'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
 import { logger } from '@utils/logger.util'
 import { byteToGB } from '@utils/helpers.util'
@@ -98,7 +98,7 @@ const Center = styled.View`
 const Centered = styled(AText)`
   width: 10%;
   text-align: center;
-  font-family: oswald-semibold;
+  font-family: ${FONT.bold};
 `
 const Text = styled(AText)``
 const ColoredText = styled(Text)`

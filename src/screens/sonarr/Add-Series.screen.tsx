@@ -8,6 +8,10 @@ import { useADispatch, useASelector } from '@src/utils/recipes.util'
 import { do_api_sonarr_get_search } from '@src/redux/actions/api.actions'
 import { IRawSeries } from '@src/interfaces/common.interface'
 import { do_clear_search_series } from '@src/redux/actions/general.actions'
+import AInfo from '@common/Info-Text.component'
+import ACard from '@common/Card.component'
+import { ColorEnum } from '@src/utils/enums.util'
+import { COLORS } from '@src/utils/constants.util'
 
 type ISearchSeries = IRawSeries<{ coverType: string; url: string }>
 const AddSeriesScreen: ScreenFComponent = () => {
@@ -30,6 +34,11 @@ const AddSeriesScreen: ScreenFComponent = () => {
         placeholder="Show name"
         touchable
       />
+      {found.length ? null : (
+        <ACard color={COLORS[ColorEnum.GRAY]} margin={10}>
+          <AInfo>Find by series title</AInfo>
+        </ACard>
+      )}
       <FlatList
         renderItem={renderItem}
         keyExtractor={keyExtractor}

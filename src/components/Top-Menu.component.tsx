@@ -3,16 +3,14 @@ import styled from 'styled-components/native'
 import { Dimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { BETWEEN_WIDTH } from '@utils/dimensions.util'
-import { StyledThemeP } from '@utils/types.util'
-import { extractStyleTheme, useADispatchC } from '@utils/recipes.util'
+import { useADispatchC } from '@utils/recipes.util'
 import { do_navigate } from '@actions/navigation.actions'
-import { useTheme } from '@hooks/useTheme'
 import { ThemeEnum } from '@utils/enums.util'
 import { do_sidebar_toggle } from '@actions/general.actions'
+import { FONT } from '@src/utils/constants.util'
 
 const { height } = Dimensions.get('window')
 const ATopMenu: React.FC = () => {
-  const [{ fontRegular }] = useTheme()
   const toSettings = useADispatchC(
     do_navigate('settings', { theme: ThemeEnum.MAIN })
   )
@@ -24,7 +22,7 @@ const ATopMenu: React.FC = () => {
   return (
     <Container>
       <SSettingsButton onPress={closeAndNavigate}>
-        <BtnText theme={{ fontRegular }}>Settings</BtnText>
+        <BtnText>Settings</BtnText>
         <BtnIcon name="ios-settings" color="white" size={32} />
       </SSettingsButton>
     </Container>
@@ -43,12 +41,12 @@ const SSettingsButton = styled.TouchableOpacity`
   padding-right: 5;
   position: relative;
 `
-const BtnText = styled.Text<StyledThemeP>`
+const BtnText = styled.Text`
   position: absolute;
   flex: 1;
   color: white;
   text-transform: capitalize;
-  font-family: ${extractStyleTheme('fontRegular')};
+  font-family: ${FONT.regular};
   font-size: 20px;
   text-align: center;
 `

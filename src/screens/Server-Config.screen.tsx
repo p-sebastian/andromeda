@@ -4,7 +4,7 @@ import { ScreenFComponent } from '@utils/types.util'
 import { THEME } from '@utils/theme.util'
 import { ThemeEnum, ColorEnum } from '@utils/enums.util'
 import ACard from '@common/Card.component'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import AText from '@common/Text.component'
 import AInput from '@common/Input.component'
 import { MARGIN, BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
@@ -13,7 +13,6 @@ import { extractProp, useADispatch } from '@utils/recipes.util'
 import AForm from '@common/Form.component'
 import { withSubmit } from '@components/hoc/withSubmit.hoc'
 import { do_server_modify } from '@actions/server.actions'
-import { logger } from '@utils/logger.util'
 import { TServerState } from '@reducers/server.reducer'
 
 const ServerConfigScreen: ScreenFComponent = props => {
@@ -22,7 +21,6 @@ const ServerConfigScreen: ScreenFComponent = props => {
   const [formValid, setFormValid] = useState(false)
   const params = props.navigation.state.params as TServerState
   const { title, themeKey, key } = params
-  logger.info(props.navigation.state.params)
   const shared = {
     selectedColor: THEME[themeKey].primary,
     autoCapitalize: 'none' as any,
@@ -132,7 +130,7 @@ const STitle = styled(AText)`
   font-size: 18;
 `
 const Header = styled(AText)`
-  font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
+  font-family: ${FONT.italic};
   text-align: center;
   color: white;
   font-size: 22;
@@ -169,7 +167,7 @@ const Button = styled.TouchableOpacity`
   box-shadow: ${BOX_SHADOW};
 `
 const ButtonText = styled(AText)`
-  font-family: ${THEME[ThemeEnum.MAIN].fontBold};
+  font-family: ${FONT.bold};
   text-align: center;
   font-size: 14;
   text-transform: uppercase;

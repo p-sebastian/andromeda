@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import { GradientEnum, ServerEnum, ColorEnum } from '@utils/enums.util'
-import { GRADIENTS, COLORS } from '@utils/constants.util'
+import { GRADIENTS, COLORS, FONT } from '@utils/constants.util'
 import PosterItem from '@common/Poster-Item.component'
 import { IMovie } from '@src/interfaces/movie.interface'
 import moment from 'moment'
@@ -63,7 +63,7 @@ const Container = styled.View`
 `
 const Title = styled.Text`
   color: white;
-  font-family: dank-mono-italic;
+  font-family: ${FONT.italic};
 `
 
 export default React.memo(MovieItem)

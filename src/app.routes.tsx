@@ -25,7 +25,8 @@ import AHeader from '@common/Header.component'
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
   swipeEnabled: false,
-  resetOnBlur: true
+  resetOnBlur: true,
+  lazy: true
 }
 
 const SonarrTabs = createMaterialTopTabNavigator(

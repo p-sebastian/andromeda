@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@utils/dimensions.util'
 import { BOX_SHADOW, MARGIN } from '@utils/position.util'
 import { LinearGradient } from 'expo-linear-gradient'
-import { GRADIENTS, COLORS } from '@utils/constants.util'
+import { GRADIENTS, COLORS, FONT } from '@utils/constants.util'
 import { GradientEnum, ColorEnum } from '@utils/enums.util'
 import { IEpisode } from '@interfaces/episode.interface'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -97,7 +97,7 @@ const Bottom = styled.View`
 const Text = styled.Text`
   font-size: 20;
   text-align: center;
-  font-family: oswald-semibold;
+  font-family: ${FONT.bold};
 `
 const BottomText = styled(Text)`
   color: ${COLORS[ColorEnum.GRAY]};

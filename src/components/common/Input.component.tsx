@@ -5,7 +5,7 @@ import { extractProp, extractCondition } from '@utils/recipes.util'
 import AText from './Text.component'
 import { THEME } from '@utils/theme.util'
 import { ThemeEnum, ColorEnum } from '@utils/enums.util'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { validator } from '@utils/validators.util'
 import { FormContext } from '../../context/Form.context'
 
@@ -117,11 +117,11 @@ const TextInput = styled.TextInput<Props>`
   height: 56;
   color: ${extractProp<Extra>('textColor')};
   background: ${extractProp<Extra>('backgroundColor')};
-  font-family: ${THEME[ThemeEnum.MAIN].fontRegular};
+  font-family: ${FONT.regular};
 `
 const ErrorLabel = styled(AText)`
   padding: 0 12px;
-  font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
+  font-family: ${FONT.italic};
   font-size: 10;
   color: ${COLORS[ColorEnum.DANGER]};
   height: 16;

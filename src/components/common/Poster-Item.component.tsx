@@ -13,6 +13,7 @@ import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
 import { View } from 'react-native'
 import { ExpansionContext } from '../../context/Expansion.context'
+import { FONT } from '@src/utils/constants.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
@@ -110,7 +111,7 @@ const Gradient = styled(LinearGradient)`
 const GradientText = styled.Text`
   color: ${extractProp<{ gradientTextColor: string }>('gradientTextColor')};
   text-align: center;
-  font-family: oswald-semibold;
+  font-family: ${FONT.bold};
   font-size: 14;
 `
 const PosterContainer = styled.View`

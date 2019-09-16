@@ -12,6 +12,7 @@ import {
   HIDDEN_WIDTH
 } from '@utils/dimensions.util'
 import { useTheme } from '@hooks/useTheme'
+import { FONT } from '@src/utils/constants.util'
 
 type Extra = { position: Animated.Value }
 type Props = { Content?: React.FC }
@@ -146,7 +147,7 @@ const STitle = styled.Text`
    */
   width: ${SCREEN_HEIGHT * 0.35};
   text-align: center;
-  font-family: ${extractStyleTheme('fontItalic')};
+  font-family: ${FONT.italic};
   font-size: 24px;
 `
 const SContentContainer = styled.View`

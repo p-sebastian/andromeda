@@ -1,7 +1,5 @@
 import { useMemo, useCallback } from 'react'
 import { PanResponder, Animated } from 'react-native'
-import { SCREEN_HEIGHT } from '@utils/dimensions.util'
-import { logger } from '@utils/logger.util'
 
 export const makePan = (container: number, draggable: number) => (
   position: Animated.Value

@@ -1,5 +1,6 @@
 import { isOfType } from 'typesafe-actions'
 import { TEpic } from '@utils/types.util'
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import {
   API_SONARR_GET_SERIES,
   API_SONARR_GET_CALENDAR,
@@ -35,7 +36,7 @@ const spinnerStartEpic: TEpic = action$ =>
         API_SONARR_GET_SEARCH
       ])
     ),
-    tap(action => logger.info('action', action)),
+    tap(() => impactAsync(ImpactFeedbackStyle.Medium)),
     map(action => do_spinner_toggle(action.meta.isOf, true))
   )
 

@@ -33,6 +33,15 @@ export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
     tabs: ['all']
   }
 })
+export const FONT = Object.freeze({
+  regular: 'dank-mono',
+  medium: 'roboto-medium',
+  bold: 'roboto-bold',
+  boldItalic: 'roboto-bold-italic',
+  black: 'roboto-black',
+  blackItalic: 'roboto-black-italic',
+  italic: 'dank-mono-italic'
+})
 export const COLORS = Object.freeze({
   [ColorEnum.MAIN]: 'hsla(225, 6%, 13%, 1)',
   [ColorEnum.SONARR]: 'hsla(195, 93%, 39%, 1)',

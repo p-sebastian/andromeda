@@ -2,7 +2,8 @@ import {
   PanResponder,
   Animated,
   Dimensions,
-  PanResponderInstance
+  PanResponderInstance,
+  Keyboard
 } from 'react-native'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useASelector, useShallowSelector } from '@utils/recipes.util'
@@ -40,6 +41,7 @@ export const usePanResponder: usePanResponderFn = position => {
           }
         },
         onPanResponderGrant: () => {
+          Keyboard.dismiss()
           position.extractOffset()
         },
         onPanResponderRelease: (e, { dx }) => {
@@ -59,8 +61,7 @@ export const usePanResponder: usePanResponderFn = position => {
     const value = open ? HIDDEN_WIDTH : OFFSET
     Animated.timing(position, {
       toValue: value,
-      duration: 400,
-      useNativeDriver: true
+      duration: 400
     }).start(() => {
       // dispatch(do_sidebar_toggle(open))
       setIsOpen(open)

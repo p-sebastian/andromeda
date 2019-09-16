@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { FlatList, ListRenderItem, ActionSheetIOS } from 'react-native'
+import { FlatList, ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import ABackground from '@common/Background.component'
 import AText from '@common/Text.component'
 import AFAB from '@common/FAB.component.tsx'
-import { logger } from '@utils/logger.util'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { Image } from 'react-native-expo-image-cache'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { ColorEnum, ThemeEnum } from '@utils/enums.util'
 import { BOX_SHADOW, BORDER_RADIUS, MARGIN } from '@utils/position.util'
 import { useShallowSelector, useADispatch } from '@utils/recipes.util'
@@ -249,7 +248,7 @@ const TopContent = styled.View`
 const Title = styled(AText)`
   text-align: center;
   font-size: 24;
-  font-family: roboto-bold;
+  font-family: ${FONT.bold};
   margin-left: ${MARGIN};
   margin-right: ${MARGIN};
   color: white;
@@ -304,15 +303,12 @@ const Empty = styled.View`
 `
 const Text = styled(AText)`
   color: white;
-  font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
-`
-const Search = styled.TouchableOpacity`
-  flex: 1;
+  font-family: ${FONT.italic};
 `
 const FabText = styled.Text`
   color: white;
   font-size: 18;
-  font-family: oswald-semibold;
+  font-family: ${FONT.bold};
 `
 
 export default ShowInfo

@@ -9,6 +9,7 @@ import { AVAILABLE_SERVERS } from '@utils/constants.util'
 import { concat, of, Observable } from 'rxjs'
 import { ScreenNames, ScreenStack } from '../../app.routes'
 import { ThemeEnum } from '@utils/enums.util'
+import { Keyboard } from 'react-native'
 
 type NavAction = {
   type: NavigationActionsType
@@ -19,6 +20,7 @@ const navigateEpic: TEpic = action$ =>
   action$.pipe(
     filter(isOfType(NavigationActions.NAVIGATE)),
     mergeMap((action: any) => {
+      Keyboard.dismiss()
       const { routeName, params = {} } = action as NavAction
       const screenName = routeName.toLocaleLowerCase() as ScreenNames
       const which = Object.values(AVAILABLE_SERVERS).find(
@@ -40,6 +42,7 @@ const onNavigationBackEpic: TEpic = (action$, state$) =>
     filter(isOfType(NavigationActions.BACK)),
     withLatestFrom(state$),
     map(([, state]) => {
+      Keyboard.dismiss()
       const path = ScreenStack.router
         .getPathAndParamsForState(state.navigation)
         .path.toLocaleLowerCase()

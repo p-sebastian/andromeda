@@ -5,13 +5,13 @@ import { ISeriesValue } from '@interfaces/common.interface'
 import moment from 'moment'
 import { GradientEnum, ThemeEnum, ServerEnum } from '@utils/enums.util'
 import { BORDER_RADIUS } from '@utils/position.util'
-import { GRADIENTS } from '@utils/constants.util'
+import { GRADIENTS, FONT } from '@utils/constants.util'
 import { THEME } from '@utils/theme.util'
 import PosterItem from '@common/Poster-Item.component'
 
 type Props = { series: ISeriesValue }
 const SeriesItem: React.FC<Props> = ({ series }) => {
-  const { id, title, status, seasonCount } = series
+  const { id, title, seasonCount } = series
   const { gradient, text } = color(series)
   const info = sideText(series)
 
@@ -76,7 +76,7 @@ const Description = styled(AText)`
   color: white;
   font-size: 12;
   text-align: center;
-  font-family: ${THEME[ThemeEnum.MAIN].fontItalic};
+  font-family: ${FONT.italic};
   flex: 1;
   border-radius: ${BORDER_RADIUS};
 `

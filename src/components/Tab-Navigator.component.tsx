@@ -3,6 +3,7 @@ import { MaterialTopTabBar, MaterialTopTabBarProps } from 'react-navigation'
 import styled from 'styled-components/native'
 import { extractStyleTheme } from '@utils/recipes.util'
 import { useTheme } from '@hooks/useTheme'
+import { FONT } from '@src/utils/constants.util'
 
 const AMaterialTopTabBar: React.FC<MaterialTopTabBarProps> = props => {
   const [theme] = useTheme()
@@ -13,7 +14,7 @@ const AMaterialTopTabBar: React.FC<MaterialTopTabBarProps> = props => {
   }
   // text in tab
   modProps.labelStyle = {
-    fontFamily: 'roboto-bold',
+    fontFamily: FONT.bold,
     letterSpacing: 1,
     color: theme.fontColor
   }

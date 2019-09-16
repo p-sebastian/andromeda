@@ -12,7 +12,7 @@ import AFAB from '@common/FAB.component'
 import { MARGIN } from '@utils/position.util'
 import { useServer } from '@hooks/useServer'
 import _ from 'lodash'
-import { COLORS } from '@utils/constants.util'
+import { COLORS, FONT } from '@utils/constants.util'
 import { useADispatch, extractCondition } from '@utils/recipes.util'
 import { do_navigate } from '@actions/navigation.actions'
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
@@ -141,7 +141,7 @@ const ItemButton = styled.TouchableOpacity`
   top: 0;
 `
 const ItemText = styled(AText)`
-  font-family: ${THEME[ThemeEnum.MAIN].fontBold};
+  font-family: ${FONT.bold};
   color: white;
   text-transform: capitalize;
 `

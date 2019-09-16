@@ -43,8 +43,11 @@ const _loadAssets = async () => {
   await Font.loadAsync({
     'dank-mono': require('../assets/fonts/DankMono-Regular.ttf'),
     'dank-mono-italic': require('../assets/fonts/DankMono-Italic.ttf'),
-    'fira-code-bold': require('../assets/fonts/FiraCode-Bold.ttf'),
+    'roboto-regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
+    'roboto-medium': require('../assets/fonts/Roboto/Roboto-Medium.ttf'),
     'roboto-bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
-    'oswald-semibold': require('../assets/fonts/Oswald-SemiBold.ttf')
+    'roboto-bold-italic': require('../assets/fonts/Roboto/Roboto-BoldItalic.ttf'),
+    'roboto-black': require('../assets/fonts/Roboto/Roboto-Black.ttf'),
+    'roboto-black-italic': require('../assets/fonts/Roboto/Roboto-BlackItalic.ttf')
   })
 }
