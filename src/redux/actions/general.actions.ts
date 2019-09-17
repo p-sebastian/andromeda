@@ -7,7 +7,9 @@ import {
   ACTION_SHEET_ON_SEASON,
   ACTION_SHEET_ON_EPISODE,
   SIDEBAR_TOGGLE,
-  CLEAR_SEARCH_SERIES
+  CLEAR_SEARCH_SERIES,
+  TOAST_SHOW,
+  TOAST_HIDE
 } from './types'
 import { capitalize } from 'lodash'
 
@@ -43,3 +45,14 @@ export const do_sidebar_toggle = createAction(
   action => (toggle: boolean) => action(toggle)
 )
 
+export const do_toast_show = createAction(
+  TOAST_SHOW,
+  action => (
+    msg: string,
+    type: 'error' | 'warning' | 'info' | 'success' = 'info',
+    position: 'top' | 'bottom' | 'center' = 'top',
+    duration: number = 5000
+  ) => action({ msg, type, position, duration })
+)
+
+export const do_toast_hide = createAction(TOAST_HIDE)

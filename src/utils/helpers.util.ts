@@ -2,6 +2,8 @@ import { ScreenNames } from '@src/app.routes'
 import { AVAILABLE_SERVERS } from './constants.util'
 import { ServerEnum } from './enums.util'
 import Fuse from 'fuse.js'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@src/utils/dimensions.util'
+import { Platform } from 'react-native'
 
 /**
  * checks if navigation screen is within the screens of the current server
@@ -29,3 +31,10 @@ const fuseOptions = {
 }
 export const fuzzySearch = (data: {}) =>
   new Fuse(Object.values(data), fuseOptions)
+
+export const isIphoneX = () =>
+  (Platform.OS === 'ios' &&
+    !Platform.isPad &&
+    !Platform.isTVOS &&
+    (SCREEN_HEIGHT === 812 || SCREEN_WIDTH === 812)) ||
+  (SCREEN_HEIGHT === 896 || SCREEN_WIDTH === 896)

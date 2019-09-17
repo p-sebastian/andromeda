@@ -53,7 +53,9 @@ export const COLORS = Object.freeze({
   [ColorEnum.PLACEHOLDER]: 'hsla(0, 0%, 52%, 1)',
   [ColorEnum.DANGER]: '#F44336',
   [ColorEnum.SUCCESS]: '#1DE9B6',
-  [ColorEnum.INFO]: '#00B0FF'
+  [ColorEnum.INFO]: '#00B0FF',
+  [ColorEnum.INFO2]: '#1976d2',
+  [ColorEnum.WARNING]: '#ffa000'
 })
 export const SERVER_GRADIENTS = Object.freeze({
   [ServerEnum.SONARR]: 'hsla(195, 93%, 39%, 1)',

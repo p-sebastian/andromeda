@@ -68,3 +68,8 @@ export const extractCondition = <P extends {}, K1 = {}, K2 = {}>(
   props[predicate]
     ? props[onTrue as keyof P] || onTrue
     : props[onFalse as keyof P] || onFalse
+
+export const extractFn = <P extends {}>(
+  key: keyof P,
+  callback: (prop: P[typeof key]) => any
+) => (props: P) => callback(props[key])

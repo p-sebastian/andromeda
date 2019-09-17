@@ -18,7 +18,9 @@ export enum ColorEnum {
   PLACEHOLDER,
   DANGER,
   SUCCESS,
-  INFO
+  INFO,
+  INFO2,
+  WARNING
 }
 export enum GradientEnum {
   BLUE = 1,

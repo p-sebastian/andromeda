@@ -10,6 +10,7 @@ import ADrawer from '@common/Drawer.component'
 import { AMenu } from './components'
 import { useScreens } from 'react-native-screens'
 import { withExpansion } from '@components/hoc/withExpansion.hoc'
+import Toast from '@common/Toast.component'
 useScreens()
 
 console.disableYellowBox = true
@@ -31,6 +32,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+        <Toast />
         <DrawerWithExpansion Content={AMenu}>
           <AppContainer />
         </DrawerWithExpansion>
