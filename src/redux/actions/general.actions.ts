@@ -9,7 +9,8 @@ import {
   SIDEBAR_TOGGLE,
   CLEAR_SEARCH_SERIES,
   TOAST_SHOW,
-  TOAST_HIDE
+  TOAST_HIDE,
+  SPINNER_CLEAR
 } from './types'
 import { capitalize } from 'lodash'
 
@@ -22,6 +23,7 @@ export const do_spinner_toggle = createAction(
   SPINNER_TOGGLE,
   action => (isOf: string, toggle: boolean) => action({ isOf, toggle })
 )
+export const do_spinner_clear = createAction(SPINNER_CLEAR)
 
 export const do_clear_episodes = createAction(CLEAR_EPISODES)
 

@@ -1,5 +1,5 @@
 import { isOfType } from 'typesafe-actions'
-import { TEpic } from '@utils/types.util'
+import { TEpic, TActions } from '@utils/types.util'
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import {
   API_SONARR_GET_SERIES,
@@ -7,13 +7,26 @@ import {
   API_SONARR_GET_EPISODES,
   API_SONARR_GET_HISTORY,
   API_RADARR_GET_MOVIES,
-  API_SONARR_GET_SEARCH
+  API_SONARR_GET_SEARCH,
+  API_AJAX_FAIL
 } from '@actions/types'
-import { mergeMap, filter, map, tap, catchError } from 'rxjs/operators'
-import { concat, of } from 'rxjs'
+import {
+  mergeMap,
+  filter,
+  map,
+  tap,
+  catchError,
+  concatMap
+} from 'rxjs/operators'
+import { of } from 'rxjs'
 import { withApi, onCase } from '@utils/api.util'
 import { logger } from '@utils/logger.util'
-import { do_api_ajax_fail, do_spinner_toggle } from '@actions/general.actions'
+import {
+  do_api_ajax_fail,
+  do_spinner_toggle,
+  do_spinner_clear,
+  do_toast_show
+} from '@actions/general.actions'
 import { ApiSuccessActionsType } from '@actions/index'
 import {
   on_api_sonarr_get_series_success,
@@ -80,14 +93,13 @@ const apiGetEpic: TEpic = (action$, state$) =>
         )
     ),
     // finish loading
-    mergeMap(action =>
-      concat(
-        ...[
-          of(action),
-          of(do_spinner_toggle((action as ApiSuccessActionsType).meta, false))
-        ]
-      )
-    )
+    concatMap(action => {
+      const actions: TActions[] = isOfType(API_AJAX_FAIL, action)
+        ? [do_spinner_clear(), do_toast_show('An Error Ocurred', 'error')]
+        : [do_spinner_toggle((action as ApiSuccessActionsType).meta, false)]
+      actions.push(action)
+      return of(...actions)
+    })
   )
 // const apiPostEpic: TEpic
 // const apiPutEpic: TEpic
