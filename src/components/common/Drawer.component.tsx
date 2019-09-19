@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Animated, View } from 'react-native'
 import styled from 'styled-components/native'
-import { extractStyleTheme, useASelector } from '@utils/recipes.util'
+import { extractStyleTheme } from '@utils/recipes.util'
 import { StyledThemeP } from '@utils/types.util'
 import { usePanResponder } from '@hooks/usePanResponder'
 import {
@@ -12,7 +12,7 @@ import {
   HIDDEN_WIDTH
 } from '@utils/dimensions.util'
 import { useTheme } from '@hooks/useTheme'
-import { FONT } from '@src/utils/constants.util'
+import NetworkInfo from '@components/Network-Info.component'
 
 type Extra = { position: Animated.Value }
 type Props = { Content?: React.FC }
@@ -40,9 +40,7 @@ ADrawer.position = new Animated.Value(OFFSET)
 type ContentProps = { Content?: React.FC; position: Animated.Value }
 const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
   const [theme] = useTheme()
-  const loading = useASelector(state => state.spinner.loading)
   const [panResponder, title] = usePanResponder(position)
-  // const [panResponder] = useState (createPanResponder (position));
   /**
    * makes title bar stick to the left, while animation is happening
    * 26, is the pixel number of the bars width;
@@ -61,10 +59,7 @@ const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
   return (
     <SDrawerView as={Animated.View} {...panResponder.panHandlers} theme={theme}>
       <SAnimatingTitleContainer as={Animated.View} style={animate as any}>
-        <SRotate>
-          <STitle theme={theme}>{title}</STitle>
-          <ActivityIndicator animating={loading} color={theme.primary} />
-        </SRotate>
+        <NetworkInfo title={title} color={theme.primary} />
       </SAnimatingTitleContainer>
       <SContentContainer>{Content ? <Content /> : null}</SContentContainer>
     </SDrawerView>
@@ -123,32 +118,9 @@ const SMainView = styled.View<StyledThemeP>`
 const SAnimatingTitleContainer = styled.View`
   position: absolute;
   z-index: 20;
-  height: ${SCREEN_HEIGHT * 0.3};
   width: ${OFFSET};
   left: ${DRAWER_WIDTH - OFFSET * 1.75};
-  top: 0;
-  justify-content: center;
   align-items: center;
-`
-const SRotate = styled.View`
-  position: relative;
-  flex-direction: row-reverse;
-  transform: rotate(270deg);
-`
-const ActivityIndicator = styled.ActivityIndicator`
-  align-self: center;
-`
-const STitle = styled.Text`
-  color: white;
-  text-transform: capitalize;
-  /* this width sets the length available for the text
-   * the one limiting it is the container which must have a fixed
-   * width 
-   */
-  width: ${SCREEN_HEIGHT * 0.35};
-  text-align: center;
-  font-family: ${FONT.italic};
-  font-size: 24px;
 `
 const SContentContainer = styled.View`
   height: ${SCREEN_HEIGHT};

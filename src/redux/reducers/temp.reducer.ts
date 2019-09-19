@@ -14,6 +14,7 @@ type State = {
   episodes: { [key: string]: IEpisode[] }
   search: IRawSeries<{ coverType: string; url: string }>[]
   sidebarToggle: { watch: number; toggle: boolean }
+  network: 'celular' | 'wifi'
 }
 const DEFAULT_STATE: State = {
   episodes: {},
@@ -21,7 +22,8 @@ const DEFAULT_STATE: State = {
   sidebarToggle: {
     watch: 0,
     toggle: false
-  }
+  },
+  network: 'celular'
 }
 
 export const tempReducer = createReducer<typeof DEFAULT_STATE, TActions>(
