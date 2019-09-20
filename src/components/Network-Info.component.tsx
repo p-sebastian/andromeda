@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components/native'
 import { SCREEN_HEIGHT } from '@src/utils/dimensions.util'
 import { FONT } from '@src/utils/constants.util'
 import { Ionicons } from '@expo/vector-icons'
 import { isIphoneX } from '@src/utils/helpers.util'
 import { useASelector } from '@src/utils/recipes.util'
+import NetInfo from '@react-native-community/netinfo'
+import { logger } from '@src/utils/logger.util'
 
 type Props = { title: string; color: string }
 const NetworkInfo: React.FC<Props> = ({ title, color }) => {
   const loading = useASelector(state => state.spinner.loading)
+  useNetwork()
   /*
    * wifi - lan fail -> try network
    * wifi - network fail -> offline
@@ -25,6 +28,15 @@ const NetworkInfo: React.FC<Props> = ({ title, color }) => {
   )
 }
 
+const useNetwork = () => {
+  useEffect(() => {
+    // NetInfo.fetch().then(state => logger.info(state))
+    /* const subscription = NetInfo.addEventListener(state => {
+     *   logger.info(state)
+     * })
+     * return subscription */
+  })
+}
 const SRotate = styled.View`
   flex-direction: row;
   transform: rotate(270deg);
