@@ -9,12 +9,13 @@ import {
   CLEAR_SEARCH_SERIES
 } from '@actions/types'
 import { IRawSeries } from '@src/interfaces/common.interface'
+import { NetInfoStateType } from '@react-native-community/netinfo'
 
 type State = {
   episodes: { [key: string]: IEpisode[] }
   search: IRawSeries<{ coverType: string; url: string }>[]
   sidebarToggle: { watch: number; toggle: boolean }
-  network: 'celular' | 'wifi'
+  network: NetInfoStateType
 }
 const DEFAULT_STATE: State = {
   episodes: {},
@@ -23,7 +24,7 @@ const DEFAULT_STATE: State = {
     watch: 0,
     toggle: false
   },
-  network: 'celular'
+  network: NetInfoStateType.cellular
 }
 
 export const tempReducer = createReducer<typeof DEFAULT_STATE, TActions>(

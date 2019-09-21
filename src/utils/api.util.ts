@@ -5,12 +5,13 @@ import { Observable, OperatorFunction } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { RootState } from '@reducers/index'
 import { StateObservable } from 'redux-observable'
-import { withLatestFrom, map } from 'rxjs/operators'
+import { withLatestFrom, map, tap, catchError } from 'rxjs/operators'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
 import { ApiActionsType } from '@actions/index'
 import { isOfType } from 'typesafe-actions'
 import { TActions } from './types.util'
 import { nrmlz } from './normalizr.util'
+import { logger } from '@src/utils/logger.util'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type AjaxCreator = (
@@ -63,7 +64,10 @@ export const withApi: WithApi = (state$, method) => action$ =>
         method,
         params
       ).pipe(
-        // tap(res => logger.log('AJAX_RESPONSE', res)),
+        // bubble error up with action
+        catchError(error => {
+          throw { action, error }
+        }),
         map(res => [action, res.response] as [ApiActionsType, any])
       )
     })
@@ -138,3 +142,9 @@ const queryString = (body: any = {}) =>
   Object.keys(body)
     .map(key => `${key}=${body[key]}`)
     .join('&')
+
+const onError = () => {
+  // check if actual network error
+  // check network error status
+  //
+}

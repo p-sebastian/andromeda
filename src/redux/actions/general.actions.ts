@@ -10,13 +10,18 @@ import {
   CLEAR_SEARCH_SERIES,
   TOAST_SHOW,
   TOAST_HIDE,
-  SPINNER_CLEAR
+  SPINNER_CLEAR,
+  NETWORK_CHANGE,
+  NETWORK_ENDPOINT_TOGGLE
 } from './types'
 import { capitalize } from 'lodash'
+import { NetInfoStateType } from '@react-native-community/netinfo'
+import { ApiActionsType } from '@src/redux/actions'
+import { ServerEnum } from '@src/utils/enums.util'
 
 export const do_api_ajax_fail = createAction(
   API_AJAX_FAIL,
-  action => (error: any) => action(error)
+  action => (error: { action: ApiActionsType; error: any }) => action(error)
 )
 
 export const do_spinner_toggle = createAction(
@@ -58,3 +63,14 @@ export const do_toast_show = createAction(
 )
 
 export const do_toast_hide = createAction(TOAST_HIDE)
+
+export const do_network_change = createAction(
+  NETWORK_CHANGE,
+  action => (type: NetInfoStateType) => action(type)
+)
+
+export const do_network_endpoint_toggle = createAction(
+  NETWORK_ENDPOINT_TOGGLE,
+  action => (serverKey: ServerEnum, endpoint: 'lan' | 'remote') =>
+    action({ serverKey, endpoint })
+)

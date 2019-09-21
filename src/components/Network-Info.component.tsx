@@ -4,14 +4,15 @@ import { SCREEN_HEIGHT } from '@src/utils/dimensions.util'
 import { FONT } from '@src/utils/constants.util'
 import { Ionicons } from '@expo/vector-icons'
 import { isIphoneX } from '@src/utils/helpers.util'
-import { useASelector } from '@src/utils/recipes.util'
-import NetInfo from '@react-native-community/netinfo'
+import { useASelector, useADispatch } from '@src/utils/recipes.util'
+import NetInfo, { NetInfoStateType } from '@react-native-community/netinfo'
 import { logger } from '@src/utils/logger.util'
+import { do_network_change } from '@src/redux/actions/general.actions'
 
 type Props = { title: string; color: string }
 const NetworkInfo: React.FC<Props> = ({ title, color }) => {
   const loading = useASelector(state => state.spinner.loading)
-  useNetwork()
+  const network = useNetwork()
   /*
    * wifi - lan fail -> try network
    * wifi - network fail -> offline
@@ -28,14 +29,27 @@ const NetworkInfo: React.FC<Props> = ({ title, color }) => {
   )
 }
 
+const icon = (network: NetInfoStateType) => {
+  switch (network) {
+    case NetInfoStateType.cellular:
+      return 'md-globe'
+    case NetInfoStateType.wifi:
+      return 'md-cloud'
+    default:
+      return 'md-cloud-outline'
+  }
+}
+
 const useNetwork = () => {
+  const dispatch = useADispatch()
+  const network = useASelector(state => state.temp.network)
   useEffect(() => {
-    // NetInfo.fetch().then(state => logger.info(state))
-    /* const subscription = NetInfo.addEventListener(state => {
-     *   logger.info(state)
-     * })
-     * return subscription */
-  })
+    const subscription = NetInfo.addEventListener(state =>
+      dispatch(do_network_change(state.type))
+    )
+    return subscription
+  }, [])
+  return network
 }
 const SRotate = styled.View`
   flex-direction: row;

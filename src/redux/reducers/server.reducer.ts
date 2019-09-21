@@ -9,8 +9,12 @@ import {
 import {
   SERVER_SET_ENABLED,
   SERVER_SET_STATUS,
-  SERVER_MODIFY_COMPLETE
+  SERVER_MODIFY_COMPLETE,
+  NETWORK_CHANGE,
+  NETWORK_ENDPOINT_TOGGLE
 } from '@actions/types'
+import { ServerEnum } from '@src/utils/enums.util'
+import { NetInfoStateType } from '@react-native-community/netinfo'
 
 export type TServerConfig = {
   enabled: boolean
@@ -66,3 +70,18 @@ export const serverReducer = createReducer<typeof DEFAULT_STATE, TActions>(
     const withPrev = { ...state[serverKey], ...value, enabled: true }
     return { ...state, [serverKey]: withPrev }
   })
+  .handleAction(NETWORK_CHANGE, (state, action) => {
+    const endpoint = action.payload === NetInfoStateType.wifi ? 'lan' : 'remote'
+    const newState: State = {} as any
+    Object.values(ServerEnum).forEach(
+      key => (newState[key] = { ...state[key], endpoint })
+    )
+    return newState
+  })
+  .handleAction(
+    NETWORK_ENDPOINT_TOGGLE,
+    (state, { payload: { serverKey, endpoint } }) => ({
+      ...state,
+      [serverKey]: { ...state[serverKey], endpoint }
+    })
+  )
