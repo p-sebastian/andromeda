@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import * as Font from 'expo-font'
-import { AppLoading } from 'expo'
 
 import Store from './redux/store'
 import AppContainer from './app.routes'
@@ -11,6 +10,7 @@ import { AMenu } from './components'
 import { useScreens } from 'react-native-screens'
 import { withExpansion } from '@components/hoc/withExpansion.hoc'
 import Toast from '@common/Toast.component'
+import { View } from 'react-native'
 useScreens()
 
 console.disableYellowBox = true
@@ -20,14 +20,9 @@ const { persistor, store } = Store()
 const DrawerWithExpansion = withExpansion(ADrawer)
 export default function App() {
   const [isReady, setReady] = useState(false)
+  _loadAssets().then(() => setReady(true))
   if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={_loadAssets}
-        onFinish={() => setReady(true)}
-        onError={e => console.error(e)}
-      />
-    )
+    return <View />
   }
   return (
     <Provider store={store}>

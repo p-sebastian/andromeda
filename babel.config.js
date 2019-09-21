@@ -3,7 +3,7 @@ module.exports = function(api) {
   // const isTest = false
 
   const presets = [
-    'babel-preset-expo'
+    'module:metro-react-native-babel-preset'
     // isTest ? 'metro-react-native-babel-preset' : ''
   ].filter(Boolean)
 
