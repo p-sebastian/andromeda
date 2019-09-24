@@ -7,7 +7,10 @@ import SearchItem from '@common/Search-Item.component'
 import { useADispatch, useASelector } from '@src/utils/recipes.util'
 import { do_api_sonarr_get_search } from '@src/redux/actions/api.actions'
 import { IRawSeries } from '@src/interfaces/common.interface'
-import { do_clear_search_series } from '@src/redux/actions/general.actions'
+import {
+  do_clear_search_series,
+  do_toast_show
+} from '@src/redux/actions/general.actions'
 import AInfo from '@common/Info-Text.component'
 import ACard from '@common/Card.component'
 import { ColorEnum } from '@src/utils/enums.util'
@@ -20,7 +23,11 @@ const AddSeriesScreen: ScreenFComponent = () => {
   const [search, setSearch] = useState('')
 
   const onPress = useCallback(() => {
-    dispatch(do_api_sonarr_get_search(search))
+    dispatch(
+      search
+        ? do_api_sonarr_get_search(search)
+        : do_toast_show('Please type something first')
+    )
   }, [search])
 
   useEffect(() => () => dispatch(do_clear_search_series()), [])

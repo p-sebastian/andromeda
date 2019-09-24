@@ -119,39 +119,35 @@ const apiErrorEpic: TEpic = (action$, state$) =>
     withLatestFrom(state$),
     concatMap(([failure, state]) => {
       const { action, error } = failure.payload
-      let actions: TActions[] = []
       const serverKey = action.meta.serverKey
       const endpoint = state.server[serverKey].endpoint
       const status = error.status
       const network = state.temp.network
+      // Server Error
+      if (!isNaN(status) && status >= 500) {
+        return [do_toast_show('Server Error', 'error')]
+      }
       // Authentication Error
       if (!isNaN(status) && (status >= 400 && status < 499)) {
-        actions = actions.concat([
+        return [
           do_toast_show('Authentication Error', 'error'),
           do_server_set_status(serverKey, 'auth')
-        ])
-      } else {
-        // server error, or timeout
-        // net === none -> err not connected
-        if (network === NetInfoStateType.none) {
-          actions.push(do_toast_show('Not connected to a network', 'error'))
-        }
-        // net !== none & lan -> retry remote
-        if (network !== NetInfoStateType.none && endpoint === 'lan') {
-          actions = actions.concat([
-            do_network_endpoint_toggle(serverKey, 'remote'),
-            action
-          ])
-        }
-        // net !== none & remote -> offline
-        if (network !== NetInfoStateType.none && endpoint === 'remote') {
-          actions = actions.concat([
-            do_server_set_status(serverKey, 'offline'),
-            do_toast_show('Server Offline', 'error')
-          ])
-        }
+        ]
       }
-      return actions
+      // timeout | unknown
+      // net === none -> err not connected
+      if (network === NetInfoStateType.none) {
+        return [do_toast_show('Not connected to a network', 'error')]
+      }
+      // net !== none & lan -> retry remote
+      if (endpoint === 'lan') {
+        return [do_network_endpoint_toggle(serverKey, 'remote'), action]
+      }
+      // net !== none & remote -> offline
+      return [
+        do_server_set_status(serverKey, 'offline'),
+        do_toast_show('Server Offline', 'error')
+      ]
     })
   )
 // const responseEpic: TEpic

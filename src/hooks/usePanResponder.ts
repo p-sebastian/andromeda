@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useASelector, useShallowSelector } from '@utils/recipes.util'
+import { logger } from '@src/utils/logger.util'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 // Sidebar size
@@ -44,26 +45,27 @@ export const usePanResponder: usePanResponderFn = position => {
           Keyboard.dismiss()
           position.extractOffset()
         },
-        onPanResponderRelease: (e, { dx }) => {
+        onPanResponderRelease: (e, { dx, vx }) => {
           const { _value } = position as any
           // prevents resetting when position isnt moving
           if (_value > 0 || _value < 0) {
             position.flattenOffset()
-            lock(dx > 0)
+            lock(dx > 0, vx)
           }
         }
       }),
     []
   )
 
-  type Lock = (open: boolean) => void
-  const lock: Lock = useCallback(open => {
+  type Lock = (open: boolean, velocity: number) => void
+  const lock: Lock = useCallback((open, velocity) => {
     const value = open ? HIDDEN_WIDTH : OFFSET
-    Animated.timing(position, {
+    Animated.spring(position, {
       toValue: value,
-      duration: 400
+      velocity,
+      overshootClamping: true,
+      useNativeDriver: true
     }).start(() => {
-      // dispatch(do_sidebar_toggle(open))
       setIsOpen(open)
       // reset offset when animation finishes
       position.setOffset(value)
