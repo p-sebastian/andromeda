@@ -28,7 +28,7 @@ import { NetInfoStateType } from '@react-native-community/netinfo'
 import { onCase, withApi } from '@utils/api.util'
 import { logger } from '@utils/logger.util'
 import { TActions, TEpic } from '@utils/types.util'
-import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
+import { ImpactFeedbackStyle, impactAsync } from 'expo-haptics'
 import { of } from 'rxjs'
 import {
   catchError,
@@ -120,7 +120,7 @@ const apiErrorEpic: TEpic = (action$, state$) =>
     concatMap(([failure, state]) => {
       const { action, error } = failure.payload
       const serverKey = action.meta.serverKey
-      const endpoint = state.server[serverKey].endpoint
+      const { endpoint, remoteUrl } = state.server[serverKey]
       const status = error.status
       const network = state.temp.network
       // Server Error
@@ -139,11 +139,11 @@ const apiErrorEpic: TEpic = (action$, state$) =>
       if (network === NetInfoStateType.none) {
         return [do_toast_show('Not connected to a network', 'error')]
       }
-      // net !== none & lan -> retry remote
-      if (endpoint === 'lan') {
+      // hasRemote & lan -> retry remote
+      if (!!remoteUrl && endpoint === 'lan') {
         return [do_network_endpoint_toggle(serverKey, 'remote'), action]
       }
-      // net !== none & remote -> offline
+      // remote -> offline
       return [
         do_server_set_status(serverKey, 'offline'),
         do_toast_show('Server Offline', 'error')

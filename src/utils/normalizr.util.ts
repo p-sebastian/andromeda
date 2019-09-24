@@ -1,12 +1,12 @@
-import { normalize, schema } from 'normalizr'
 import {
+  API_RADARR_GET_MOVIES,
   API_SONARR_GET_CALENDAR,
-  API_SONARR_GET_SERIES,
   API_SONARR_GET_EPISODES,
   API_SONARR_GET_HISTORY,
-  API_RADARR_GET_MOVIES
+  API_SONARR_GET_SERIES
 } from '@actions/types'
-import { omit, groupBy } from 'lodash'
+import { groupBy, omit } from 'lodash'
+import { normalize, schema } from 'normalizr'
 
 // constant => AjaxResponse => normalizedRes
 type Nrmlzr = (CONSTANT: string, json: any) => any
@@ -29,12 +29,16 @@ export const nrmlz: Nrmlzr = (CONSTANT, json) => {
 
 /* SONARR */
 const sonarrGetSeries = (json: any) => {
-  const series = new schema.Entity('series')
+  const series = new schema.Entity(
+    'series',
+    {},
+    { idAttribute: entity => entity.tvdbId }
+  )
   const images = new schema.Entity(
     'images',
     {},
     {
-      idAttribute: (entity, parent) => `${parent.id}-${entity.coverType}`
+      idAttribute: (entity, parent) => `${parent.tvdbId}-${entity.coverType}`
     }
   )
   series.define({
@@ -49,7 +53,10 @@ const sonarrGetCalendar = (json: any) => {
     'calendar',
     {},
     {
-      processStrategy: entity => omit(entity, 'series')
+      processStrategy: entity => {
+        entity.tvdbId = entity.series.tvdbId
+        return omit(entity, 'series')
+      }
     }
   )
   return normalize(json, [calendar])
@@ -65,12 +72,16 @@ const sonarrGetHistory = (json: { records: any[] }) => {
 
 /* RADARR */
 const radarrGetMovies = (json: any) => {
-  const movies = new schema.Entity('movies')
+  const movies = new schema.Entity(
+    'movies',
+    {},
+    { idAttribute: entity => entity.tmdbId }
+  )
   const images = new schema.Entity(
     'images',
     {},
     {
-      idAttribute: (entity, parent) => `${parent.id}-${entity.coverType}`
+      idAttribute: (entity, parent) => `${parent.tmdbId}-${entity.coverType}`
     }
   )
   movies.define({

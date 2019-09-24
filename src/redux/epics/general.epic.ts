@@ -1,11 +1,11 @@
-import { isOfType } from 'typesafe-actions'
-import { ActionSheetIOS } from 'react-native'
-import { TEpic } from '@utils/types.util'
-import { ACTION_SHEET_OPEN } from '@actions/types'
-import { mergeMap, filter, map } from 'rxjs/operators'
-import { bindCallback } from 'rxjs'
 import { on_action_sheet_episode } from '@actions/general.actions'
+import { ACTION_SHEET_OPEN } from '@actions/types'
 import { logger } from '@utils/logger.util'
+import { TEpic } from '@utils/types.util'
+import { ActionSheetIOS } from 'react-native'
+import { bindCallback } from 'rxjs'
+import { filter, map, mergeMap } from 'rxjs/operators'
+import { isOfType } from 'typesafe-actions'
 
 const ASheet$ = bindCallback(ActionSheetIOS.showActionSheetWithOptions)
 

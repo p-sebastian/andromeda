@@ -15,6 +15,7 @@ export const withExpansion = <P extends {}>(Component: ComponentType<P>) => {
       elmWidth: 0,
       selected: false,
       id: 0,
+      tdbid: 0,
       posterReq: { uri: '', headers: {} },
       fanartReq: { uri: '', headers: {} },
       serverKey: ServerEnum.SONARR

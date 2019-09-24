@@ -8,12 +8,13 @@ import moment from 'moment'
 
 type Props = { movie: IMovie }
 const MovieItem: React.FC<Props> = ({ movie }) => {
-  const { id, title } = movie
+  const { tmdbId, id, title } = movie
   const { gradient, text } = color(movie)
 
   return (
     <PosterItem
       id={id}
+      tdbid={tmdbId}
       title={title}
       gradient={gradient}
       gradientTextColor={text}

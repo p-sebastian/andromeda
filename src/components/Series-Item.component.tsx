@@ -10,7 +10,7 @@ import PosterItem from '@common/Poster-Item.component'
 
 type Props = { series: ISeriesValue }
 const SeriesItem: React.FC<Props> = ({ series }) => {
-  const { id, title, seasonCount } = series
+  const { tvdbId, id, title, seasonCount } = series
   const { gradient, text } = color(series)
   const info = sideText(series)
 
@@ -20,6 +20,7 @@ const SeriesItem: React.FC<Props> = ({ series }) => {
       gradientTextColor={text}
       title={title}
       id={id}
+      tdbid={tvdbId}
       serverKey={ServerEnum.SONARR}
     >
       <Description>

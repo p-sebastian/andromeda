@@ -13,7 +13,8 @@ import styled from 'styled-components/native'
 type Props = { upcoming: CalendarValue }
 const CalendarItem: React.FC<Props> = ({ upcoming }) => {
   const {
-    seriesId,
+    tvdbId,
+    id,
     title,
     seasonNumber,
     episodeNumber,
@@ -21,7 +22,7 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
     hasFile
   } = upcoming
   const series = useShallowSelector(
-    state => state.sonarr.entities.series[seriesId]
+    state => state.sonarr.entities.series[tvdbId]
   )
   // calendar might load before geting shows, so series might be empty
   if (isUndefined(series)) {
@@ -36,7 +37,8 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
       gradient={gradient}
       gradientTextColor={color}
       title={series.title}
-      id={seriesId}
+      id={id}
+      tdbid={tvdbId}
       serverKey={ServerEnum.SONARR}
       flexDirection="column"
       justifyContent="flex-start"

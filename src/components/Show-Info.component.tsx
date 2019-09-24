@@ -37,17 +37,18 @@ const G = GRADIENTS[GradientEnum.SEASONS]
 
 type Props = {
   id: number
+  tdbid: number
   posterReq: { uri: string; headers: { [key: string]: string } }
   fanartReq: { uri: string; headers: { [key: string]: string } }
   animEnd: boolean
 }
-const ShowInfo: React.FC<Props> = ({ id, fanartReq, posterReq, animEnd }) => {
+const ShowInfo: React.FC<Props> = ({ id, tdbid, fanartReq, posterReq, animEnd }) => {
   const dispatch = useADispatch()
   const episodes = useEpisodes(id)
   const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
   const [onViewIndex, setOnViewIndex] = useState(0)
   const noSpecial = useRef(0)
-  const show = useShallowSelector(state => state.sonarr.entities.series[id])
+  const show = useShallowSelector(state => state.sonarr.entities.series[tdbid])
   const keys = Object.keys(episodes).map(Number)
   const data = keys.slice().reverse()
   const selected = (episodes[onViewIndex + noSpecial.current] || [])

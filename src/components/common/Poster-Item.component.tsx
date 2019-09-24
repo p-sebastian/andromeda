@@ -22,6 +22,7 @@ type Props = {
   gradientTextColor: string
   title: string
   id: number
+  tdbid: number
   serverKey: ServersWithImages
   children: React.ReactNode
   flexDirection?: 'row' | 'column'
@@ -30,6 +31,7 @@ type Props = {
 const PosterItem: React.FC<Props> = ({
   children,
   id,
+  tdbid,
   serverKey,
   gradient,
   gradientTextColor,
@@ -40,8 +42,8 @@ const PosterItem: React.FC<Props> = ({
   const { setDimensions } = useContext(ExpansionContext)
   const container = useRef<View>(null)
   const server = useASelector(selectServer(serverKey))
-  const poster = useASelector(selectImage(serverKey, `${id}-poster`))
-  const fanart = useASelector(selectImage(serverKey, `${id}-fanart`))
+  const poster = useASelector(selectImage(serverKey, `${tdbid}-poster`))
+  const fanart = useASelector(selectImage(serverKey, `${tdbid}-fanart`))
   const posterReq = uriForImage(server, poster)
   const fanartReq = uriForImage(server, fanart)
   /**
@@ -56,6 +58,7 @@ const PosterItem: React.FC<Props> = ({
         offsetY,
         selected: true,
         id,
+        tdbid,
         posterReq,
         fanartReq,
         serverKey

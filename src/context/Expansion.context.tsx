@@ -1,5 +1,5 @@
-import { createContext } from 'react'
 import { ServerEnum } from '@utils/enums.util'
+import { createContext } from 'react'
 
 export const ExpansionContext = createContext({
   dimensions: {
@@ -9,6 +9,7 @@ export const ExpansionContext = createContext({
     elmWidth: 0,
     selected: false,
     id: 0,
+    tdbid: 0,
     posterReq: { uri: '', headers: {} },
     fanartReq: { uri: '', headers: {} },
     serverKey: ServerEnum.SONARR
@@ -20,6 +21,7 @@ export const ExpansionContext = createContext({
     elmWidth: number
     selected: boolean
     id: number
+    tdbid: number
     posterReq: { uri: string; headers: { [key: string]: string } }
     fanartReq: { uri: string; headers: { [key: string]: string } }
     serverKey: ServerEnum

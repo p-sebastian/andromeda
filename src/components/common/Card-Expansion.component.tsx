@@ -15,6 +15,7 @@ type Props = {
   elmHeight: number
   elmWidth: number
   id: number
+  tdbid: number
   posterReq: { uri: string; headers: { [key: string]: string } }
   fanartReq: { uri: string; headers: { [key: string]: string } }
   serverKey: ServerEnum

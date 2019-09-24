@@ -19,7 +19,7 @@ const MoviesScreen: ScreenFComponent = () => {
     state => state.radarr.result.movies
   )
 
-  const fuse = useMemo(() => fuzzySearch(movies), [JSON.stringify(result)])
+  const fuse = useMemo(() => fuzzySearch(movies, 'tmdbId'), [JSON.stringify(result)])
   const data = value === '' ? result : (fuse.search(value) as number[])
 
   return (

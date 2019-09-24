@@ -1,13 +1,12 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import { persistStore, persistReducer, PersistConfig } from 'redux-persist'
-import { createEpicMiddleware } from 'redux-observable'
-import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
-import thunk from 'redux-thunk'
-import storage from 'redux-persist/lib/storage'
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2'
-
-import { rootReducer, RootState } from '@reducers/index'
 import epics from '@epics/index'
+import { RootState, rootReducer } from '@reducers/index'
+import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
+import { applyMiddleware, compose, createStore } from 'redux'
+import { createEpicMiddleware } from 'redux-observable'
+import { PersistConfig, persistReducer, persistStore } from 'redux-persist'
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2'
+import storage from 'redux-persist/lib/storage'
+import thunk from 'redux-thunk'
 
 // @note: DEVELOPMENT
 import Reactotron from '../../../Reactotron.config'

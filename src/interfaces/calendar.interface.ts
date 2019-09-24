@@ -3,6 +3,7 @@ import { IEntity } from './common.interface'
 export type TCalendar = IEntity<CalendarValue>
 
 export interface CalendarValue {
+  tvdbId: number
   seriesId: number
   episodeFileId: number
   seasonNumber: number

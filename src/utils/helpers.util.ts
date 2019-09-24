@@ -1,10 +1,11 @@
 import { ScreenNames } from '@routes'
-import { AVAILABLE_SERVERS } from './constants.util'
-import Fuse from 'fuse.js'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
-import { Platform } from 'react-native'
-import { memoize } from 'lodash'
 import { TServer } from '@utils/types.util'
+import Fuse from 'fuse.js'
+import { memoize } from 'lodash'
+import { Platform } from 'react-native'
+
+import { AVAILABLE_SERVERS } from './constants.util'
 
 const _withinScreen = (screenName: ScreenNames) => {
   let _server = null
@@ -29,8 +30,8 @@ const fuseOptions = {
   keys: ['title'],
   id: 'id'
 }
-export const fuzzySearch = (data: {}) =>
-  new Fuse(Object.values(data), fuseOptions)
+export const fuzzySearch = (data: {}, id: string) =>
+  new Fuse(Object.values(data), { ...fuseOptions, id })
 
 export const isIphoneX = () =>
   (Platform.OS === 'ios' &&

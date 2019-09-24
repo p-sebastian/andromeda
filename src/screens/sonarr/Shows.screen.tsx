@@ -22,7 +22,7 @@ const SonarrHomeScreen: ScreenFComponent = () => {
     state => state.sonarr.result.series
   )
 
-  const fuse = useMemo(() => fuzzySearch(series), [JSON.stringify(result)])
+  const fuse = useMemo(() => fuzzySearch(series, 'tvdbId'), [JSON.stringify(result)])
   const data = value === '' ? result : (fuse.search(value) as number[])
 
   return (
