@@ -7,7 +7,7 @@ import { useADispatchC } from '@utils/recipes.util'
 import { do_navigate } from '@actions/navigation.actions'
 import { ThemeEnum } from '@utils/enums.util'
 import { do_sidebar_toggle } from '@actions/general.actions'
-import { FONT } from '@src/utils/constants.util'
+import { FONT } from '@utils/constants.util'
 
 const { height } = Dimensions.get('window')
 const ATopMenu: React.FC = () => {

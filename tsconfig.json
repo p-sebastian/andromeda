@@ -27,7 +27,7 @@
     "forceConsistentCasingInFileNames": true,
     "disableSizeLimit": true,
     "paths": {
-      "@src/*": ["src/*"],
+      "@routes": ["src/app.routes"],
       "@common/*": ["src/components/common/*"],
       "@components/*": ["src/components/*"],
       "@screens/*": ["src/screens/*"],

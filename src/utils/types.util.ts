@@ -8,7 +8,7 @@ import {
   NavigationRouter
 } from 'react-navigation'
 import { Epic } from 'redux-observable'
-import { RootState } from '../redux/reducers'
+import { RootState } from '@reducers/index'
 import {
   ThemeActionsType,
   NavigationActionsType,
@@ -16,9 +16,9 @@ import {
   ApiActionsType,
   GeneralActionsType,
   ApiSuccessActionsType
-} from '../redux/actions'
+} from '@actions/index'
 import { BASE } from './theme.util'
-import { ScreenNames } from '@src/app.routes'
+import { ScreenNames } from '@routes'
 import { ThemeEnum, ServerEnum, GradientEnum } from './enums.util'
 
 /**

@@ -10,8 +10,8 @@ import { useShallowSelector, useADispatchC } from '@utils/recipes.util'
 import SearchBar from '@common/Search-Bar.component'
 import AFAB from '@common/FAB.component'
 import { Ionicons } from '@expo/vector-icons'
-import { do_navigate } from '@src/redux/actions/navigation.actions'
-import { fuzzySearch } from '@src/utils/helpers.util'
+import { do_navigate } from '@actions/navigation.actions'
+import { fuzzySearch } from '@utils/helpers.util'
 
 const SonarrHomeScreen: ScreenFComponent = () => {
   const toAddSeries = useADispatchC(do_navigate('addseries', { title: 'add' }))

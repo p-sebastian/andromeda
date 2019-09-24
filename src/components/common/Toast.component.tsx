@@ -4,16 +4,16 @@ import {
   useShallowSelector,
   useADispatchC,
   extractCondition
-} from '@src/utils/recipes.util'
-import { SCREEN_HEIGHT } from '@src/utils/dimensions.util'
-import { isIphoneX } from '@src/utils/helpers.util'
-import { MARGIN, BORDER_RADIUS, BOX_SHADOW } from '@src/utils/position.util'
+} from '@utils/recipes.util'
+import { SCREEN_HEIGHT } from '@utils/dimensions.util'
+import { isIphoneX } from '@utils/helpers.util'
+import { MARGIN, BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import { Animated } from 'react-native'
-import { do_toast_hide } from '@src/redux/actions/general.actions'
-import { COLORS } from '@src/utils/constants.util'
-import { ColorEnum } from '@src/utils/enums.util'
+import { do_toast_hide } from '@actions/general.actions'
+import { COLORS } from '@utils/constants.util'
+import { ColorEnum } from '@utils/enums.util'
 import { Ionicons } from '@expo/vector-icons'
-import { ToastState } from '@src/redux/reducers'
+import { ToastState } from '@reducers/index'
 import AText from '@common/Text.component'
 
 const TOAST_HEIGHT = 60

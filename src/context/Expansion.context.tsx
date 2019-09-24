@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { ServerEnum } from '@src/utils/enums.util'
+import { ServerEnum } from '@utils/enums.util'
 
 export const ExpansionContext = createContext({
   dimensions: {

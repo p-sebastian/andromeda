@@ -7,7 +7,7 @@ import MovieInfo from '@components/Movie-Info.component'
 import AFAB from '@common/FAB.component'
 import { Ionicons } from '@expo/vector-icons'
 import { ExpansionContext } from '../../context/Expansion.context'
-import { ServerEnum } from '@src/utils/enums.util'
+import { ServerEnum } from '@utils/enums.util'
 
 type Props = {
   offsetX: number

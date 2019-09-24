@@ -1,4 +1,4 @@
-import { ScreenStack } from '../../app.routes'
+import { ScreenStack } from '@routes'
 import { NavigationActions } from 'react-navigation'
 
 const INITIAL_ACTION = { type: NavigationActions.INIT }

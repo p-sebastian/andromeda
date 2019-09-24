@@ -11,9 +11,9 @@ import {
   SERVER_SET_ENABLED,
   SERVER_MODIFY_COMPLETE
 } from '@actions/types'
-import { IRawSeries } from '@src/interfaces/common.interface'
+import { IRawSeries } from '@interfaces/common.interface'
 import { NetInfoStateType } from '@react-native-community/netinfo'
-import { ServerEnum } from '@src/utils/enums.util'
+import { ServerEnum } from '@utils/enums.util'
 
 type State = {
   episodes: { [key: string]: IEpisode[] }

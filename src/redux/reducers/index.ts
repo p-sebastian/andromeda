@@ -7,7 +7,7 @@ import { sonarrReducer } from './sonarr.reducer'
 import { spinnerReducer } from './spinner.reducer'
 import { tempReducer } from './temp.reducer'
 import { radarrReducer } from './radarr.reducer'
-import { toastReducer } from '@src/redux/reducers/toast.reducer'
+import { toastReducer } from '@reducers/toast.reducer'
 
 export const rootReducer = combineReducers({
   navigation: navigationReducer,

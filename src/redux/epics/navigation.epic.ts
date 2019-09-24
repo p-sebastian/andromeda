@@ -1,15 +1,15 @@
 import { isOfType } from 'typesafe-actions'
 import { filter, mergeMap, tap, map, withLatestFrom } from 'rxjs/operators'
-import { NavigationActionsType, ThemeActionsType } from '../actions'
+import { NavigationActionsType, ThemeActionsType } from '@actions/index'
 import { TEpic } from '@utils/types.util'
 import _ from 'lodash'
 import { do_theme_change, do_theme_title } from '@actions/theme.actions'
 import { NavigationActions } from 'react-navigation'
 import { concat, of, Observable } from 'rxjs'
-import { ScreenNames, ScreenStack } from '../../app.routes'
+import { ScreenNames, ScreenStack } from '@routes'
 import { ThemeEnum } from '@utils/enums.util'
 import { Keyboard } from 'react-native'
-import { withinScreen } from '@src/utils/helpers.util'
+import { withinScreen } from '@utils/helpers.util'
 
 type NavAction = {
   type: NavigationActionsType

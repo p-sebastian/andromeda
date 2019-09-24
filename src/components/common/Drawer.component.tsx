@@ -13,8 +13,8 @@ import {
 } from '@utils/dimensions.util'
 import { useTheme } from '@hooks/useTheme'
 import NetworkInfo from '@components/Network-Info.component'
-import { ColorEnum } from '@src/utils/enums.util'
-import { COLORS } from '@src/utils/constants.util'
+import { ColorEnum } from '@utils/enums.util'
+import { COLORS } from '@utils/constants.util'
 
 type Extra = { position: Animated.Value }
 type Props = { Content?: React.FC }

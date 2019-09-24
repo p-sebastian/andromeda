@@ -13,7 +13,7 @@ import {
   NETWORK_CHANGE,
   NETWORK_ENDPOINT_TOGGLE
 } from '@actions/types'
-import { ServerEnum } from '@src/utils/enums.util'
+import { ServerEnum } from '@utils/enums.util'
 import { NetInfoStateType } from '@react-native-community/netinfo'
 
 export type TServerConfig = {

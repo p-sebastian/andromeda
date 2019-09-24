@@ -1,16 +1,15 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
-import { TServer, StyledThemeP } from '@utils/types.util'
+import { StyledThemeP } from '@utils/types.util'
 import { useADispatchC, useShallowSelector } from '@utils/recipes.util'
 import _ from 'lodash'
 import { Entypo } from '@expo/vector-icons'
 import { BETWEEN_WIDTH, OFFSET } from '@utils/dimensions.util'
 import { do_navigate } from '@actions/navigation.actions'
 import { COLORS, FONT } from '@utils/constants.util'
-import { useTheme } from '@hooks/useTheme'
 import { do_sidebar_toggle } from '@actions/general.actions'
-import { ServerEnum, ThemeEnum } from '@src/utils/enums.util'
-import { THEME } from '@src/utils/theme.util'
+import { ServerEnum, ThemeEnum } from '@utils/enums.util'
+import { THEME } from '@utils/theme.util'
 
 type Props = {
   serverKey: ServerEnum

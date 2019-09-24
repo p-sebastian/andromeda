@@ -1,7 +1,7 @@
-import { THEME_CHANGE, THEME_TITLE } from '../actions/types'
-import { ThemeActionsType } from '../actions'
+import { THEME_CHANGE, THEME_TITLE } from '@actions/types'
+import { ThemeActionsType } from '@actions/index'
 import { ThemeEnum, ServerEnum } from '@utils/enums.util'
-import { ScreenNames } from '@src/app.routes'
+import { ScreenNames } from '@routes'
 
 /**
  * Also consists of initial page when datas been purged

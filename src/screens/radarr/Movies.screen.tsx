@@ -8,8 +8,8 @@ import { IEntity } from '@interfaces/common.interface'
 import MovieItem from '@components/Movie-Item.component'
 import { useShallowSelector } from '@utils/recipes.util'
 import SearchBar from '@common/Search-Bar.component'
-import { fuzzySearch } from '@src/utils/helpers.util'
-import { IMovie } from '@src/interfaces/movie.interface'
+import { fuzzySearch } from '@utils/helpers.util'
+import { IMovie } from '@interfaces/movie.interface'
 
 const MoviesScreen: ScreenFComponent = () => {
   const movies = useShallowSelector(state => state.radarr.entities.movies)

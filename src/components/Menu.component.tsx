@@ -5,8 +5,8 @@ import { SafeAreaView } from 'react-navigation'
 import AMenuItem from './Menu-Item.component'
 import ATopMenu from './Top-Menu.component'
 import { SCREEN_HEIGHT } from '@utils/dimensions.util'
-import { useShallowSelector, useASelector } from '@src/utils/recipes.util'
-import { ServerEnum } from '@src/utils/enums.util'
+import { useShallowSelector, useASelector } from '@utils/recipes.util'
+import { ServerEnum } from '@utils/enums.util'
 
 const AMenu: React.FC = () => {
   const enabled = useShallowSelector(state => state.temp.enabledServers)

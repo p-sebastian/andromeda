@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import { COLORS, FONT } from '@utils/constants.util'
 import { ColorEnum } from '@utils/enums.util'
-import { extractCondition } from '@src/utils/recipes.util'
+import { extractCondition } from '@utils/recipes.util'
 import { Keyboard } from 'react-native'
 
 type Props = {

@@ -1,45 +1,45 @@
-import { isOfType } from 'typesafe-actions'
-import { TEpic, TActions } from '@utils/types.util'
-import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import {
-  API_SONARR_GET_SERIES,
-  API_SONARR_GET_CALENDAR,
-  API_SONARR_GET_EPISODES,
-  API_SONARR_GET_HISTORY,
-  API_RADARR_GET_MOVIES,
-  API_SONARR_GET_SEARCH,
-  API_AJAX_FAIL
-} from '@actions/types'
-import {
-  mergeMap,
-  filter,
-  map,
-  tap,
-  catchError,
-  concatMap,
-  withLatestFrom
-} from 'rxjs/operators'
-import { of } from 'rxjs'
-import { withApi, onCase } from '@utils/api.util'
-import { logger } from '@utils/logger.util'
-import {
-  do_api_ajax_fail,
-  do_spinner_toggle,
-  do_spinner_clear,
-  do_toast_show,
-  do_network_endpoint_toggle
-} from '@actions/general.actions'
-import { ApiSuccessActionsType } from '@actions/index'
-import {
-  on_api_sonarr_get_series_success,
+  on_api_radarr_get_movies_success,
   on_api_sonarr_get_calendar_success,
   on_api_sonarr_get_episodes_success,
   on_api_sonarr_get_history_success,
-  on_api_radarr_get_movies_success,
-  on_api_sonarr_get_search_success
+  on_api_sonarr_get_search_success,
+  on_api_sonarr_get_series_success
 } from '@actions/api.success.actions'
+import {
+  do_api_ajax_fail,
+  do_network_endpoint_toggle,
+  do_spinner_clear,
+  do_spinner_toggle,
+  do_toast_show
+} from '@actions/general.actions'
+import { ApiSuccessActionsType } from '@actions/index'
+import { do_server_set_status } from '@actions/server.actions'
+import {
+  API_AJAX_FAIL,
+  API_RADARR_GET_MOVIES,
+  API_SONARR_GET_CALENDAR,
+  API_SONARR_GET_EPISODES,
+  API_SONARR_GET_HISTORY,
+  API_SONARR_GET_SEARCH,
+  API_SONARR_GET_SERIES
+} from '@actions/types'
 import { NetInfoStateType } from '@react-native-community/netinfo'
-import { do_server_set_status } from '@src/redux/actions/server.actions'
+import { onCase, withApi } from '@utils/api.util'
+import { logger } from '@utils/logger.util'
+import { TActions, TEpic } from '@utils/types.util'
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
+import { of } from 'rxjs'
+import {
+  catchError,
+  concatMap,
+  filter,
+  map,
+  mergeMap,
+  tap,
+  withLatestFrom
+} from 'rxjs/operators'
+import { isOfType } from 'typesafe-actions'
 
 const spinnerStartEpic: TEpic = action$ =>
   action$.pipe(

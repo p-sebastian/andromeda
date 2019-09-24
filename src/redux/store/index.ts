@@ -6,8 +6,8 @@ import thunk from 'redux-thunk'
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2'
 
-import { rootReducer, RootState } from '../reducers'
-import epics from '../epics'
+import { rootReducer, RootState } from '@reducers/index'
+import epics from '@epics/index'
 
 // @note: DEVELOPMENT
 import Reactotron from '../../../Reactotron.config'

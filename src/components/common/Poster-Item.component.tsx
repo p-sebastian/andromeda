@@ -13,7 +13,7 @@ import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
 import { View } from 'react-native'
 import { ExpansionContext } from '../../context/Expansion.context'
-import { FONT } from '@src/utils/constants.util'
+import { FONT } from '@utils/constants.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 

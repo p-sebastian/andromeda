@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useShallowSelector } from '@utils/recipes.util'
 import { ServerState } from '@reducers/index'
 import { TServerState } from '@reducers/server.reducer'
-import { logger } from '@src/utils/logger.util'
+import { logger } from '@utils/logger.util'
 
 const separate = (servers: ServerState) => {
   const enabled: TServerState[] = []

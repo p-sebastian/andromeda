@@ -4,17 +4,14 @@ import { ScreenFComponent } from '@utils/types.util'
 import ABackground from '@common/Background.component'
 import SearchBar from '@common/Search-Bar.component'
 import SearchItem from '@common/Search-Item.component'
-import { useADispatch, useASelector } from '@src/utils/recipes.util'
-import { do_api_sonarr_get_search } from '@src/redux/actions/api.actions'
-import { IRawSeries } from '@src/interfaces/common.interface'
-import {
-  do_clear_search_series,
-  do_toast_show
-} from '@src/redux/actions/general.actions'
+import { useADispatch, useASelector } from '@utils/recipes.util'
+import { do_api_sonarr_get_search } from '@actions/api.actions'
+import { IRawSeries } from '@interfaces/common.interface'
+import { do_clear_search_series, do_toast_show } from '@actions/general.actions'
 import AInfo from '@common/Info-Text.component'
 import ACard from '@common/Card.component'
-import { ColorEnum } from '@src/utils/enums.util'
-import { COLORS } from '@src/utils/constants.util'
+import { ColorEnum } from '@utils/enums.util'
+import { COLORS } from '@utils/constants.util'
 
 type ISearchSeries = IRawSeries<{ coverType: string; url: string }>
 const AddSeriesScreen: ScreenFComponent = () => {

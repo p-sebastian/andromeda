@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useASelector, useShallowSelector } from '@utils/recipes.util'
-import { logger } from '@src/utils/logger.util'
+import { logger } from '@utils/logger.util'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 // Sidebar size
@@ -57,8 +57,8 @@ export const usePanResponder: usePanResponderFn = position => {
     []
   )
 
-  type Lock = (open: boolean, velocity: number) => void
-  const lock: Lock = useCallback((open, velocity) => {
+  type Lock = (open: boolean, velocity?: number) => void
+  const lock: Lock = useCallback((open, velocity = 0) => {
     const value = open ? HIDDEN_WIDTH : OFFSET
     Animated.spring(position, {
       toValue: value,

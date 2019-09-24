@@ -16,8 +16,8 @@ import {
 } from './types'
 import { capitalize } from 'lodash'
 import { NetInfoStateType } from '@react-native-community/netinfo'
-import { ApiActionsType } from '@src/redux/actions'
-import { ServerEnum } from '@src/utils/enums.util'
+import { ApiActionsType } from '@actions/index'
+import { ServerEnum } from '@utils/enums.util'
 
 export const do_api_ajax_fail = createAction(
   API_AJAX_FAIL,

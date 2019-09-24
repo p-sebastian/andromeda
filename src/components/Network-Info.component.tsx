@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components/native'
-import { SCREEN_HEIGHT } from '@src/utils/dimensions.util'
-import { FONT, COLORS } from '@src/utils/constants.util'
+import { SCREEN_HEIGHT } from '@utils/dimensions.util'
+import { FONT, COLORS } from '@utils/constants.util'
 import { Ionicons } from '@expo/vector-icons'
-import { isIphoneX } from '@src/utils/helpers.util'
-import { useASelector, useADispatch } from '@src/utils/recipes.util'
+import { isIphoneX } from '@utils/helpers.util'
+import { useASelector, useADispatch } from '@utils/recipes.util'
 import NetInfo from '@react-native-community/netinfo'
 import { do_network_change } from '@actions/general.actions'
 import { ColorEnum } from '@utils/enums.util'
-import { useTheme } from '@src/hooks/useTheme'
+import { useTheme } from '@hooks/useTheme'
 
 type Props = { title: string }
 const NetworkInfo: React.FC<Props> = ({ title }) => {

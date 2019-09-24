@@ -1,6 +1,6 @@
 import { createReducer } from 'typesafe-actions'
 import { TActions } from '@utils/types.util'
-import { TOAST_SHOW, TOAST_HIDE } from '@src/redux/actions/types'
+import { TOAST_SHOW, TOAST_HIDE } from '@actions/types'
 
 type State = {
   msg: string

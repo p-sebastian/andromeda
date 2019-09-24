@@ -1,11 +1,10 @@
-import { ScreenNames } from '@src/app.routes'
+import { ScreenNames } from '@routes'
 import { AVAILABLE_SERVERS } from './constants.util'
-import { ServerEnum } from './enums.util'
 import Fuse from 'fuse.js'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@src/utils/dimensions.util'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { Platform } from 'react-native'
 import { memoize } from 'lodash'
-import { TServer } from '@src/utils/types.util'
+import { TServer } from '@utils/types.util'
 
 const _withinScreen = (screenName: ScreenNames) => {
   let _server = null

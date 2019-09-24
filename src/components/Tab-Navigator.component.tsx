@@ -3,7 +3,7 @@ import { MaterialTopTabBar, MaterialTopTabBarProps } from 'react-navigation'
 import styled from 'styled-components/native'
 import { extractStyleTheme } from '@utils/recipes.util'
 import { useTheme } from '@hooks/useTheme'
-import { FONT } from '@src/utils/constants.util'
+import { FONT } from '@utils/constants.util'
 
 const AMaterialTopTabBar: React.FC<MaterialTopTabBarProps> = props => {
   const theme = useTheme()

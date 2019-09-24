@@ -11,7 +11,7 @@ import { ApiActionsType } from '@actions/index'
 import { isOfType } from 'typesafe-actions'
 import { TActions } from './types.util'
 import { nrmlz } from './normalizr.util'
-import { logger } from '@src/utils/logger.util'
+import { logger } from '@utils/logger.util'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type AjaxCreator = (

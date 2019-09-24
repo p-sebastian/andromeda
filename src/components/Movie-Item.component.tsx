@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import { GradientEnum, ServerEnum, ColorEnum } from '@utils/enums.util'
 import { GRADIENTS, COLORS, FONT } from '@utils/constants.util'
 import PosterItem from '@common/Poster-Item.component'
-import { IMovie } from '@src/interfaces/movie.interface'
+import { IMovie } from '@interfaces/movie.interface'
 import moment from 'moment'
 
 type Props = { movie: IMovie }

@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import { ExpansionContext } from '../../context/Expansion.context'
 import { Overwrite } from '@utils/types.util'
 import CardExpansion from '@common/Card-Expansion.component'
-import { ServerEnum } from '@src/utils/enums.util'
+import { ServerEnum } from '@utils/enums.util'
 
 type Props = {}
 export const withExpansion = <P extends {}>(Component: ComponentType<P>) => {
