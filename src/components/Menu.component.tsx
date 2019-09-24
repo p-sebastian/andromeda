@@ -4,32 +4,39 @@ import styled from 'styled-components/native'
 import { SafeAreaView } from 'react-navigation'
 import AMenuItem from './Menu-Item.component'
 import ATopMenu from './Top-Menu.component'
-import { TServer } from '@utils/types.util'
 import { SCREEN_HEIGHT } from '@utils/dimensions.util'
-import { useServer } from '@hooks/useServer'
+import { useShallowSelector, useASelector } from '@src/utils/recipes.util'
+import { ServerEnum } from '@src/utils/enums.util'
 
 const AMenu: React.FC = () => {
-  const [enabled] = useServer()
+  const enabled = useShallowSelector(state => state.temp.enabledServers)
+  const selectedServer = useASelector(state => state.theme.selectedServer)
+  // only need to pass selectedServer
   return (
     <SContainer>
       <ATopMenu />
       <FlatList
+        extraData={selectedServer}
         data={enabled}
-        renderItem={renderItem}
+        renderItem={renderItem(selectedServer)}
         keyExtractor={keyExtract}
       />
     </SContainer>
   )
 }
 
-const renderItem: ListRenderItem<TServer> = ({ item }) => (
-  <AMenuItem item={item} />
+const renderItem: (
+  selectedServer: ServerEnum
+) => ListRenderItem<ServerEnum> = selectedServer => ({ item }) => (
+  <AMenuItem serverKey={item} selected={item === selectedServer} />
 )
 
-const keyExtract = (item: TServer) => item.key.toString()
+const keyExtract = (item: ServerEnum) => item.toString()
 
 const SContainer = styled(SafeAreaView)`
   height: ${SCREEN_HEIGHT - 60};
 `
 
-export default AMenu
+// memoizing here disables the parent rendering this
+// only the selectors trigger the re-render
+export default React.memo(AMenu)

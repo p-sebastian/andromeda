@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components/native'
 import {
   useShallowSelector,
@@ -20,7 +20,7 @@ const TOAST_HEIGHT = 60
 
 const Toast: React.FC = () => {
   const toast = useShallowSelector(state => state.toast)
-  const animated = useAnimate(toast)
+  const [animated, dismiss] = useAnimate(toast)
   const { backgroundColor, icon } = _styles(toast.type)
 
   return (
@@ -29,16 +29,19 @@ const Toast: React.FC = () => {
       padding={animated.height > TOAST_HEIGHT}
       style={{ ...animated, backgroundColor } as any}
     >
-      <Container>
-        <Ionicons name={icon} color="white" size={32} />
-        <Text>{toast.msg}</Text>
-      </Container>
+      <Touchable onPress={dismiss}>
+        <Container>
+          <Ionicons name={icon} color="white" size={32} />
+          <Text>{toast.msg}</Text>
+        </Container>
+      </Touchable>
     </Padding>
   )
 }
 
 const useAnimate = ({ position, visible, duration }: ToastState) => {
   const hide = useADispatchC(do_toast_hide())
+  const timer = useRef<number>(0)
   let initial = 0
   let height = TOAST_HEIGHT
   if (position === 'top') {
@@ -53,16 +56,25 @@ const useAnimate = ({ position, visible, duration }: ToastState) => {
     const toValue = visible ? _toValue(position) : initial
     Animated.spring(animated, {
       toValue
-    }).start(() => (visible ? setTimeout(hide, duration) : null))
+    }).start(() =>
+      visible ? (timer.current = setTimeout(hide, duration)) : null
+    )
   }
+  const dismiss = useCallback(() => {
+    clearTimeout(timer.current)
+    hide()
+  }, [timer.current])
 
   useEffect(() => {
     animate()
   }, [visible])
 
-  return position === 'center'
-    ? { height, opacity: animated, top: SCREEN_HEIGHT / 2 }
-    : { height, bottom: animated }
+  const _style =
+    position === 'center'
+      ? { height, opacity: animated, top: SCREEN_HEIGHT / 2 }
+      : { height, bottom: animated }
+
+  return [_style, dismiss] as [typeof _style, typeof dismiss]
 }
 const _styles = (type: 'error' | 'warning' | 'info' | 'success') => {
   switch (type) {
@@ -103,6 +115,9 @@ const Padding = styled.View`
   padding-left: ${MARGIN};
   padding-right: ${MARGIN};
   box-shadow: ${BOX_SHADOW};
+`
+const Touchable = styled.TouchableWithoutFeedback`
+  flex: 1;
 `
 const Container = styled.View`
   flex: 1;

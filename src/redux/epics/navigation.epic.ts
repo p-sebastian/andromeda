@@ -5,15 +5,15 @@ import { TEpic } from '@utils/types.util'
 import _ from 'lodash'
 import { do_theme_change, do_theme_title } from '@actions/theme.actions'
 import { NavigationActions } from 'react-navigation'
-import { AVAILABLE_SERVERS } from '@utils/constants.util'
 import { concat, of, Observable } from 'rxjs'
 import { ScreenNames, ScreenStack } from '../../app.routes'
 import { ThemeEnum } from '@utils/enums.util'
 import { Keyboard } from 'react-native'
+import { withinScreen } from '@src/utils/helpers.util'
 
 type NavAction = {
   type: NavigationActionsType
-  params?: { theme?: ThemeEnum }
+  params?: { theme?: ThemeEnum; title?: ScreenNames }
   routeName: ScreenNames
 }
 const navigateEpic: TEpic = action$ =>
@@ -22,16 +22,14 @@ const navigateEpic: TEpic = action$ =>
     mergeMap((action: any) => {
       Keyboard.dismiss()
       const { routeName, params = {} } = action as NavAction
+      const { title, theme } = params
       const screenName = routeName.toLocaleLowerCase() as ScreenNames
-      const which = Object.values(AVAILABLE_SERVERS).find(
-        v => v.title === screenName
-      )
+      const server = withinScreen(screenName)
       const actions = [
-        of(do_theme_title(params.title || screenName))
+        of(do_theme_title(title || screenName, server ? server.key : undefined))
       ] as Observable<ThemeActionsType>[]
-      const theme = params.theme
-      if (theme || which) {
-        actions.push(of(do_theme_change(theme || which!.themeKey)))
+      if (theme || server) {
+        actions.push(of(do_theme_change(theme || server!.themeKey)))
       }
       return concat(...actions)
     })

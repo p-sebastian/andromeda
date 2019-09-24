@@ -97,13 +97,16 @@ const apiGetEpic: TEpic = (action$, state$) =>
         )
     ),
     // finish loading
-    concatMap(action => {
-      return of(
-        isOfType(API_AJAX_FAIL, action)
-          ? do_spinner_clear()
-          : do_spinner_toggle((action as ApiSuccessActionsType).meta, false),
-        action
-      )
+    withLatestFrom(state$),
+    concatMap(([action, state]) => {
+      const actions: TActions[] = isOfType(API_AJAX_FAIL, action)
+        ? [do_spinner_clear()]
+        : [
+            do_spinner_toggle((action as ApiSuccessActionsType).meta, false),
+            do_server_set_status(state.theme.selectedServer, 'online')
+          ]
+      actions.push(action)
+      return actions
     })
   )
 // const apiPostEpic: TEpic
@@ -123,7 +126,10 @@ const apiErrorEpic: TEpic = (action$, state$) =>
       const network = state.temp.network
       // Authentication Error
       if (!isNaN(status) && (status >= 400 && status < 499)) {
-        actions.push(do_toast_show('Authentication Error', 'error'))
+        actions = actions.concat([
+          do_toast_show('Authentication Error', 'error'),
+          do_server_set_status(serverKey, 'auth')
+        ])
       } else {
         // server error, or timeout
         // net === none -> err not connected

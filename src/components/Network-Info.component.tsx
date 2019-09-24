@@ -1,55 +1,64 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components/native'
 import { SCREEN_HEIGHT } from '@src/utils/dimensions.util'
-import { FONT } from '@src/utils/constants.util'
+import { FONT, COLORS } from '@src/utils/constants.util'
 import { Ionicons } from '@expo/vector-icons'
 import { isIphoneX } from '@src/utils/helpers.util'
 import { useASelector, useADispatch } from '@src/utils/recipes.util'
-import NetInfo, { NetInfoStateType } from '@react-native-community/netinfo'
-import { logger } from '@src/utils/logger.util'
-import { do_network_change } from '@src/redux/actions/general.actions'
+import NetInfo from '@react-native-community/netinfo'
+import { do_network_change } from '@actions/general.actions'
+import { ColorEnum } from '@utils/enums.util'
+import { useTheme } from '@src/hooks/useTheme'
 
-type Props = { title: string; color: string }
-const NetworkInfo: React.FC<Props> = ({ title, color }) => {
+type Props = { title: string }
+const NetworkInfo: React.FC<Props> = ({ title }) => {
+  const { primary } = useTheme()
   const loading = useASelector(state => state.spinner.loading)
-  const network = useNetwork()
-  /*
-   * wifi - lan fail -> try network
-   * wifi - network fail -> offline
-   * mobile -> must be network
-   * mobile fail -> offline
-   *
-   * */
+  const serverKey = useASelector(state => state.theme.selectedServer)
+  const endpoint = useASelector(
+    state => state.server[serverKey].endpoint,
+    serverKey
+  )
+  const status = useASelector(
+    state => state.server[serverKey].status,
+    serverKey
+  )
+  const iconProps = icon(endpoint, status)
+  useNetwork()
+
   return (
     <SRotate>
       <STitle>{title}</STitle>
-      <NetworkIcon name="md-cloud-outline" color="white" size={24} />
-      <ActivityIndicator animating={loading} color={color} />
+      <NetworkIcon {...iconProps} size={24} />
+      <ActivityIndicator animating={loading} color={primary} />
     </SRotate>
   )
 }
 
-const icon = (network: NetInfoStateType) => {
-  switch (network) {
-    case NetInfoStateType.cellular:
-      return 'md-globe'
-    case NetInfoStateType.wifi:
-      return 'md-cloud'
+const icon = (endpoint: string, status: string) => {
+  const props = { name: '', color: 'white' }
+  props.name = endpoint === 'lan' ? 'md-cloud' : 'md-globe'
+  switch (status) {
+    case 'offline':
+      props.color = COLORS[ColorEnum.DANGER]
+      break
+    case 'auth':
+      props.color = COLORS[ColorEnum.RADARR]
+      break
     default:
-      return 'md-cloud-outline'
+      props.color = 'white'
   }
+  return props
 }
 
 const useNetwork = () => {
   const dispatch = useADispatch()
-  const network = useASelector(state => state.temp.network)
   useEffect(() => {
     const subscription = NetInfo.addEventListener(state =>
       dispatch(do_network_change(state.type))
     )
     return subscription
   }, [])
-  return network
 }
 const SRotate = styled.View`
   flex-direction: row;

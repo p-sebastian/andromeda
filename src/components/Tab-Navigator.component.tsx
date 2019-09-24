@@ -6,7 +6,7 @@ import { useTheme } from '@hooks/useTheme'
 import { FONT } from '@src/utils/constants.util'
 
 const AMaterialTopTabBar: React.FC<MaterialTopTabBarProps> = props => {
-  const [theme] = useTheme()
+  const theme = useTheme()
   const modProps: MaterialTopTabBarProps = { ...props }
   // bottom bar
   modProps.indicatorStyle = {

@@ -13,6 +13,8 @@ import {
 } from '@utils/dimensions.util'
 import { useTheme } from '@hooks/useTheme'
 import NetworkInfo from '@components/Network-Info.component'
+import { ColorEnum } from '@src/utils/enums.util'
+import { COLORS } from '@src/utils/constants.util'
 
 type Extra = { position: Animated.Value }
 type Props = { Content?: React.FC }
@@ -37,9 +39,11 @@ const ADrawer: React.FC<Props> & Extra = ({ Content, children }) => {
 }
 ADrawer.position = new Animated.Value(OFFSET)
 
-type ContentProps = { Content?: React.FC; position: Animated.Value }
+type ContentProps = {
+  Content?: React.FC
+  position: Animated.Value
+}
 const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
-  const [theme] = useTheme()
   const [panResponder, title] = usePanResponder(position)
   /**
    * makes title bar stick to the left, while animation is happening
@@ -57,9 +61,9 @@ const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
   }
 
   return (
-    <SDrawerView as={Animated.View} {...panResponder.panHandlers} theme={theme}>
+    <SDrawerView as={Animated.View} {...panResponder.panHandlers}>
       <SAnimatingTitleContainer as={Animated.View} style={animate as any}>
-        <NetworkInfo title={title} color={theme.primary} />
+        <NetworkInfo title={title} />
       </SAnimatingTitleContainer>
       <SContentContainer>{Content ? <Content /> : null}</SContentContainer>
     </SDrawerView>
@@ -68,7 +72,7 @@ const DrawerContent: React.FC<ContentProps> = ({ Content, position }) => {
 
 type MainProps = { main: ReactNode; position: Animated.Value }
 const MainContent: React.FC<MainProps> = ({ main, position }) => {
-  const [theme] = useTheme()
+  const theme = useTheme()
   // hide main content
   const animated = {
     opacity: position.interpolate({
@@ -101,13 +105,13 @@ const SSafeAreaView = styled.SafeAreaView`
   flex: 1;
   background-color: red;
 `
-const SDrawerView = styled.View<StyledThemeP>`
+const SDrawerView = styled.View`
   position: absolute;
   flex: 1;
   width: ${DRAWER_WIDTH};
   height: ${SCREEN_HEIGHT};
   left: ${-DRAWER_WIDTH + OFFSET};
-  background-color: ${extractStyleTheme('dark')};
+  background-color: ${COLORS[ColorEnum.MAIN]};
 `
 const SMainView = styled.View<StyledThemeP>`
   position: absolute;

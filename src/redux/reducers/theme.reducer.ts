@@ -1,14 +1,20 @@
 import { THEME_CHANGE, THEME_TITLE } from '../actions/types'
 import { ThemeActionsType } from '../actions'
-import { ThemeEnum } from '@utils/enums.util'
+import { ThemeEnum, ServerEnum } from '@utils/enums.util'
 import { ScreenNames } from '@src/app.routes'
 
 /**
  * Also consists of initial page when datas been purged
  */
-const DEFAULT_STATE = {
-  selected: ThemeEnum.MAIN as ThemeEnum,
-  title: 'Settings' as ScreenNames
+type State = {
+  selected: ThemeEnum
+  title: ScreenNames
+  selectedServer: ServerEnum
+}
+const DEFAULT_STATE: State = {
+  selected: ThemeEnum.MAIN,
+  title: 'settings',
+  selectedServer: ServerEnum.SONARR
 }
 
 export const themeReducer = (
@@ -19,7 +25,12 @@ export const themeReducer = (
     case THEME_CHANGE:
       return { ...state, selected: action.payload }
     case THEME_TITLE:
-      return { ...state, title: action.payload }
+      const { title, serverKey } = action.payload
+      return {
+        ...state,
+        title,
+        selectedServer: serverKey ? serverKey : state.selectedServer
+      }
     default:
       return state
   }

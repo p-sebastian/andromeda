@@ -1,6 +1,6 @@
 import { createAction } from 'typesafe-actions'
 import { THEME_CHANGE, THEME_TITLE } from './types'
-import { ThemeEnum } from '@utils/enums.util'
+import { ThemeEnum, ServerEnum } from '@utils/enums.util'
 import { ScreenNames } from '@src/app.routes'
 
 /**
@@ -12,5 +12,6 @@ export const do_theme_change = createAction(
 )
 export const do_theme_title = createAction(
   THEME_TITLE,
-  action => (title: ScreenNames) => action(title)
+  action => (title: ScreenNames, serverKey?: ServerEnum) =>
+    action({ title, serverKey })
 )

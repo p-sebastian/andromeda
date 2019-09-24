@@ -59,7 +59,8 @@ const CardExpansion: React.FC<Props> = ({
   const onPress = useCallback(() => {
     Animated.spring(animatedValue, {
       toValue: 0,
-      overshootClamping: true
+      overshootClamping: true,
+      useNativeDriver: true
     }).start(() => {
       setDimensions({ ...dimensions, selected: false })
       setAnimEnd(false)
@@ -87,7 +88,8 @@ const useAnimate = (
   const [animatedValue] = useState(new Animated.Value(0))
   useEffect(() => {
     Animated.spring(animatedValue, {
-      toValue: 1
+      toValue: 1,
+      useNativeDriver: true
     }).start(() => {
       setAnimEnd(true)
     })

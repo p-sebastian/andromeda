@@ -12,16 +12,22 @@ export type Selector<R, S> = (state: S) => R
  * ONLY GOES DOWN ONE LEVEL
  */
 export const useShallowSelector = <TSelected, TState = RootState>(
-  selector: Selector<TSelected, TState>
-) => useSelector<TState, TSelected>(useCallback(selector, []), shallowEqual)
+  selector: Selector<TSelected, TState>,
+  props?: any
+) =>
+  useSelector<TState, TSelected>(useCallback(selector, [props]), shallowEqual)
 
 /**
  * to use when returning a primitive value from
  * the selector
+ * @prop props required when selector has value in closure,
+ * else it wont re-render when said value changes
+ * eg: state => state.server[serverKey].status; serverKey is the prop
  */
 export const useASelector = <TSelected, TState = RootState>(
-  selector: Selector<TSelected, TState>
-) => useSelector<TState, TSelected>(useCallback(selector, []))
+  selector: Selector<TSelected, TState>,
+  props?: any
+) => useSelector<TState, TSelected>(useCallback(selector, [props]))
 
 /**
  * useDispatch but with type safety

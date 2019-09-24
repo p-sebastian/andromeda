@@ -6,7 +6,7 @@ import SafeAreaView from 'react-native-safe-area-view'
 import { useTheme } from '@hooks/useTheme'
 
 const AHeader: React.FC = () => {
-  const [theme] = useTheme()
+  const theme = useTheme()
   return <SSafeView theme={theme} accessibilityLabel="header" />
 }
 

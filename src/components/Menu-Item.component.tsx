@@ -1,26 +1,29 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 import { TServer, StyledThemeP } from '@utils/types.util'
-import { extractStyleTheme, useADispatchC } from '@utils/recipes.util'
+import { useADispatchC, useShallowSelector } from '@utils/recipes.util'
 import _ from 'lodash'
 import { Entypo } from '@expo/vector-icons'
 import { BETWEEN_WIDTH, OFFSET } from '@utils/dimensions.util'
 import { do_navigate } from '@actions/navigation.actions'
 import { COLORS, FONT } from '@utils/constants.util'
 import { useTheme } from '@hooks/useTheme'
-import { withinScreen } from '@utils/helpers.util'
 import { do_sidebar_toggle } from '@actions/general.actions'
+import { ServerEnum, ThemeEnum } from '@src/utils/enums.util'
+import { THEME } from '@src/utils/theme.util'
 
 type Props = {
-  item: TServer
+  serverKey: ServerEnum
+  selected: boolean
 }
-const AMenuItem: React.FC<Props> = ({ item }) => {
-  const { title, key, themeKey } = item
+const AMenuItem: React.FC<Props> = ({ serverKey, selected }) => {
+  const { title, key, themeKey } = useShallowSelector(
+    state => state.server[serverKey]
+  )
   const navigator = useADispatchC(do_navigate(title))
   const close = useADispatchC(do_sidebar_toggle(false))
-  const [theme, themeTitle] = useTheme()
   const isSelected = {
-    selected: withinScreen(key, themeTitle),
+    selected,
     isEven: Number(key) % 2 === 0,
     color: COLORS[themeKey]
   }
@@ -30,8 +33,8 @@ const AMenuItem: React.FC<Props> = ({ item }) => {
   }, [])
 
   return (
-    <SItem onPress={closeAndNavigate} theme={theme} {...isSelected}>
-      <SText theme={theme}>{title}</SText>
+    <SItem onPress={closeAndNavigate} {...isSelected}>
+      <SText>{title}</SText>
       {isSelected.selected ? (
         <BtnIcon name="dot-single" size={32} color="white" />
       ) : null}
@@ -52,8 +55,8 @@ const SItem = styled.TouchableOpacity<TSpecial>`
   border-right-width: 3px;
   border-style: solid;
   border-right-color: ${p => p.color};
-  background-color: ${({ isEven, theme }) =>
-    isEven ? theme.dark : theme.lighterDark};
+  background-color: ${({ isEven }) =>
+    isEven ? THEME[ThemeEnum.MAIN].dark : THEME[ThemeEnum.MAIN].lighterDark};
 `
 const SText = styled.Text<StyledThemeP>`
   position: absolute;

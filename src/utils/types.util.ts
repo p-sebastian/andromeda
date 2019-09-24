@@ -70,7 +70,7 @@ export type TTheme = typeof BASE
 export type StyledThemeP = { theme: TTheme }
 
 export type ServerNames = 'sonarr' | 'radarr' | 'lidarr' | 'sabnzbd' | 'torrent'
-export type ServerStatus = 'online' | 'offline'
+export type ServerStatus = 'online' | 'offline' | 'auth'
 export type TServer = {
   key: ServerEnum
   title: ServerNames

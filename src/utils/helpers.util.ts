@@ -4,21 +4,22 @@ import { ServerEnum } from './enums.util'
 import Fuse from 'fuse.js'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@src/utils/dimensions.util'
 import { Platform } from 'react-native'
+import { memoize } from 'lodash'
+import { TServer } from '@src/utils/types.util'
 
-/**
- * checks if navigation screen is within the screens of the current server
- * to maintain the check in the sidebar
- */
-export const withinScreen = (
-  serverKey: ServerEnum,
-  screenName: ScreenNames
-) => {
-  const server = AVAILABLE_SERVERS[serverKey]
-  return (
-    server.title === screenName ||
-    server.tabs.findIndex(name => name === screenName) > -1
-  )
+const _withinScreen = (screenName: ScreenNames) => {
+  let _server = null
+  Object.values(AVAILABLE_SERVERS).forEach(server => {
+    if (
+      server.title === screenName ||
+      server.tabs.findIndex(n => n === screenName) > -1
+    ) {
+      _server = { ...server }
+    }
+  })
+  return _server as TServer | null
 }
+export const withinScreen = memoize(_withinScreen)
 
 export const byteToGB = (size: number = 0) => {
   const gb = 1073741824
