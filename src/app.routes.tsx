@@ -14,7 +14,8 @@ import {
   HistoryScreen,
   MoviesScreen,
   TorrentAllScreen,
-  AddSeriesScreen
+  AddSeriesScreen,
+  AddInfoScreen
 } from '@screens/index'
 import { AMaterialTopTabBar } from './components'
 import { useASelector, useADispatch } from '@utils/recipes.util'
@@ -94,7 +95,8 @@ const ModalStack = createStackNavigator(
 const withHeaderStack = createStackNavigator(
   {
     Tabs: AppSwitch,
-    Addseries: AddSeriesScreen
+    Addseries: AddSeriesScreen,
+    Addinfo: AddInfoScreen
   },
   {
     mode: 'modal',
@@ -131,6 +133,9 @@ const AppNavigator: React.FC = () => {
 }
 /**
  * Screen Names for typing the navigator
+ * aside from actual name in navigator, if it uses an
+ * especial title, it must also be added such as
+ * addseries -> add
  */
 export type ScreenNames =
   | ServerNames
@@ -143,5 +148,7 @@ export type ScreenNames =
   | 'addseries'
   | 'add'
   | 'all'
+  | 'addinfo'
+  | 'info'
 
 export default AppNavigator

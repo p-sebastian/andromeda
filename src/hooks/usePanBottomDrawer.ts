@@ -1,5 +1,5 @@
-import { useMemo, useCallback } from 'react'
-import { PanResponder, Animated } from 'react-native'
+import { useCallback, useMemo } from 'react'
+import { Animated, PanResponder } from 'react-native'
 
 export const makePan = (container: number, draggable: number) => (
   position: Animated.Value
@@ -20,23 +20,24 @@ export const makePan = (container: number, draggable: number) => (
         onPanResponderGrant: () => {
           position.extractOffset()
         },
-        onPanResponderRelease: (e, { dy }) => {
+        onPanResponderRelease: (e, { dy, vy }) => {
           const { _value } = position as any
           // prevents resetting when position isnt moving
           if (_value > 0 || _value < 0) {
             position.flattenOffset()
-            lock(dy < 0)
+            lock(dy < 0, vy)
           }
         }
       }),
     []
   )
-  const lock = useCallback((_open: boolean) => {
+  const lock = useCallback((_open: boolean, velocity = 0) => {
     // 0 is opened value, because element starts there in the container (I think)
     const value = _open ? 0 : container - draggable
-    Animated.timing(position, {
+    Animated.spring(position, {
       toValue: value,
-      duration: 400,
+      velocity,
+      overshootClamping: true,
       useNativeDriver: true
     }).start(() => {
       // reset offset when animation finishes

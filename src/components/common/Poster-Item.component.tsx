@@ -1,19 +1,21 @@
-import React, { useCallback, useRef, useContext } from 'react'
-import styled from 'styled-components/native'
+import { uriForImage } from '@utils/api.util'
+import { FONT } from '@utils/constants.util'
 import { SCREEN_WIDTH } from '@utils/dimensions.util'
-import { LinearGradient } from 'expo-linear-gradient'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import { extractProp, useASelector } from '@utils/recipes.util'
 import {
-  selectServer,
+  ServersWithImages,
   selectImage,
-  ServersWithImages
+  selectServer
 } from '@utils/selectors.util'
-import { uriForImage } from '@utils/api.util'
 import { TGradient } from '@utils/types.util'
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useCallback, useContext, useRef } from 'react'
 import { View } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import styled from 'styled-components/native'
+
 import { ExpansionContext } from '../../context/Expansion.context'
-import { FONT } from '@utils/constants.util'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
@@ -128,14 +130,14 @@ const ContentContainer = styled.View`
   padding-left: 5;
   box-shadow: ${BOX_SHADOW};
 `
-const Fanart = styled.Image`
+const Fanart = styled(FastImage)`
   position: absolute;
   border-radius: ${BORDER_RADIUS};
   opacity: 0.2;
   width: 100%;
   height: 100%;
 `
-const Poster = styled.Image`
+const Poster = styled(FastImage)`
   border-radius: ${BORDER_RADIUS};
   flex: 1;
 `

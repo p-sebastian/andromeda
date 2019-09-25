@@ -29,7 +29,7 @@ PODS:
   - EXSQLite (7.0.0):
     - UMCore
     - UMFileSystemInterface
-  - EXWebBrowser (7.0.0):
+  - EXWebBrowser (7.0.1):
     - UMCore
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -38,6 +38,9 @@ PODS:
   - glog (0.3.5)
   - React (0.59.10):
     - React/Core (= 0.59.10)
+  - react-native-fast-image (6.1.1):
+    - React
+    - SDWebImage (~> 5.0)
   - react-native-netinfo (4.2.2):
     - React
   - React/Core (0.59.10):
@@ -99,6 +102,9 @@ PODS:
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
+  - SDWebImage (5.1.1):
+    - SDWebImage/Core (= 5.1.1)
+  - SDWebImage/Core (5.1.1)
   - UMBarCodeScannerInterface (4.0.0)
   - UMCameraInterface (4.0.0)
   - UMConstantsInterface (4.0.0)
@@ -132,6 +138,7 @@ DEPENDENCIES:
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - react-native-fast-image (from `../node_modules/react-native-fast-image`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
@@ -167,6 +174,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - boost-for-react-native
+    - SDWebImage
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -213,6 +221,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-fast-image:
+    :path: "../node_modules/react-native-fast-image"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   RNGestureHandler:
@@ -274,14 +284,16 @@ SPEC CHECKSUMS:
   EXLocation: 452a1d9edceb1b93deb86fd785236606d33742dd
   EXPermissions: df10ad83df2f6b647aec304619354f8ab48d5f63
   EXSQLite: ddc1e6727bd7d36e649f07590fe3ae5511c1f039
-  EXWebBrowser: 7bc3a4006cd4c66b5cb558d07f486f9fbca476ad
+  EXWebBrowser: 18924c3d2a3a1aa95d413672f058beff589c80f4
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 36d0768f9e93be2473b37e7fa64f92c1d5341eef
+  react-native-fast-image: fdfc612dba58fd73136cf5efdaeb8cfcad7f63b2
   react-native-netinfo: 2bb2e5094edcfecfb340a85053608526cb20f185
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
   RNReanimated: 1b52415c4302f198cb581282a0166690bad62c43
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
+  SDWebImage: 96d7f03415ccb28d299d765f93557ff8a617abd8
   UMBarCodeScannerInterface: d5a6fdc98ed6241225b0a8432a7f4e2b397668bc
   UMCameraInterface: 68870a3197fee85bd5afca5609ba4a5b7257d19d
   UMConstantsInterface: d25b8e8887ca7aaf568c06caf08f4d40734ee4ef
@@ -296,6 +308,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 1e70fe58b872355f0ecb44fb81bb1a16484047f0
   yoga: 684513b14b03201579ba3cee20218c9d1298b0cc
 
-PODFILE CHECKSUM: f92170a2086b5b3d379db125703c24b604372051
+PODFILE CHECKSUM: ed8536efb2a5c33d1c79d63311faf19f149c37b4
 
 COCOAPODS: 1.7.5

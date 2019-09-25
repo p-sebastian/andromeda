@@ -2,16 +2,18 @@ import React from 'react'
 import styled from 'styled-components/native'
 import { IRawSeries } from '@interfaces/common.interface'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
-import { extractProp } from '@utils/recipes.util'
+import { extractProp, useADispatchC } from '@utils/recipes.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { SCREEN_WIDTH } from '@utils/dimensions.util'
 import { GradientEnum } from '@utils/enums.util'
 import { GRADIENTS, FONT } from '@utils/constants.util'
+import {do_navigate} from '@actions/navigation.actions'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
 type Props = { item: IRawSeries<{ coverType: string; url: string }> }
 const SearchItem: React.FC<Props> = ({ item }) => {
+  const toInfo = useADispatchC(do_navigate('addinfo', { title: 'info', series: item }))
   const { images, title } = item
   const gradient = GRADIENTS[GradientEnum.PURPLE]
   const posterReq = images
@@ -23,7 +25,7 @@ const SearchItem: React.FC<Props> = ({ item }) => {
 
   return (
     <Container>
-      <Touchable>
+      <Touchable onPress={toInfo}>
         <PosterContainer>
           <Poster source={posterReq} />
         </PosterContainer>

@@ -1,33 +1,33 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { FlatList, ListRenderItem } from 'react-native'
-import styled from 'styled-components/native'
-import { SwipeListView } from 'react-native-swipe-list-view'
-import ABackground from '@common/Background.component'
-import AText from '@common/Text.component'
-import AFAB from '@common/FAB.component.tsx'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
-import { Image } from 'react-native-expo-image-cache'
-import { COLORS, FONT } from '@utils/constants.util'
-import { ColorEnum, ThemeEnum } from '@utils/enums.util'
-import { BOX_SHADOW, BORDER_RADIUS, MARGIN } from '@utils/position.util'
-import { useShallowSelector, useADispatch } from '@utils/recipes.util'
-import BottomDrawer from '@common/Bottom-Drawer.component'
 import { do_api_sonarr_get_episodes } from '@actions/api.actions'
 import {
-  do_clear_episodes,
-  do_action_sheet_open
+  do_action_sheet_open,
+  do_clear_episodes
 } from '@actions/general.actions'
-import { IEpisode } from '@interfaces/episode.interface'
+import ABackground from '@common/Background.component'
+import BottomDrawer from '@common/Bottom-Drawer.component'
+import AFAB from '@common/FAB.component.tsx'
+import AText from '@common/Text.component'
 import SeasonCard from '@components/Season-Card.component'
-import EpisodeItem from './Episode-Item.component'
-import { LinearGradient } from 'expo-linear-gradient'
-import { GRADIENTS } from '@utils/constants.util'
-import { GradientEnum } from '@utils/enums.util'
 import { Ionicons } from '@expo/vector-icons'
 import { ISeriesValue } from '@interfaces/common.interface'
-import { THEME } from '@utils/theme.util'
-import { isEmpty } from 'lodash'
+import { IEpisode } from '@interfaces/episode.interface'
+import { COLORS, FONT } from '@utils/constants.util'
+import { GRADIENTS } from '@utils/constants.util'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
+import { ColorEnum } from '@utils/enums.util'
+import { GradientEnum } from '@utils/enums.util'
 import { byteToGB } from '@utils/helpers.util'
+import { BORDER_RADIUS, BOX_SHADOW, MARGIN } from '@utils/position.util'
+import { useADispatch, useShallowSelector } from '@utils/recipes.util'
+import { LinearGradient } from 'expo-linear-gradient'
+import { isEmpty } from 'lodash'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { FlatList, ListRenderItem } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { SwipeListView } from 'react-native-swipe-list-view'
+import styled from 'styled-components/native'
+
+import EpisodeItem from './Episode-Item.component'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 const POSTER_HEIGHT = WIDTH / 0.69
@@ -42,7 +42,13 @@ type Props = {
   fanartReq: { uri: string; headers: { [key: string]: string } }
   animEnd: boolean
 }
-const ShowInfo: React.FC<Props> = ({ id, tdbid, fanartReq, posterReq, animEnd }) => {
+const ShowInfo: React.FC<Props> = ({
+  id,
+  tdbid,
+  fanartReq,
+  posterReq,
+  animEnd
+}) => {
   const dispatch = useADispatch()
   const episodes = useEpisodes(id)
   const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
@@ -89,17 +95,14 @@ const ShowInfo: React.FC<Props> = ({ id, tdbid, fanartReq, posterReq, animEnd })
   return (
     <ABackground>
       <FanartView>
-        <Img uri={fanartReq.uri} options={{ headers: fanartReq.headers }} />
+        <Img source={fanartReq} />
       </FanartView>
       <TopContent>
         <Title>{show.title}</Title>
       </TopContent>
       <BottomContent>
         <PosterView>
-          <Fanart
-            uri={posterReq.uri}
-            options={{ headers: fanartReq.headers }}
-          />
+          <Poster source={posterReq} />
         </PosterView>
         <ButtonGroup>
           <ForGradient>
@@ -221,11 +224,11 @@ const PosterView = styled.View`
   height: ${POSTER_HEIGHT};
   box-shadow: ${BOX_SHADOW};
 `
-const Img = styled(Image)`
+const Img = styled(FastImage)`
   flex: 1;
   opacity: 0.4;
 `
-const Fanart = styled(Img)`
+const Poster = styled(Img)`
   overflow: hidden;
   opacity: 1;
   border-radius: ${BORDER_RADIUS};
