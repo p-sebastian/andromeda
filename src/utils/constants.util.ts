@@ -1,4 +1,4 @@
-import { ThemeEnum, ServerEnum, ColorEnum, GradientEnum } from './enums.util'
+import { ColorEnum, GradientEnum, ServerEnum, ThemeEnum } from './enums.util'
 import { TAvailableServers, TGradientConstants } from './types.util'
 
 export const AVAILABLE_SERVERS: TAvailableServers = Object.freeze({
@@ -66,29 +66,28 @@ export const SERVER_GRADIENTS = Object.freeze({
 })
 export const GRADIENTS: TGradientConstants = Object.freeze({
   [GradientEnum.ORANGE]: {
-    colors: ['#C6FFDD', '#FBD786', '#f7797d'],
-    start: [0, 0.5] as [number, number],
-    end: [1.3, 0.5] as [number, number]
+    colors: [COLORS[ColorEnum.MAIN], '#FBD786', '#C6FFDD'],
+    start: [0.85, 0.5] as [number, number],
+    end: [1, 0.5] as [number, number]
   },
   [GradientEnum.GREEN]: {
-    colors: ['#11998e', '#38ef7d'],
-    // colors: ['#34e89e', '#218b6f', '#144f50', '#0f3443'],
-    start: [0.2, 0] as [number, number],
-    end: [0.9, 1] as [number, number]
+    colors: [COLORS[ColorEnum.MAIN], '#11998e', '#38ef7d'],
+    start: [0.85, 0.5] as [number, number],
+    end: [1, 0.5] as [number, number]
   },
   [GradientEnum.BLUE]: {
-    colors: ['#12c2e9', '#c471ed', '#f7797d'],
-    start: [0, 0.5] as [number, number],
+    colors: [COLORS[ColorEnum.MAIN], '#3b8d99', '#12c2e9'],
+    start: [0.85, 0.5] as [number, number],
     end: [1, 0.5] as [number, number]
   },
   [GradientEnum.PURPLE]: {
-    colors: ['#1096e1', '#6651e5', '#b214e8'],
-    start: [0.3, 0] as [number, number],
-    end: [0.6, 1] as [number, number]
+    colors: [COLORS[ColorEnum.MAIN], '#b214e8'],
+    start: [0.85, 0.5] as [number, number],
+    end: [1, 0.5] as [number, number]
   },
   [GradientEnum.RED]: {
-    colors: ['#ee0979', '#ff6a00'],
-    start: [0, 0.5] as [number, number],
+    colors: [COLORS[ColorEnum.MAIN], '#ff6a00'],
+    start: [0.85, 0.5] as [number, number],
     end: [1, 0.5] as [number, number]
   },
   [GradientEnum.BUTTONS]: {
@@ -102,8 +101,8 @@ export const GRADIENTS: TGradientConstants = Object.freeze({
     end: [1, 0.5] as [number, number]
   },
   [GradientEnum.GRAY]: {
-    colors: ['#283048', '#859398'],
-    start: [0, 0.5] as [number, number],
+    colors: [COLORS[ColorEnum.MAIN], '#283048', '#859398'],
+    start: [0.85, 0.5] as [number, number],
     end: [1, 0.5] as [number, number]
   }
 })

@@ -2,7 +2,7 @@ import { uriForImage } from '@utils/api.util'
 import { FONT } from '@utils/constants.util'
 import { SCREEN_WIDTH } from '@utils/dimensions.util'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
-import { extractProp, useASelector } from '@utils/recipes.util'
+import { extractFn, extractProp, useASelector } from '@utils/recipes.util'
 import {
   ServersWithImages,
   selectImage,
@@ -21,7 +21,6 @@ const WIDTH = SCREEN_WIDTH * 0.25
 
 type Props = {
   gradient: TGradient
-  gradientTextColor: string
   title: string
   id: number
   tdbid: number
@@ -36,7 +35,6 @@ const PosterItem: React.FC<Props> = ({
   tdbid,
   serverKey,
   gradient,
-  gradientTextColor,
   title,
   flexDirection = 'row',
   justifyContent = 'flex-end'
@@ -76,9 +74,7 @@ const PosterItem: React.FC<Props> = ({
         </PosterContainer>
         <ContentContainer>
           <Gradient {...gradient}>
-            <GradientText gradientTextColor={gradientTextColor}>
-              {title}
-            </GradientText>
+            <GradientText>{title}</GradientText>
           </Gradient>
           <InfoView>
             <Fanart source={fanartReq} />
@@ -112,9 +108,11 @@ const Gradient = styled(LinearGradient)`
   justify-content: center;
   align-items: center;
   box-shadow: none;
+  border-width: 1;
+  border-color: ${extractFn('colors', a => a[a.length - 1])};
 `
 const GradientText = styled.Text`
-  color: ${extractProp<{ gradientTextColor: string }>('gradientTextColor')};
+  color: white;
   text-align: center;
   font-family: ${FONT.bold};
   font-size: 14;

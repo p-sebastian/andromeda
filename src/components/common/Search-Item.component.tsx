@@ -1,21 +1,31 @@
-import React from 'react'
-import styled from 'styled-components/native'
+import { do_navigate } from '@actions/navigation.actions'
 import { IRawSeries } from '@interfaces/common.interface'
-import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
-import { extractProp, useADispatchC } from '@utils/recipes.util'
-import { LinearGradient } from 'expo-linear-gradient'
+import { FONT, GRADIENTS } from '@utils/constants.util'
 import { SCREEN_WIDTH } from '@utils/dimensions.util'
 import { GradientEnum } from '@utils/enums.util'
-import { GRADIENTS, FONT } from '@utils/constants.util'
-import {do_navigate} from '@actions/navigation.actions'
+import { logger } from '@utils/logger.util'
+import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
+import {
+  extractFn,
+  extractProp,
+  useADispatchC,
+  useASelector
+} from '@utils/recipes.util'
+import { LinearGradient } from 'expo-linear-gradient'
+import React from 'react'
+import styled from 'styled-components/native'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
 type Props = { item: IRawSeries<{ coverType: string; url: string }> }
 const SearchItem: React.FC<Props> = ({ item }) => {
-  const toInfo = useADispatchC(do_navigate('addinfo', { title: 'info', series: item }))
-  const { images, title } = item
-  const gradient = GRADIENTS[GradientEnum.PURPLE]
+  const { images, title, tvdbId, status } = item
+  const exists = !!useASelector(state => state.sonarr.entities.series[tvdbId])
+  const toInfo = useADispatchC(
+    do_navigate('addinfo', { title: 'info', series: item })
+  )
+  logger.info(exists)
+  const gradient = color(exists, status)
   const posterReq = images
     .filter(i => i.coverType === 'poster')
     .map(i => ({ uri: i.url }))[0]
@@ -43,6 +53,16 @@ const SearchItem: React.FC<Props> = ({ item }) => {
   )
 }
 
+const color = (exists: boolean, status: string) => {
+  if (exists) {
+    return GRADIENTS[GradientEnum.GREEN]
+  }
+  if (status === 'continuing') {
+    return GRADIENTS[GradientEnum.GRAY]
+  }
+  return GRADIENTS[GradientEnum.RED]
+}
+
 const Container = styled.View`
   height: ${WIDTH / 0.69};
   margin-bottom: 15;
@@ -60,6 +80,8 @@ const Gradient = styled(LinearGradient)`
   justify-content: center;
   align-items: center;
   box-shadow: none;
+  border-width: 1;
+  border-color: ${extractFn('colors', a => a[a.length - 1])};
 `
 const GradientText = styled.Text`
   color: ${extractProp<{ gradientTextColor: string }>('gradientTextColor')};

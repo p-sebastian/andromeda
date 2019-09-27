@@ -30,12 +30,10 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
   }
   const gradient = hasFile
     ? GRADIENTS[GradientEnum.GREEN]
-    : GRADIENTS[GradientEnum.PURPLE]
-  const color = hasFile ? THEME[ThemeEnum.MAIN].primary : 'white'
+    : GRADIENTS[GradientEnum.BLUE]
   return (
     <PosterItem
       gradient={gradient}
-      gradientTextColor={color}
       title={series.title}
       id={id}
       tdbid={tvdbId}

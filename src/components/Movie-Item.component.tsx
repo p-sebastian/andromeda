@@ -1,15 +1,15 @@
-import React from 'react'
-import styled from 'styled-components/native'
-import { GradientEnum, ServerEnum, ColorEnum } from '@utils/enums.util'
-import { GRADIENTS, COLORS, FONT } from '@utils/constants.util'
 import PosterItem from '@common/Poster-Item.component'
 import { IMovie } from '@interfaces/movie.interface'
+import { FONT, GRADIENTS } from '@utils/constants.util'
+import { GradientEnum, ServerEnum } from '@utils/enums.util'
 import moment from 'moment'
+import React from 'react'
+import styled from 'styled-components/native'
 
 type Props = { movie: IMovie }
 const MovieItem: React.FC<Props> = ({ movie }) => {
   const { tmdbId, id, title } = movie
-  const { gradient, text } = color(movie)
+  const gradient = color(movie)
 
   return (
     <PosterItem
@@ -17,7 +17,6 @@ const MovieItem: React.FC<Props> = ({ movie }) => {
       tdbid={tmdbId}
       title={title}
       gradient={gradient}
-      gradientTextColor={text}
       serverKey={ServerEnum.RADARR}
     >
       <Container>
@@ -35,28 +34,22 @@ const release = ({ physicalRelease }: IMovie) => {
 const color = ({ hasFile, monitored, isAvailable }: IMovie) => {
   if (hasFile && monitored) {
     // downloaded & monitored
-    return {
-      gradient: GRADIENTS[GradientEnum.GREEN],
-      text: 'white'
-    }
+    GRADIENTS[GradientEnum.GREEN]
   }
   if (hasFile && !monitored) {
     // downloaded not monitored
-    return { gradient: GRADIENTS[GradientEnum.GRAY], text: 'white' }
+    return GRADIENTS[GradientEnum.GRAY]
   }
   if (!hasFile && !monitored) {
     // missing not monitored
-    return {
-      gradient: GRADIENTS[GradientEnum.ORANGE],
-      text: COLORS[ColorEnum.MAIN]
-    }
+    return GRADIENTS[GradientEnum.ORANGE]
   }
   if (!hasFile && monitored && isAvailable) {
     // missing & monitored & available
-    return { gradient: GRADIENTS[GradientEnum.RED], text: 'white' }
+    return GRADIENTS[GradientEnum.RED]
   }
   // missing - monitored - not available
-  return { gradient: GRADIENTS[GradientEnum.PURPLE], text: 'white' }
+  return GRADIENTS[GradientEnum.BLUE]
 }
 
 const Container = styled.View`
