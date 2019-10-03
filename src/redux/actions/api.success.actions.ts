@@ -1,14 +1,19 @@
+import { IRawSeries, TNrmlzResponse } from '@interfaces/common.interface'
+import { IEpisode } from '@interfaces/episode.interface'
+import { IPath } from '@interfaces/path.interface'
+import { IProfile } from '@interfaces/profile.interface'
 import { createAction } from 'typesafe-actions'
+
 import {
-  API_SONARR_GET_SERIES_SUCCESS,
+  API_RADARR_GET_MOVIES_SUCCESS,
   API_SONARR_GET_CALENDAR_SUCCESS,
   API_SONARR_GET_EPISODES_SUCCESS,
   API_SONARR_GET_HISTORY_SUCCESS,
-  API_RADARR_GET_MOVIES_SUCCESS,
-  API_SONARR_GET_SEARCH_SUCCESS
+  API_SONARR_GET_PATHS_SUCCESS,
+  API_SONARR_GET_PROFILES_SUCCESS,
+  API_SONARR_GET_SEARCH_SUCCESS,
+  API_SONARR_GET_SERIES_SUCCESS
 } from './types'
-import { TNrmlzResponse, IRawSeries } from '@interfaces/common.interface'
-import { IEpisode } from '@interfaces/episode.interface'
 
 /*********** Success calls, managed by epics **********/
 
@@ -40,6 +45,14 @@ export const on_api_sonarr_get_search_success = createAction(
     payload: IRawSeries<{ coverType: string; url: string }>[],
     isOf: string
   ) => action(payload, isOf)
+)
+export const on_api_sonarr_get_paths_success = createAction(
+  API_SONARR_GET_PATHS_SUCCESS,
+  action => (payload: IPath[], isOf: string) => action(payload, isOf)
+)
+export const on_api_sonarr_get_profiles_success = createAction(
+  API_SONARR_GET_PROFILES_SUCCESS,
+  action => (payload: IProfile[], isOf: string) => action(payload, isOf)
 )
 
 /* RADARR */

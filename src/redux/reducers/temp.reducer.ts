@@ -1,25 +1,31 @@
-import { createReducer } from 'typesafe-actions'
-import { TActions } from '@utils/types.util'
-import { IEpisode } from '@interfaces/episode.interface'
 import {
   API_SONARR_GET_EPISODES_SUCCESS,
-  CLEAR_EPISODES,
-  SIDEBAR_TOGGLE,
+  API_SONARR_GET_PATHS_SUCCESS,
+  API_SONARR_GET_PROFILES_SUCCESS,
   API_SONARR_GET_SEARCH_SUCCESS,
+  CLEAR_EPISODES,
   CLEAR_SEARCH_SERIES,
   NETWORK_CHANGE,
+  SERVER_MODIFY_COMPLETE,
   SERVER_SET_ENABLED,
-  SERVER_MODIFY_COMPLETE
+  SIDEBAR_TOGGLE
 } from '@actions/types'
 import { IRawSeries } from '@interfaces/common.interface'
+import { IEpisode } from '@interfaces/episode.interface'
+import { IPath } from '@interfaces/path.interface'
+import { IProfile } from '@interfaces/profile.interface'
 import { NetInfoStateType } from '@react-native-community/netinfo'
 import { ServerEnum } from '@utils/enums.util'
+import { TActions } from '@utils/types.util'
+import { createReducer } from 'typesafe-actions'
 
 type State = {
   episodes: { [key: string]: IEpisode[] }
   search: IRawSeries<{ coverType: string; url: string }>[]
   sidebarToggle: { watch: number; toggle: boolean }
   network: NetInfoStateType
+  profiles: IProfile[]
+  paths: IPath[]
   enabledServers: ServerEnum[]
 }
 const DEFAULT_STATE: State = {
@@ -29,6 +35,8 @@ const DEFAULT_STATE: State = {
     watch: 0,
     toggle: false
   },
+  profiles: [],
+  paths: [],
   network: NetInfoStateType.cellular,
   enabledServers: []
 }
@@ -74,3 +82,11 @@ export const tempReducer = createReducer<typeof DEFAULT_STATE, TActions>(
     }
     return { ...state, enabledServers: [...state.enabledServers, serverKey] }
   })
+  .handleAction(API_SONARR_GET_PATHS_SUCCESS, (state, action) => ({
+    ...state,
+    paths: [...action.payload]
+  }))
+  .handleAction(API_SONARR_GET_PROFILES_SUCCESS, (state, action) => ({
+    ...state,
+    profiles: [...action.payload]
+  }))

@@ -1,13 +1,17 @@
+import {
+  do_api_sonarr_get_paths,
+  do_api_sonarr_get_profiles
+} from '@actions/api.actions'
+import { do_toast_show } from '@actions/general.actions'
 import { do_navigate } from '@actions/navigation.actions'
 import { IRawSeries } from '@interfaces/common.interface'
 import { FONT, GRADIENTS } from '@utils/constants.util'
 import { SCREEN_WIDTH } from '@utils/dimensions.util'
 import { GradientEnum } from '@utils/enums.util'
-import { logger } from '@utils/logger.util'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
 import {
   extractFn,
-  extractProp,
+  useADispatch,
   useADispatchC,
   useASelector
 } from '@utils/recipes.util'
@@ -21,10 +25,6 @@ type Props = { item: IRawSeries<{ coverType: string; url: string }> }
 const SearchItem: React.FC<Props> = ({ item }) => {
   const { images, title, tvdbId, status } = item
   const exists = !!useASelector(state => state.sonarr.entities.series[tvdbId])
-  const toInfo = useADispatchC(
-    do_navigate('addinfo', { title: 'info', series: item })
-  )
-  logger.info(exists)
   const gradient = color(exists, status)
   const posterReq = images
     .filter(i => i.coverType === 'poster')
@@ -32,16 +32,17 @@ const SearchItem: React.FC<Props> = ({ item }) => {
   const fanartReq = images
     .filter(i => i.coverType === 'fanart')
     .map(i => ({ uri: i.url }))[0]
+  const onPress = useNavigate(item, { posterReq, fanartReq }, exists)
 
   return (
     <Container>
-      <Touchable onPress={toInfo}>
+      <Touchable onPress={onPress}>
         <PosterContainer>
           <Poster source={posterReq} />
         </PosterContainer>
         <ContentContainer>
           <Gradient {...gradient}>
-            <GradientText gradientTextColor="white">{title}</GradientText>
+            <GradientText>{title}</GradientText>
           </Gradient>
           <InfoView>
             <Fanart source={fanartReq} />
@@ -51,6 +52,30 @@ const SearchItem: React.FC<Props> = ({ item }) => {
       </Touchable>
     </Container>
   )
+}
+
+type UseNavigate = (
+  item: IRawSeries<{ coverType: string; url: string }>,
+  images: any,
+  exists: boolean
+) => () => void
+const useNavigate: UseNavigate = (item, images, exists) => {
+  const dispatch = useADispatch()
+  const onPress = () => {
+    if (exists) {
+      return dispatch(do_toast_show('Show already added'))
+    }
+    dispatch(do_api_sonarr_get_paths())
+    dispatch(do_api_sonarr_get_profiles())
+    dispatch(
+      do_navigate('addinfo', {
+        ...images,
+        title: 'info',
+        series: item
+      })
+    )
+  }
+  return onPress
 }
 
 const color = (exists: boolean, status: string) => {
@@ -84,7 +109,7 @@ const Gradient = styled(LinearGradient)`
   border-color: ${extractFn('colors', a => a[a.length - 1])};
 `
 const GradientText = styled.Text`
-  color: ${extractProp<{ gradientTextColor: string }>('gradientTextColor')};
+  color: white;
   text-align: center;
   font-family: ${FONT.bold};
   font-size: 14;

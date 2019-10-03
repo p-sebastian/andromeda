@@ -23,7 +23,7 @@ export const makePan = (container: number, draggable: number) => (
         onPanResponderRelease: (e, { dy, vy }) => {
           const { _value } = position as any
           // prevents resetting when position isnt moving
-          if (_value > 0 || _value < 0) {
+          if (_value !== 0) {
             position.flattenOffset()
             lock(dy < 0, vy)
           }

@@ -26,6 +26,8 @@ export const API_SONARR_GET_CALENDAR = '@api/sonarr_get_calendar'
 export const API_SONARR_GET_EPISODES = '@api/sonarr_get_episodes'
 export const API_SONARR_GET_HISTORY = '@api/sonarr_get_history'
 export const API_SONARR_GET_SEARCH = '@api/sonarr_get_search'
+export const API_SONARR_GET_PROFILES = '@api/sonarr_get_profiles'
+export const API_SONARR_GET_PATHS = '@api/sonarr_get_paths'
 
 /* RADARR */
 export const API_RADARR_GET_MOVIES = '@api/radarr_get_movies'
@@ -39,6 +41,9 @@ export const API_SONARR_GET_EPISODES_SUCCESS =
   '@api/sonarr_get_episodes_success'
 export const API_SONARR_GET_HISTORY_SUCCESS = '@api/sonarr_get_history_success'
 export const API_SONARR_GET_SEARCH_SUCCESS = '@api/sonarr_get_search_success'
+export const API_SONARR_GET_PROFILES_SUCCESS =
+  '@api/sonarr_get_profiles_success'
+export const API_SONARR_GET_PATHS_SUCCESS = '@api/sonarr_get_paths_success'
 
 /* RADARR */
 export const API_RADARR_GET_MOVIES_SUCCESS = '@api/radarr_get_movies_success'

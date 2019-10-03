@@ -1,13 +1,13 @@
+import { logger } from '@utils/logger.util'
+import { useASelector, useShallowSelector } from '@utils/recipes.util'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  PanResponder,
   Animated,
   Dimensions,
-  PanResponderInstance,
-  Keyboard
+  Keyboard,
+  PanResponder,
+  PanResponderInstance
 } from 'react-native'
-import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useASelector, useShallowSelector } from '@utils/recipes.util'
-import { logger } from '@utils/logger.util'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 // Sidebar size
@@ -48,7 +48,7 @@ export const usePanResponder: usePanResponderFn = position => {
         onPanResponderRelease: (e, { dx, vx }) => {
           const { _value } = position as any
           // prevents resetting when position isnt moving
-          if (_value > 0 || _value < 0) {
+          if (_value !== 0) {
             position.flattenOffset()
             lock(dx > 0, vx)
           }

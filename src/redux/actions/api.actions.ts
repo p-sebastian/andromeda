@@ -1,14 +1,17 @@
+import { ServerEnum } from '@utils/enums.util'
+import moment from 'moment'
 import { createAction } from 'typesafe-actions'
+
 import {
-  API_SONARR_GET_SERIES,
+  API_RADARR_GET_MOVIES,
   API_SONARR_GET_CALENDAR,
   API_SONARR_GET_EPISODES,
   API_SONARR_GET_HISTORY,
-  API_RADARR_GET_MOVIES,
-  API_SONARR_GET_SEARCH
+  API_SONARR_GET_PATHS,
+  API_SONARR_GET_PROFILES,
+  API_SONARR_GET_SEARCH,
+  API_SONARR_GET_SERIES
 } from './types'
-import { ServerEnum } from '@utils/enums.util'
-import moment from 'moment'
 
 /**
  * type constraints endpoint and server
@@ -61,6 +64,14 @@ export const do_api_sonarr_get_search = createAction(
         term: term.trim().replace(/\s/g, '%')
       })
     )
+)
+export const do_api_sonarr_get_paths = createAction(
+  API_SONARR_GET_PATHS,
+  action => () => action(..._config('/rootfolder', ServerEnum.SONARR))
+)
+export const do_api_sonarr_get_profiles = createAction(
+  API_SONARR_GET_PROFILES,
+  action => () => action(..._config('/profile', ServerEnum.SONARR))
 )
 
 /* RADARR */

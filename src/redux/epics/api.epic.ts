@@ -3,6 +3,8 @@ import {
   on_api_sonarr_get_calendar_success,
   on_api_sonarr_get_episodes_success,
   on_api_sonarr_get_history_success,
+  on_api_sonarr_get_paths_success,
+  on_api_sonarr_get_profiles_success,
   on_api_sonarr_get_search_success,
   on_api_sonarr_get_series_success
 } from '@actions/api.success.actions'
@@ -21,6 +23,8 @@ import {
   API_SONARR_GET_CALENDAR,
   API_SONARR_GET_EPISODES,
   API_SONARR_GET_HISTORY,
+  API_SONARR_GET_PATHS,
+  API_SONARR_GET_PROFILES,
   API_SONARR_GET_SEARCH,
   API_SONARR_GET_SERIES
 } from '@actions/types'
@@ -50,7 +54,9 @@ const spinnerStartEpic: TEpic = action$ =>
         API_SONARR_GET_EPISODES,
         API_SONARR_GET_HISTORY,
         API_RADARR_GET_MOVIES,
-        API_SONARR_GET_SEARCH
+        API_SONARR_GET_SEARCH,
+        API_SONARR_GET_PROFILES,
+        API_SONARR_GET_PATHS
       ])
     ),
     tap(() => impactAsync(ImpactFeedbackStyle.Medium)),
@@ -67,7 +73,9 @@ const apiGetEpic: TEpic = (action$, state$) =>
         API_SONARR_GET_EPISODES,
         API_SONARR_GET_HISTORY,
         API_RADARR_GET_MOVIES,
-        API_SONARR_GET_SEARCH
+        API_SONARR_GET_SEARCH,
+        API_SONARR_GET_PROFILES,
+        API_SONARR_GET_PATHS
       ])
     ),
     withApi(state$, 'GET'),
@@ -84,6 +92,8 @@ const apiGetEpic: TEpic = (action$, state$) =>
           onCase(API_SONARR_GET_EPISODES)(on_api_sonarr_get_episodes_success),
           onCase(API_SONARR_GET_HISTORY)(on_api_sonarr_get_history_success),
           onCase(API_SONARR_GET_SEARCH)(on_api_sonarr_get_search_success),
+          onCase(API_SONARR_GET_PATHS)(on_api_sonarr_get_paths_success),
+          onCase(API_SONARR_GET_PROFILES)(on_api_sonarr_get_profiles_success),
           /* RADARR */
           onCase(API_RADARR_GET_MOVIES)(on_api_radarr_get_movies_success),
           /**
