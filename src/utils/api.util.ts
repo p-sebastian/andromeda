@@ -1,17 +1,21 @@
-import { ServerEnum } from './enums.util'
+import { do_spinner_clear, do_spinner_toggle } from '@actions/general.actions'
+import { ApiActionsType } from '@actions/index'
+import { ApiSuccessActionsType } from '@actions/index'
+import { do_server_set_status } from '@actions/server.actions'
+import { API_AJAX_FAIL } from '@actions/types'
+import { RootState } from '@reducers/index'
 import { TServerState } from '@reducers/server.reducer'
 import { memoize, values } from 'lodash'
+import { StateObservable } from 'redux-observable'
 import { Observable, OperatorFunction } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
-import { RootState } from '@reducers/index'
-import { StateObservable } from 'redux-observable'
-import { withLatestFrom, map, tap, catchError } from 'rxjs/operators'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
-import { ApiActionsType } from '@actions/index'
+import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators'
 import { isOfType } from 'typesafe-actions'
-import { TActions } from './types.util'
+
+import { ServerEnum } from './enums.util'
 import { nrmlz } from './normalizr.util'
-import { logger } from '@utils/logger.util'
+import { TActions } from './types.util'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type AjaxCreator = (
@@ -40,7 +44,7 @@ const _ajaxConfig = ({
     method,
     url,
     body: method === 'GET' ? undefined : body,
-    timeout: 5000
+    timeout: 10000
   })
 }
 type WithApi = (
@@ -100,6 +104,23 @@ export const onCase: OnCase = CONSTANT => callback => action$ =>
     )
     // tap(([, res]) => logger.info('normalized', res))
   )
+type OnComplete = (
+  state$: StateObservable<RootState>
+) => OperatorFunction<TActions, TActions>
+export const onComplete: OnComplete = state$ => action$ =>
+  action$.pipe(
+    withLatestFrom(state$),
+    concatMap(([action, state]) => {
+      const actions: TActions[] = isOfType(API_AJAX_FAIL, action)
+        ? [do_spinner_clear()]
+        : [
+            do_spinner_toggle((action as ApiSuccessActionsType).meta, false),
+            do_server_set_status(state.theme.selectedServer, 'online')
+          ]
+      actions.push(action)
+      return actions
+    })
+  )
 
 type FormUrl = (
   server: TServerState,
@@ -116,17 +137,18 @@ const formUrl: FormUrl = (
 ) => {
   const url = endpoint === 'lan' ? lanUrl : remoteUrl
   const port = endpoint === 'lan' ? lanPort : remotePort
+  const headers = { 'Content-Type': 'application/json' }
 
   switch (key) {
     case ServerEnum.SONARR:
       return [
         `http${ssl ? 's' : ''}://${url}:${port}/api`,
-        { 'X-Api-Key': apiKey }
+        { ...headers, 'X-Api-Key': apiKey }
       ]
     case ServerEnum.RADARR:
       return [
         `http${ssl ? 's' : ''}://${url}:${port}/api`,
-        { 'X-Api-Key': apiKey }
+        { ...headers, 'X-Api-Key': apiKey }
       ]
     default:
       return ['', { '0': '0' }]
@@ -142,9 +164,3 @@ const queryString = (body: any = {}) =>
   Object.keys(body)
     .map(key => `${key}=${body[key]}`)
     .join('&')
-
-const onError = () => {
-  // check if actual network error
-  // check network error status
-  //
-}

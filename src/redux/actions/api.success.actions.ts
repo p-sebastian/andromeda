@@ -12,7 +12,8 @@ import {
   API_SONARR_GET_PATHS_SUCCESS,
   API_SONARR_GET_PROFILES_SUCCESS,
   API_SONARR_GET_SEARCH_SUCCESS,
-  API_SONARR_GET_SERIES_SUCCESS
+  API_SONARR_GET_SERIES_SUCCESS,
+  API_SONARR_POST_SERIES_SUCCESS
 } from './types'
 
 /*********** Success calls, managed by epics **********/
@@ -53,6 +54,10 @@ export const on_api_sonarr_get_paths_success = createAction(
 export const on_api_sonarr_get_profiles_success = createAction(
   API_SONARR_GET_PROFILES_SUCCESS,
   action => (payload: IProfile[], isOf: string) => action(payload, isOf)
+)
+export const on_api_sonarr_post_series_success = createAction(
+  API_SONARR_POST_SERIES_SUCCESS,
+  action => (payload: any, isOf: string) => action(payload, isOf)
 )
 
 /* RADARR */

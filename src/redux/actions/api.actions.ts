@@ -1,3 +1,4 @@
+import { IRawSeries } from '@interfaces/common.interface'
 import { ServerEnum } from '@utils/enums.util'
 import moment from 'moment'
 import { createAction } from 'typesafe-actions'
@@ -10,7 +11,8 @@ import {
   API_SONARR_GET_PATHS,
   API_SONARR_GET_PROFILES,
   API_SONARR_GET_SEARCH,
-  API_SONARR_GET_SERIES
+  API_SONARR_GET_SERIES,
+  API_SONARR_POST_SERIES
 } from './types'
 
 /**
@@ -72,6 +74,23 @@ export const do_api_sonarr_get_paths = createAction(
 export const do_api_sonarr_get_profiles = createAction(
   API_SONARR_GET_PROFILES,
   action => () => action(..._config('/profile', ServerEnum.SONARR))
+)
+
+type NewSeries = IRawSeries<{ coverType: string; url: string }> & {
+  addOptions: {
+    ignoreEpisodesWithFiles: boolean
+    ignoreEpisodesWithoutFiles: boolean
+    searchForMissingEpisodes: boolean
+  }
+  profileId: number
+  rootFolderPath: string
+  seriesType: string
+  seasonFolder: boolean
+}
+export const do_api_sonarr_post_series = createAction(
+  API_SONARR_POST_SERIES,
+  action => (series: NewSeries) =>
+    action(..._config('/series', ServerEnum.SONARR, series))
 )
 
 /* RADARR */

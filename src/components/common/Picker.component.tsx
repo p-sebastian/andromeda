@@ -12,7 +12,7 @@ const APicker: React.FC<Props> = ({ label, items, onChange = () => {} }) => {
   return (
     <Container>
       <Text>{label}</Text>
-      <SPicker items={items} onValueChange={onChange} />
+      <SPicker placeholder={{}} items={items} onValueChange={onChange} />
     </Container>
   )
 }

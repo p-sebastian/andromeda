@@ -19,8 +19,8 @@ export const API_AJAX_SUCCESS = '@api/ajax_success'
 export const API_AJAX_FAIL = '@api/ajax_fail'
 export const API_AJAX_RESPONSE_ERROR = '@api/ajax_response_error'
 
-/* ******* GET REQUESTS ********* */
-/* SONARR */
+/* ***** SONARR ***** */
+/* GET */
 export const API_SONARR_GET_SERIES = '@api/sonarr_get_series'
 export const API_SONARR_GET_CALENDAR = '@api/sonarr_get_calendar'
 export const API_SONARR_GET_EPISODES = '@api/sonarr_get_episodes'
@@ -28,12 +28,15 @@ export const API_SONARR_GET_HISTORY = '@api/sonarr_get_history'
 export const API_SONARR_GET_SEARCH = '@api/sonarr_get_search'
 export const API_SONARR_GET_PROFILES = '@api/sonarr_get_profiles'
 export const API_SONARR_GET_PATHS = '@api/sonarr_get_paths'
+/* POST */
+export const API_SONARR_POST_SERIES = '@api/sonarr_post_series'
 
-/* RADARR */
+/* ***** RADARR ***** */
 export const API_RADARR_GET_MOVIES = '@api/radarr_get_movies'
 
-/* ******* SUCCESS CALLBACKS ********* */
-/* SONARR */
+/* ********** SUCCESS CALLBACKS ********** */
+
+/* ***** SONARR ***** */
 export const API_SONARR_GET_SERIES_SUCCESS = '@api/sonarr_get_series_success'
 export const API_SONARR_GET_CALENDAR_SUCCESS =
   '@api/sonarr_get_calendar_success'
@@ -44,8 +47,9 @@ export const API_SONARR_GET_SEARCH_SUCCESS = '@api/sonarr_get_search_success'
 export const API_SONARR_GET_PROFILES_SUCCESS =
   '@api/sonarr_get_profiles_success'
 export const API_SONARR_GET_PATHS_SUCCESS = '@api/sonarr_get_paths_success'
+export const API_SONARR_POST_SERIES_SUCCESS = '@api/sonarr_post_series_success'
 
-/* RADARR */
+/* ***** RADARR ***** */
 export const API_RADARR_GET_MOVIES_SUCCESS = '@api/radarr_get_movies_success'
 
 export const CLEAR_EPISODES = '@clear/episodes'

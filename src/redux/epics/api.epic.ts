@@ -1,3 +1,4 @@
+import { do_api_sonarr_get_series } from '@actions/api.actions'
 import {
   on_api_radarr_get_movies_success,
   on_api_sonarr_get_calendar_success,
@@ -6,7 +7,8 @@ import {
   on_api_sonarr_get_paths_success,
   on_api_sonarr_get_profiles_success,
   on_api_sonarr_get_search_success,
-  on_api_sonarr_get_series_success
+  on_api_sonarr_get_series_success,
+  on_api_sonarr_post_series_success
 } from '@actions/api.success.actions'
 import {
   do_api_ajax_fail,
@@ -16,6 +18,7 @@ import {
   do_toast_show
 } from '@actions/general.actions'
 import { ApiSuccessActionsType } from '@actions/index'
+import { do_navigate } from '@actions/navigation.actions'
 import { do_server_set_status } from '@actions/server.actions'
 import {
   API_AJAX_FAIL,
@@ -26,24 +29,41 @@ import {
   API_SONARR_GET_PATHS,
   API_SONARR_GET_PROFILES,
   API_SONARR_GET_SEARCH,
-  API_SONARR_GET_SERIES
+  API_SONARR_GET_SERIES,
+  API_SONARR_POST_SERIES,
+  API_SONARR_POST_SERIES_SUCCESS
 } from '@actions/types'
 import { NetInfoStateType } from '@react-native-community/netinfo'
-import { onCase, withApi } from '@utils/api.util'
+import { onCase, onComplete, withApi } from '@utils/api.util'
 import { logger } from '@utils/logger.util'
 import { TActions, TEpic } from '@utils/types.util'
 import { ImpactFeedbackStyle, impactAsync } from 'expo-haptics'
-import { of } from 'rxjs'
+import { ofType } from 'redux-observable'
+import { Observable, OperatorFunction, of } from 'rxjs'
 import {
   catchError,
   concatMap,
   filter,
   map,
+  mapTo,
   mergeMap,
   tap,
   withLatestFrom
 } from 'rxjs/operators'
 import { isOfType } from 'typesafe-actions'
+
+/**
+ * initial pipe overload only accepts
+ * up to 9 fns
+ */
+Observable.prototype.pipeSwitch = Observable.prototype.pipe as any
+declare module 'rxjs' {
+  class Observable<T> {
+    public pipeSwitch(
+      ...operations: Array<OperatorFunction<[TActions, any], [TActions, any]>>
+    ): Observable<[TActions, any]>
+  }
+}
 
 const spinnerStartEpic: TEpic = action$ =>
   action$.pipe(
@@ -85,7 +105,7 @@ const apiGetEpic: TEpic = (action$, state$) =>
          * Switch cases
          * (TYPE_CONSTANT) => (ajax_response => successAction)
          */
-        .pipe(
+        .pipeSwitch(
           /* SONARR */
           onCase(API_SONARR_GET_SERIES)(on_api_sonarr_get_series_success),
           onCase(API_SONARR_GET_CALENDAR)(on_api_sonarr_get_calendar_success),
@@ -95,7 +115,9 @@ const apiGetEpic: TEpic = (action$, state$) =>
           onCase(API_SONARR_GET_PATHS)(on_api_sonarr_get_paths_success),
           onCase(API_SONARR_GET_PROFILES)(on_api_sonarr_get_profiles_success),
           /* RADARR */
-          onCase(API_RADARR_GET_MOVIES)(on_api_radarr_get_movies_success),
+          onCase(API_RADARR_GET_MOVIES)(on_api_radarr_get_movies_success)
+        )
+        .pipe(
           /**
            * Maps successAction to stream
            */
@@ -107,19 +129,41 @@ const apiGetEpic: TEpic = (action$, state$) =>
         )
     ),
     // finish loading
-    withLatestFrom(state$),
-    concatMap(([action, state]) => {
-      const actions: TActions[] = isOfType(API_AJAX_FAIL, action)
-        ? [do_spinner_clear()]
-        : [
-            do_spinner_toggle((action as ApiSuccessActionsType).meta, false),
-            do_server_set_status(state.theme.selectedServer, 'online')
-          ]
-      actions.push(action)
-      return actions
-    })
+    onComplete(state$)
   )
-// const apiPostEpic: TEpic
+const apiPostEpic: TEpic = (action$, state$) =>
+  action$.pipe(
+    filter(isOfType([API_SONARR_POST_SERIES])),
+    withApi(state$, 'POST'),
+    mergeMap(ajax =>
+      ajax
+        .pipeSwitch(
+          /* SONARR */
+          onCase(API_SONARR_POST_SERIES)(on_api_sonarr_post_series_success)
+        )
+        .pipe(
+          /**
+           * Maps successAction to stream
+           */
+          map(([success]) => success as ApiSuccessActionsType),
+          catchError(error => {
+            logger.error(error)
+            return of(do_api_ajax_fail(error))
+          })
+        )
+    ),
+    onComplete(state$)
+  )
+
+const onPostSeriesComplete: TEpic = action$ =>
+  action$.pipe(
+    ofType(API_SONARR_POST_SERIES_SUCCESS),
+    concatMap(() => [
+      do_navigate('shows'),
+      do_api_sonarr_get_series(),
+      do_toast_show('Series added', 'success')
+    ])
+  )
 // const apiPutEpic: TEpic
 // const apiDeleteEpic: TEpic
 
@@ -164,4 +208,10 @@ const apiErrorEpic: TEpic = (action$, state$) =>
 // @note make responseEpic call helper functions to organize state before sending to reducer
 // since its called by all requests it should be generalized, but function calls spetialized
 
-export const API_EPICS = [spinnerStartEpic, apiGetEpic, apiErrorEpic]
+export const API_EPICS = [
+  spinnerStartEpic,
+  apiGetEpic,
+  apiPostEpic,
+  onPostSeriesComplete,
+  apiErrorEpic
+]
