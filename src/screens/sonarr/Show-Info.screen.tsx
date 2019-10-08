@@ -3,22 +3,26 @@ import {
   do_action_sheet_open,
   do_clear_episodes
 } from '@actions/general.actions'
+import { do_navigate_back } from '@actions/navigation.actions'
 import ABackground from '@common/Background.component'
 import BottomDrawer from '@common/Bottom-Drawer.component'
 import AFAB from '@common/FAB.component.tsx'
 import AText from '@common/Text.component'
+import EpisodeItem from '@components/Episode-Item.component'
 import SeasonCard from '@components/Season-Card.component'
 import { Ionicons } from '@expo/vector-icons'
 import { ISeriesValue } from '@interfaces/common.interface'
 import { IEpisode } from '@interfaces/episode.interface'
 import { COLORS, FONT } from '@utils/constants.util'
 import { GRADIENTS } from '@utils/constants.util'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
+import { OFFSET, SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { ColorEnum } from '@utils/enums.util'
 import { GradientEnum } from '@utils/enums.util'
 import { byteToGB } from '@utils/helpers.util'
+import { logger } from '@utils/logger.util'
 import { BORDER_RADIUS, BOX_SHADOW, MARGIN } from '@utils/position.util'
 import { useADispatch, useShallowSelector } from '@utils/recipes.util'
+import { ScreenFComponent } from '@utils/types.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { isEmpty } from 'lodash'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -27,28 +31,23 @@ import FastImage from 'react-native-fast-image'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import styled from 'styled-components/native'
 
-import EpisodeItem from './Episode-Item.component'
-
-const WIDTH = SCREEN_WIDTH * 0.25
+const MAIN_WIDTH = SCREEN_WIDTH - OFFSET
+const WIDTH = MAIN_WIDTH * 0.25
 const POSTER_HEIGHT = WIDTH / 0.69
-const B_GROUP_WIDTH = SCREEN_WIDTH * 0.75 - MARGIN * 2
+const B_GROUP_WIDTH = MAIN_WIDTH * 0.75 - MARGIN * 2
 const B_GROUP_HEIGHT = POSTER_HEIGHT * 0.5
 const G = GRADIENTS[GradientEnum.SEASONS]
 
-type Props = {
+type Params = {
   id: number
   tdbid: number
   posterReq: { uri: string; headers: { [key: string]: string } }
   fanartReq: { uri: string; headers: { [key: string]: string } }
-  animEnd: boolean
 }
-const ShowInfo: React.FC<Props> = ({
-  id,
-  tdbid,
-  fanartReq,
-  posterReq,
-  animEnd
-}) => {
+
+const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
+  const { id, tdbid, posterReq, fanartReq } = navigation.state.params as Params
+  logger.info(navigation.state.params)
   const dispatch = useADispatch()
   const episodes = useEpisodes(id)
   const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
@@ -60,7 +59,7 @@ const ShowInfo: React.FC<Props> = ({
   const selected = (episodes[onViewIndex + noSpecial.current] || [])
     .slice()
     .reverse()
-  const offsets = data.map(k => SCREEN_WIDTH * 0.84 * (k - noSpecial.current))
+  const offsets = data.map(k => MAIN_WIDTH * 0.84 * (k - noSpecial.current))
   // Episodes toggled true
   const episodesSelected = Object.values(isSelected).filter(Boolean).length
 
@@ -122,33 +121,29 @@ const ShowInfo: React.FC<Props> = ({
         <InfoView>
           <Text>{info(show)}</Text>
         </InfoView>
-        {animEnd ? (
-          <ListContainer>
-            <FlatList
-              keyExtractor={keyExtractor}
-              data={data}
-              horizontal
-              renderItem={renderItem(episodes, show)}
-              decelerationRate={0}
-              snapToOffsets={offsets}
-              snapToAlignment={'center'}
-              onScrollEndDrag={onScrollEndDrag}
-              inverted
-              ListHeaderComponent={Empty}
-              ListFooterComponent={Empty}
-            />
-          </ListContainer>
-        ) : null}
+        <ListContainer>
+          <FlatList
+            keyExtractor={keyExtractor}
+            data={data}
+            horizontal
+            renderItem={renderItem(episodes, show)}
+            decelerationRate={0}
+            snapToOffsets={offsets}
+            snapToAlignment={'center'}
+            onScrollEndDrag={onScrollEndDrag}
+            inverted
+            ListHeaderComponent={Empty}
+            ListFooterComponent={Empty}
+          />
+        </ListContainer>
         <BottomDrawer>
-          {animEnd ? (
-            <SwipeListView
-              extraData={isSelected}
-              keyExtractor={episodeKeyExtract}
-              data={selected}
-              renderItem={renderEpisodes(toggle, isSelected)}
-              directionalLockEnabled
-            />
-          ) : null}
+          <SwipeListView
+            extraData={isSelected}
+            keyExtractor={episodeKeyExtract}
+            data={selected}
+            renderItem={renderEpisodes(toggle, isSelected)}
+            directionalLockEnabled
+          />
           {episodesSelected ? (
             <AFAB
               onPress={() =>
@@ -161,8 +156,15 @@ const ShowInfo: React.FC<Props> = ({
           ) : null}
         </BottomDrawer>
       </BottomContent>
+      <AFAB position="top-left" onPress={() => dispatch(do_navigate_back())}>
+        <Ionicons name="md-close" color="white" size={32} />
+      </AFAB>
     </ABackground>
   )
+}
+ShowInfoScreen.navigationOptions = {
+  gesturesEnabled: false,
+  header: null
 }
 
 const useEpisodes = (id: number) => {
@@ -303,7 +305,7 @@ const Empty = styled.View`
    * 0.08 = (1 - (CardWidth + Margins(left,right))) / 2
    * the divided by 2 is because its one size of 2
    */
-  width: ${SCREEN_WIDTH * 0.08};
+  width: ${MAIN_WIDTH * 0.08};
 `
 const Text = styled(AText)`
   color: white;
@@ -315,4 +317,4 @@ const FabText = styled.Text`
   font-family: ${FONT.bold};
 `
 
-export default ShowInfo
+export default ShowInfoScreen

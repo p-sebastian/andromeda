@@ -1,33 +1,45 @@
+import AHeader from '@common/Header.component'
+import {
+  AddInfoScreen,
+  AddSeriesScreen,
+  HistoryScreen,
+  HomeScreen,
+  MovieInfoScreen,
+  MoviesScreen,
+  ServerConfigScreen,
+  SettingsScreen,
+  ShowInfoScreen,
+  ShowsScreen,
+  TorrentAllScreen,
+  UpcomingScreen
+} from '@screens/index'
+import { useADispatch, useASelector } from '@utils/recipes.util'
+import { transitionConfig } from '@utils/transition.util'
+import { ServerNames } from '@utils/types.util'
 import React from 'react'
 import {
-  createStackNavigator,
+  StackNavigatorConfig,
+  TabNavigatorConfig,
   createMaterialTopTabNavigator,
-  createSwitchNavigator,
-  TabNavigatorConfig
+  createStackNavigator,
+  createSwitchNavigator
 } from 'react-navigation'
-import {
-  ShowsScreen,
-  UpcomingScreen,
-  HomeScreen,
-  SettingsScreen,
-  ServerConfigScreen,
-  HistoryScreen,
-  MoviesScreen,
-  TorrentAllScreen,
-  AddSeriesScreen,
-  AddInfoScreen
-} from '@screens/index'
-import { AMaterialTopTabBar } from './components'
-import { useASelector, useADispatch } from '@utils/recipes.util'
 import { createReduxContainer } from 'react-navigation-redux-helpers'
-import { ServerNames } from '@utils/types.util'
-import AHeader from '@common/Header.component'
+
+import { AMaterialTopTabBar } from './components'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
   swipeEnabled: false,
   resetOnBlur: true,
   lazy: true
+}
+const stackConfig: StackNavigatorConfig = {
+  transitionConfig,
+  mode: 'modal',
+  defaultNavigationOptions: {
+    header: AHeader as any
+  }
 }
 
 const SonarrTabs = createMaterialTopTabNavigator(
@@ -38,11 +50,27 @@ const SonarrTabs = createMaterialTopTabNavigator(
   },
   tabConfig
 )
+const SonarrStack = createStackNavigator(
+  {
+    Tabs: SonarrTabs,
+    Showinfo: ShowInfoScreen,
+    Addseries: AddSeriesScreen,
+    Addinfo: AddInfoScreen
+  },
+  stackConfig
+)
 const RadarrTabs = createMaterialTopTabNavigator(
   {
     Movies: MoviesScreen
   },
   tabConfig
+)
+const RadarrStack = createStackNavigator(
+  {
+    Tabs: RadarrTabs,
+    MovieInfo: MovieInfoScreen
+  },
+  stackConfig
 )
 const LidarrTabs = createMaterialTopTabNavigator(
   {
@@ -68,8 +96,8 @@ const TorrentTabs = createMaterialTopTabNavigator(
  * module, since all are different
  */
 const AppSwitch = createSwitchNavigator({
-  Sonarr: SonarrTabs,
-  Radarr: RadarrTabs,
+  Sonarr: SonarrStack,
+  Radarr: RadarrStack,
   Lidarr: LidarrTabs,
   Sabnzbd: SabnzbdTabs,
   Torrent: TorrentTabs
@@ -94,14 +122,16 @@ const ModalStack = createStackNavigator(
  */
 const withHeaderStack = createStackNavigator(
   {
-    Tabs: AppSwitch,
-    Addseries: AddSeriesScreen,
-    Addinfo: AddInfoScreen
+    Tabs: AppSwitch
+    /* Showinfo: ShowInfoScreen,
+     * Addseries: AddSeriesScreen,
+     * Addinfo: AddInfoScreen */
   },
   {
-    mode: 'modal',
+    // transitionConfig,
+    headerMode: 'none',
     defaultNavigationOptions: {
-      header: AHeader as any
+      // header: AHeader as any
     }
   }
 )
@@ -114,7 +144,7 @@ const withHeaderStack = createStackNavigator(
  */
 export const ScreenStack = createSwitchNavigator(
   {
-    Main: withHeaderStack,
+    Main: AppSwitch,
     Modal: ModalStack
   },
   {
@@ -139,16 +169,19 @@ const AppNavigator: React.FC = () => {
  */
 export type ScreenNames =
   | ServerNames
+  | 'tabs'
   | 'settings'
   | 'upcoming'
   | 'shows'
   | 'config'
   | 'history'
   | 'movies'
+  | 'movieinfo'
   | 'addseries'
   | 'add'
   | 'all'
   | 'addinfo'
   | 'info'
+  | 'showinfo'
 
 export default AppNavigator

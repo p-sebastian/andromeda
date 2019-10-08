@@ -21,6 +21,8 @@ const SeriesItem: React.FC<Props> = ({ series }) => {
       id={id}
       tdbid={tvdbId}
       serverKey={ServerEnum.SONARR}
+      screen="showinfo"
+      screenTitle="Info"
     >
       <Description>
         {seasonCount} {seasonCount > 1 ? 'Seasons' : 'Season'}

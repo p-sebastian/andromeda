@@ -1,13 +1,19 @@
-import React from 'react'
-import styled from 'styled-components/native'
+import { useTheme } from '@hooks/useTheme'
 import { extractStyleTheme } from '@utils/recipes.util'
+import React from 'react'
 import { View } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
-import { useTheme } from '@hooks/useTheme'
+import styled from 'styled-components/native'
 
 const AHeader: React.FC = () => {
   const theme = useTheme()
-  return <SSafeView theme={theme} accessibilityLabel="header" />
+  return (
+    <SSafeView
+      theme={theme}
+      forceInset={{ top: 'always' }}
+      accessibilityLabel="header"
+    />
+  )
 }
 
 const SSafeView = styled(SafeAreaView)`

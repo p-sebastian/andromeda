@@ -1,13 +1,19 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react'
-import styled from 'styled-components/native'
-import { Animated } from 'react-native'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
-import ShowInfo from '@components/Show-Info.component'
-import MovieInfo from '@components/Movie-Info.component'
 import AFAB from '@common/FAB.component'
 import { Ionicons } from '@expo/vector-icons'
-import { ExpansionContext } from '../../context/Expansion.context'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { ServerEnum } from '@utils/enums.util'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { Animated } from 'react-native'
+import styled from 'styled-components/native'
+
+import { ExpansionContext } from '../../context/Expansion.context'
+
+/*
+ * ********** DEPRECATED
+ *
+ * Until I find something to use it with
+ *
+ * */
 
 type Props = {
   offsetX: number
@@ -70,12 +76,15 @@ const CardExpansion: React.FC<Props> = ({
 
   return (
     <Expansion as={Animated.View} style={animated as any}>
+      {/*
       {_props.serverKey === ServerEnum.SONARR ? (
         <ShowInfo animEnd={animEnd} {..._props} />
       ) : null}
       {_props.serverKey === ServerEnum.RADARR ? (
         <MovieInfo animEnd={animEnd} {..._props} />
       ) : null}
+
+        */}
       <AFAB position="top-left" onPress={onPress as any}>
         <Ionicons name="md-close" color="white" size={32} />
       </AFAB>

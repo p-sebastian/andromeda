@@ -1,8 +1,15 @@
+import { do_navigate } from '@actions/navigation.actions'
+import { ScreenNames } from '@routes'
 import { uriForImage } from '@utils/api.util'
 import { FONT } from '@utils/constants.util'
 import { SCREEN_WIDTH } from '@utils/dimensions.util'
 import { BORDER_RADIUS, BOX_SHADOW } from '@utils/position.util'
-import { extractFn, extractProp, useASelector } from '@utils/recipes.util'
+import {
+  extractFn,
+  extractProp,
+  useADispatch,
+  useASelector
+} from '@utils/recipes.util'
 import {
   ServersWithImages,
   selectImage,
@@ -10,12 +17,9 @@ import {
 } from '@utils/selectors.util'
 import { TGradient } from '@utils/types.util'
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useCallback, useContext, useRef } from 'react'
-import { View } from 'react-native'
+import React from 'react'
 import FastImage from 'react-native-fast-image'
 import styled from 'styled-components/native'
-
-import { ExpansionContext } from '../../context/Expansion.context'
 
 const WIDTH = SCREEN_WIDTH * 0.25
 
@@ -28,6 +32,8 @@ type Props = {
   children: React.ReactNode
   flexDirection?: 'row' | 'column'
   justifyContent?: string
+  screen: ScreenNames
+  screenTitle?: string
 }
 const PosterItem: React.FC<Props> = ({
   children,
@@ -37,37 +43,29 @@ const PosterItem: React.FC<Props> = ({
   gradient,
   title,
   flexDirection = 'row',
-  justifyContent = 'flex-end'
+  justifyContent = 'flex-end',
+  screen,
+  screenTitle
 }) => {
-  const { setDimensions } = useContext(ExpansionContext)
-  const container = useRef<View>(null)
+  const dispatch = useADispatch()
   const server = useASelector(selectServer(serverKey))
   const poster = useASelector(selectImage(serverKey, `${tdbid}-poster`))
   const fanart = useASelector(selectImage(serverKey, `${tdbid}-fanart`))
   const posterReq = uriForImage(server, poster)
   const fanartReq = uriForImage(server, fanart)
-  /**
-   * Open expansion card, whats withing withExpansion.hoc, in AppContainer
-   */
-  const _onPress = useCallback(() => {
-    container.current!.measure((x, y, elmWidth, elmHeight, offsetX, offsetY) =>
-      setDimensions({
-        elmHeight,
-        elmWidth,
-        offsetX,
-        offsetY,
-        selected: true,
+  const _onPress = () =>
+    dispatch(
+      do_navigate(screen, {
+        title: screenTitle,
         id,
         tdbid,
         posterReq,
-        fanartReq,
-        serverKey
+        fanartReq
       })
     )
-  }, [container])
 
   return (
-    <Container ref={container}>
+    <Container>
       <Touchable onPress={_onPress as any}>
         <PosterContainer>
           <Poster source={posterReq} />

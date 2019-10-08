@@ -18,6 +18,8 @@ const MovieItem: React.FC<Props> = ({ movie }) => {
       title={title}
       gradient={gradient}
       serverKey={ServerEnum.RADARR}
+      screen="movieinfo"
+      screenTitle="Info"
     >
       <Container>
         <Title>{release(movie)}</Title>

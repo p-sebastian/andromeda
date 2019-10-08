@@ -2,9 +2,8 @@ import PosterItem from '@common/Poster-Item.component'
 import AText from '@common/Text.component'
 import { CalendarValue } from '@interfaces/calendar.interface'
 import { FONT, GRADIENTS } from '@utils/constants.util'
-import { GradientEnum, ServerEnum, ThemeEnum } from '@utils/enums.util'
+import { GradientEnum, ServerEnum } from '@utils/enums.util'
 import { useShallowSelector } from '@utils/recipes.util'
-import { THEME } from '@utils/theme.util'
 import { isUndefined } from 'lodash'
 import moment from 'moment'
 import React from 'react'
@@ -14,7 +13,6 @@ type Props = { upcoming: CalendarValue }
 const CalendarItem: React.FC<Props> = ({ upcoming }) => {
   const {
     tvdbId,
-    id,
     title,
     seasonNumber,
     episodeNumber,
@@ -35,11 +33,13 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
     <PosterItem
       gradient={gradient}
       title={series.title}
-      id={id}
+      id={series.id}
       tdbid={tvdbId}
       serverKey={ServerEnum.SONARR}
       flexDirection="column"
       justifyContent="flex-start"
+      screen="showinfo"
+      screenTitle="Info"
     >
       <Title>{title}</Title>
       <Container>

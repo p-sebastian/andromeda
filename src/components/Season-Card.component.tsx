@@ -1,16 +1,17 @@
-import React from 'react'
-import styled from 'styled-components/native'
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@utils/dimensions.util'
-import { BOX_SHADOW, MARGIN } from '@utils/position.util'
-import { LinearGradient } from 'expo-linear-gradient'
-import { GRADIENTS, COLORS, FONT } from '@utils/constants.util'
-import { GradientEnum, ColorEnum } from '@utils/enums.util'
-import { IEpisode } from '@interfaces/episode.interface'
 import { MaterialIcons } from '@expo/vector-icons'
 import { ISeason } from '@interfaces/common.interface'
+import { IEpisode } from '@interfaces/episode.interface'
+import { COLORS, FONT, GRADIENTS } from '@utils/constants.util'
+import { OFFSET, SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
+import { ColorEnum, GradientEnum } from '@utils/enums.util'
 import { byteToGB } from '@utils/helpers.util'
+import { BOX_SHADOW, MARGIN } from '@utils/position.util'
+import { LinearGradient } from 'expo-linear-gradient'
 import moment from 'moment'
+import React from 'react'
+import styled from 'styled-components/native'
 
+const MAIN_WIDTH = SCREEN_WIDTH - OFFSET
 const gradient = GRADIENTS[GradientEnum.SEASONS]
 type Props = { episodes: IEpisode[]; season: ISeason }
 const SeasonCard: React.FC<Props> = ({ season, episodes }) => {
@@ -64,11 +65,11 @@ const SeasonCard: React.FC<Props> = ({ season, episodes }) => {
 const title = (num: number) => (num === 0 ? 'Specials' : `Season ${num}`)
 
 const Container = styled.View`
-  width: ${SCREEN_WIDTH * 0.7};
+  width: ${MAIN_WIDTH * 0.7};
   height: ${SCREEN_HEIGHT * 0.375 -
     MARGIN}; /* 0.375 lines with the bottom drawer*/
-  margin-left: ${SCREEN_WIDTH * 0.07};
-  margin-right: ${SCREEN_WIDTH * 0.07};
+  margin-left: ${MAIN_WIDTH * 0.07};
+  margin-right: ${MAIN_WIDTH * 0.07};
   top: ${SCREEN_HEIGHT * 0.125};
   box-shadow: ${BOX_SHADOW};
 `
