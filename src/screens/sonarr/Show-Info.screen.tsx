@@ -47,7 +47,6 @@ type Params = {
 
 const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
   const { id, tdbid, posterReq, fanartReq } = navigation.state.params as Params
-  logger.info(navigation.state.params)
   const dispatch = useADispatch()
   const episodes = useEpisodes(id)
   const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
@@ -66,10 +65,12 @@ const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
   const toggle = (key: number) =>
     setIsSelected({ ...isSelected, [key]: !isSelected[key] })
 
+  // runs when it has episodes; 2 times
   useEffect(() => {
     if (!isEmpty(episodes)) {
       // seasonNumber = 0; means specials season.
       noSpecial.current = keys.findIndex(k => k === 0) < 0 ? 1 : 0
+      // start on last season
       setOnViewIndex(data.length - 1)
     }
   }, [JSON.stringify(keys)])
@@ -85,7 +86,8 @@ const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
       setIsSelected({})
       setOnViewIndex(
         offsets.findIndex(
-          v => Math.round(v) === Math.round(e.nativeEvent.targetContentOffset.x)
+          // within +/- 1
+          v => Math.abs(e.nativeEvent.targetContentOffset.x - v) <= 1
         )
       )
     },
@@ -156,7 +158,11 @@ const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
           ) : null}
         </BottomDrawer>
       </BottomContent>
-      <AFAB position="top-left" onPress={() => dispatch(do_navigate_back())}>
+      <AFAB
+        fullscreen
+        position="top-left"
+        onPress={() => dispatch(do_navigate_back())}
+      >
         <Ionicons name="md-close" color="white" size={32} />
       </AFAB>
     </ABackground>

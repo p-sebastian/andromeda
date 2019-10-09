@@ -1,8 +1,9 @@
+import { isIphoneX } from '@utils/helpers.util'
+import { BOX_SHADOW, MARGIN } from '@utils/position.util'
+import { extractProp } from '@utils/recipes.util'
 import React from 'react'
 import { GestureResponderEvent } from 'react-native'
 import styled from 'styled-components/native'
-import { MARGIN, BOX_SHADOW } from '@utils/position.util'
-import { extractProp } from '@utils/recipes.util'
 
 type Positions = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 type Props = {
@@ -10,15 +11,17 @@ type Props = {
   position?: Positions
   children: React.ReactNode
   background?: string
+  fullscreen?: boolean
 }
 const AFAB: React.FC<Props> = ({
   children,
   onPress,
   position = 'bottom-right',
-  background = 'hsla(228, 11%, 28%, 1)'
+  background = 'hsla(228, 11%, 28%, 1)',
+  fullscreen = false
 }) => {
   return (
-    <Container position={position}>
+    <Container position={position} fullscreen={fullscreen}>
       <Button onPress={onPress} background={background}>
         {children}
       </Button>
@@ -26,12 +29,20 @@ const AFAB: React.FC<Props> = ({
   )
 }
 
-const where = ({ position }: { position: Positions }) => {
+const where = ({
+  position,
+  fullscreen
+}: {
+  position: Positions
+  fullscreen: boolean
+}) => {
+  // when no safeAreaView is set in the container displaying it
+  const add = fullscreen && isIphoneX() ? 20 : 0
   switch (position) {
     case 'top-left':
-      return `top: ${MARGIN}; left: ${MARGIN};`
+      return `top: ${MARGIN + add}; left: ${MARGIN};`
     case 'top-right':
-      return `top: ${MARGIN}; right: ${MARGIN};`
+      return `top: ${MARGIN + add}; right: ${MARGIN};`
     case 'bottom-left':
       return `bottom: ${MARGIN}; left: ${MARGIN};`
     default:
@@ -42,7 +53,7 @@ const where = ({ position }: { position: Positions }) => {
  * This circle in circle fixes, jagged edges of a
  * border in a circle
  */
-const Container = styled.View<{ position: Positions }>`
+const Container = styled.View<{ position: Positions; fullscreen: boolean }>`
   position: absolute;
   ${where}
   height: 60;
