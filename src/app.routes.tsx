@@ -68,7 +68,7 @@ const RadarrTabs = createMaterialTopTabNavigator(
 const RadarrStack = createStackNavigator(
   {
     Tabs: RadarrTabs,
-    MovieInfo: MovieInfoScreen
+    Movieinfo: MovieInfoScreen
   },
   stackConfig
 )

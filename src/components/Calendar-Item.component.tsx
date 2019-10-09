@@ -17,6 +17,7 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
     seasonNumber,
     episodeNumber,
     airDate,
+    airDateUtc,
     hasFile
   } = upcoming
   const series = useShallowSelector(
@@ -47,7 +48,7 @@ const CalendarItem: React.FC<Props> = ({ upcoming }) => {
           {seasonNumber}x{episodeNumber}
         </Text>
         <Text>
-          {moment(airDate).format('h:mm a')} on {series.network}
+          {moment(airDateUtc || airDate).format('h:mm a')} on {series.network}
         </Text>
       </Container>
     </PosterItem>

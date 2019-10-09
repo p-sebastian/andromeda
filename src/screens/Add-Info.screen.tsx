@@ -13,7 +13,7 @@ import { useADispatch, useASelector } from '@utils/recipes.util'
 import { ScreenFComponent } from '@utils/types.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { capitalize } from 'lodash'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 
 const WIDTH = SCREEN_WIDTH * 0.25
@@ -32,11 +32,19 @@ const AddInfoScreen: ScreenFComponent = ({ navigation }) => {
   const { posterReq, fanartReq, series } = navigation.state.params as Params
   const dispatch = useADispatch()
   const [profiles, paths, monitor, seriesType] = useData()
+  // on first app load profiles will be empty,
   const [form, onPress] = useForm(
-    profiles[0].value,
-    paths[0].value,
+    profiles.length ? profiles[0].value : 0,
+    paths.length ? paths[0].value : '',
     seriesType[0].value
   )
+  // on Update or first load
+  useEffect(() => {
+    onPress('profileId')(profiles[0].value)
+  }, [JSON.stringify(profiles)])
+  useEffect(() => {
+    onPress('rootFolderPath')(paths[0].value)
+  }, [JSON.stringify(paths)])
   const [options, seasons, onMonitorPress] = useOptions(series)
 
   const onAdd = (search = false) => () => {
