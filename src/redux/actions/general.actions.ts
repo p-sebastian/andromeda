@@ -1,23 +1,26 @@
-import { createAction } from 'typesafe-actions'
-import {
-  API_AJAX_FAIL,
-  SPINNER_TOGGLE,
-  CLEAR_EPISODES,
-  ACTION_SHEET_OPEN,
-  ACTION_SHEET_ON_SEASON,
-  ACTION_SHEET_ON_EPISODE,
-  SIDEBAR_TOGGLE,
-  CLEAR_SEARCH_SERIES,
-  TOAST_SHOW,
-  TOAST_HIDE,
-  SPINNER_CLEAR,
-  NETWORK_CHANGE,
-  NETWORK_ENDPOINT_TOGGLE
-} from './types'
-import { capitalize } from 'lodash'
-import { NetInfoStateType } from '@react-native-community/netinfo'
 import { ApiActionsType } from '@actions/index'
+import { NetInfoStateType } from '@react-native-community/netinfo'
 import { ServerEnum } from '@utils/enums.util'
+import { capitalize } from 'lodash'
+import { createAction } from 'typesafe-actions'
+
+import {
+  ACTION_SHEET_ON_EPISODE,
+  ACTION_SHEET_ON_SEASON,
+  ACTION_SHEET_OPEN,
+  API_AJAX_FAIL,
+  CLEAR_COMMAND,
+  CLEAR_EPISODES,
+  CLEAR_SEARCH_SERIES,
+  COMMAND_COMPLETE,
+  NETWORK_CHANGE,
+  NETWORK_ENDPOINT_TOGGLE,
+  SIDEBAR_TOGGLE,
+  SPINNER_CLEAR,
+  SPINNER_TOGGLE,
+  TOAST_HIDE,
+  TOAST_SHOW
+} from './types'
 
 export const do_api_ajax_fail = createAction(
   API_AJAX_FAIL,
@@ -33,6 +36,14 @@ export const do_spinner_clear = createAction(SPINNER_CLEAR)
 export const do_clear_episodes = createAction(CLEAR_EPISODES)
 
 export const do_clear_search_series = createAction(CLEAR_SEARCH_SERIES)
+export const do_clear_command = createAction(
+  CLEAR_COMMAND,
+  action => (ids: number[]) => action(ids)
+)
+export const do_command_complete = createAction(
+  COMMAND_COMPLETE,
+  action => (ids: number[]) => action(ids)
+)
 
 export const do_action_sheet_open = createAction(
   ACTION_SHEET_OPEN,

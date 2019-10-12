@@ -8,6 +8,7 @@ import {
   on_api_sonarr_get_profiles_success,
   on_api_sonarr_get_search_success,
   on_api_sonarr_get_series_success,
+  on_api_sonarr_post_command_success,
   on_api_sonarr_post_series_success
 } from '@actions/api.success.actions'
 import {
@@ -30,6 +31,8 @@ import {
   API_SONARR_GET_PROFILES,
   API_SONARR_GET_SEARCH,
   API_SONARR_GET_SERIES,
+  API_SONARR_POST_COMMAND,
+  API_SONARR_POST_COMMAND_SUCCESS,
   API_SONARR_POST_SERIES,
   API_SONARR_POST_SERIES_SUCCESS
 } from '@actions/types'
@@ -133,13 +136,14 @@ const apiGetEpic: TEpic = (action$, state$) =>
   )
 const apiPostEpic: TEpic = (action$, state$) =>
   action$.pipe(
-    filter(isOfType([API_SONARR_POST_SERIES])),
+    filter(isOfType([API_SONARR_POST_SERIES, API_SONARR_POST_COMMAND])),
     withApi(state$, 'POST'),
     mergeMap(ajax =>
       ajax
         .pipeSwitch(
           /* SONARR */
-          onCase(API_SONARR_POST_SERIES)(on_api_sonarr_post_series_success)
+          onCase(API_SONARR_POST_SERIES)(on_api_sonarr_post_series_success),
+          onCase(API_SONARR_POST_COMMAND)(on_api_sonarr_post_command_success)
         )
         .pipe(
           /**
@@ -155,7 +159,7 @@ const apiPostEpic: TEpic = (action$, state$) =>
     onComplete(state$)
   )
 
-const onPostSeriesComplete: TEpic = action$ =>
+const onPostSeriesCompleteEpic: TEpic = action$ =>
   action$.pipe(
     ofType(API_SONARR_POST_SERIES_SUCCESS),
     concatMap(() => [
@@ -164,8 +168,6 @@ const onPostSeriesComplete: TEpic = action$ =>
       do_toast_show('Series added', 'success')
     ])
   )
-// const apiPutEpic: TEpic
-// const apiDeleteEpic: TEpic
 
 const apiErrorEpic: TEpic = (action$, state$) =>
   action$.pipe(
@@ -212,6 +214,6 @@ export const API_EPICS = [
   spinnerStartEpic,
   apiGetEpic,
   apiPostEpic,
-  onPostSeriesComplete,
+  onPostSeriesCompleteEpic,
   apiErrorEpic
 ]

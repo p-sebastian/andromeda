@@ -1,3 +1,4 @@
+import { ICommand } from '@interfaces/command.interface'
 import { IRawSeries, TNrmlzResponse } from '@interfaces/common.interface'
 import { IEpisode } from '@interfaces/episode.interface'
 import { IPath } from '@interfaces/path.interface'
@@ -7,12 +8,14 @@ import { createAction } from 'typesafe-actions'
 import {
   API_RADARR_GET_MOVIES_SUCCESS,
   API_SONARR_GET_CALENDAR_SUCCESS,
+  API_SONARR_GET_COMMAND_SUCCESS,
   API_SONARR_GET_EPISODES_SUCCESS,
   API_SONARR_GET_HISTORY_SUCCESS,
   API_SONARR_GET_PATHS_SUCCESS,
   API_SONARR_GET_PROFILES_SUCCESS,
   API_SONARR_GET_SEARCH_SUCCESS,
   API_SONARR_GET_SERIES_SUCCESS,
+  API_SONARR_POST_COMMAND_SUCCESS,
   API_SONARR_POST_SERIES_SUCCESS
 } from './types'
 
@@ -40,6 +43,11 @@ export const on_api_sonarr_get_history_success = createAction(
   action => (payload: TNrmlzResponse<'history'>, isOf: string) =>
     action(payload, isOf)
 )
+export const on_api_get_command_success = createAction(
+  API_SONARR_GET_COMMAND_SUCCESS,
+  action => (payload: TNrmlzResponse<'command'>, isOf: string) =>
+    action(payload, isOf)
+)
 export const on_api_sonarr_get_search_success = createAction(
   API_SONARR_GET_SEARCH_SUCCESS,
   action => (
@@ -58,6 +66,10 @@ export const on_api_sonarr_get_profiles_success = createAction(
 export const on_api_sonarr_post_series_success = createAction(
   API_SONARR_POST_SERIES_SUCCESS,
   action => (payload: any, isOf: string) => action(payload, isOf)
+)
+export const on_api_sonarr_post_command_success = createAction(
+  API_SONARR_POST_COMMAND_SUCCESS,
+  action => (payload: ICommand, isOf: string) => action(payload, isOf)
 )
 
 /* RADARR */

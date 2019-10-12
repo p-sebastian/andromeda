@@ -40,3 +40,14 @@ export enum ServerEnum {
   SABNZBD = 'sabnzbd',
   TORRENT = 'torrent'
 }
+
+export enum CommandEnum {
+  RESCAN_SERIES = 'RescanSeries',
+  REFRESH_SERIES = 'RefreshSeries',
+  EPISODE_SEARCH = 'EpisodeSearch',
+  SEASON_SEARCH = 'SeasonSearch',
+  SERIES_SEARCH = 'SeriesSearch',
+  RSS_SYNC = 'RssSync',
+  BACKUP = 'Backup',
+  MISSING_EPISODE_SEARCH = 'missingEpisodeSearch' // not a typo
+}

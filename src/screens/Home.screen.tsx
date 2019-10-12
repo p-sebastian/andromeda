@@ -1,6 +1,6 @@
+import { ScreenFComponent } from '@utils/types.util'
 import React from 'react'
 import styled from 'styled-components/native'
-import { ScreenFComponent } from '@utils/types.util'
 
 const HomeScreen: ScreenFComponent = () => {
   return (

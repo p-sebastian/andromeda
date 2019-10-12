@@ -82,11 +82,11 @@ export const tempReducer = createReducer<typeof DEFAULT_STATE, TActions>(
     }
     return { ...state, enabledServers: [...state.enabledServers, serverKey] }
   })
-  .handleAction(API_SONARR_GET_PATHS_SUCCESS, (state, action) => ({
+  .handleAction(API_SONARR_GET_PATHS_SUCCESS, (state, { payload }) => ({
     ...state,
-    paths: [...action.payload]
+    paths: [...payload]
   }))
-  .handleAction(API_SONARR_GET_PROFILES_SUCCESS, (state, action) => ({
+  .handleAction(API_SONARR_GET_PROFILES_SUCCESS, (state, { payload }) => ({
     ...state,
-    profiles: [...action.payload]
+    profiles: [...payload]
   }))

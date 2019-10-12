@@ -1,6 +1,7 @@
 import {
   API_RADARR_GET_MOVIES,
   API_SONARR_GET_CALENDAR,
+  API_SONARR_GET_COMMAND,
   API_SONARR_GET_EPISODES,
   API_SONARR_GET_HISTORY,
   API_SONARR_GET_SERIES
@@ -22,6 +23,8 @@ export const nrmlz: Nrmlzr = (CONSTANT, json) => {
       return sonarrGetHistory(json)
     case API_RADARR_GET_MOVIES:
       return radarrGetMovies(json)
+    case API_SONARR_GET_COMMAND:
+      return sonarrGetCommands(json)
     default:
       return json
   }
@@ -68,6 +71,10 @@ const sonarrGetEpisodes = (json: any) => {
 const sonarrGetHistory = (json: { records: any[] }) => {
   const history = new schema.Entity('history')
   return normalize(json.records, [history])
+}
+const sonarrGetCommands = (json: any) => {
+  const command = new schema.Entity('command')
+  return normalize(json, [command])
 }
 
 /* RADARR */

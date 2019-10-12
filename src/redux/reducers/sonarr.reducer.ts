@@ -1,14 +1,18 @@
-import { createReducer } from 'typesafe-actions'
-import { TActions } from '@utils/types.util'
 import {
-  API_SONARR_GET_SERIES_SUCCESS,
   API_SONARR_GET_CALENDAR_SUCCESS,
-  API_SONARR_GET_HISTORY_SUCCESS
+  API_SONARR_GET_COMMAND_SUCCESS,
+  API_SONARR_GET_HISTORY_SUCCESS,
+  API_SONARR_GET_SERIES_SUCCESS,
+  CLEAR_COMMAND
 } from '@actions/types'
-import { TSeries } from '@interfaces/series.interface'
 import { TCalendar } from '@interfaces/calendar.interface'
-import { THistory } from '@interfaces/history.interface'
+import { TCommand } from '@interfaces/command.interface'
 import { TImage } from '@interfaces/common.interface'
+import { THistory } from '@interfaces/history.interface'
+import { TSeries } from '@interfaces/series.interface'
+import { TActions } from '@utils/types.util'
+import { omit, uniq, without } from 'lodash'
+import { createReducer } from 'typesafe-actions'
 
 type State = {
   entities: {
@@ -16,11 +20,13 @@ type State = {
     calendar: TCalendar
     images: TImage
     history: THistory
+    command: TCommand
   }
   result: {
     series: number[]
     calendar: number[]
     history: number[]
+    command: number[]
   }
 }
 const DEFAULT_STATE: State = {
@@ -28,12 +34,14 @@ const DEFAULT_STATE: State = {
     series: {},
     calendar: {},
     images: {},
-    history: {}
+    history: {},
+    command: {}
   },
   result: {
     series: [],
     calendar: [],
-    history: []
+    history: [],
+    command: []
   }
 }
 
@@ -69,5 +77,29 @@ export const sonarrReducer = createReducer<typeof DEFAULT_STATE, TActions>(
         history: { ...entities['history'] }
       },
       result: { ...state.result, history: [...result] }
+    }
+  })
+  /*
+   * Adds all commands without deleting previous ones (updates instead)
+   */
+  .handleAction(API_SONARR_GET_COMMAND_SUCCESS, (state, { payload }) => {
+    const result = uniq([...state.result.command, ...payload.result])
+    return {
+      entities: {
+        ...state.entities,
+        command: { ...state.entities.command, ...payload.entities['command'] }
+      },
+      result: { ...state.result, command: [...result] }
+    }
+  })
+  .handleAction(CLEAR_COMMAND, (state, { payload }) => {
+    const result = without(state.result.command, ...payload)
+    const command = omit(state.entities.command, payload)
+    return {
+      entities: {
+        ...state.entities,
+        command
+      },
+      result: { ...state.result, command: result }
     }
   })

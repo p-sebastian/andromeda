@@ -1,17 +1,19 @@
 import { IRawSeries } from '@interfaces/common.interface'
-import { ServerEnum } from '@utils/enums.util'
+import { CommandEnum, ServerEnum } from '@utils/enums.util'
 import moment from 'moment'
 import { createAction } from 'typesafe-actions'
 
 import {
   API_RADARR_GET_MOVIES,
   API_SONARR_GET_CALENDAR,
+  API_SONARR_GET_COMMAND,
   API_SONARR_GET_EPISODES,
   API_SONARR_GET_HISTORY,
   API_SONARR_GET_PATHS,
   API_SONARR_GET_PROFILES,
   API_SONARR_GET_SEARCH,
   API_SONARR_GET_SERIES,
+  API_SONARR_POST_COMMAND,
   API_SONARR_POST_SERIES
 } from './types'
 
@@ -75,6 +77,10 @@ export const do_api_sonarr_get_profiles = createAction(
   API_SONARR_GET_PROFILES,
   action => () => action(..._config('/profile', ServerEnum.SONARR))
 )
+export const do_api_sonarr_get_command = createAction(
+  API_SONARR_GET_COMMAND,
+  action => () => action(..._config('/command', ServerEnum.SONARR))
+)
 
 type NewSeries = IRawSeries<{ coverType: string; url: string }> & {
   addOptions: {
@@ -91,6 +97,18 @@ export const do_api_sonarr_post_series = createAction(
   API_SONARR_POST_SERIES,
   action => (series: NewSeries) =>
     action(..._config('/series', ServerEnum.SONARR, series))
+)
+// tvdbId isnt needed for the http request, but for indexing the series later
+export const do_api_sonarr_post_command = createAction(
+  API_SONARR_POST_COMMAND,
+  action => (command: CommandEnum, seriesId: number, tvdbId: number) =>
+    action(
+      ..._config('/command', ServerEnum.SONARR, {
+        name: command,
+        seriesId,
+        tvdbId
+      })
+    )
 )
 
 /* RADARR */

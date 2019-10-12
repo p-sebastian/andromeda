@@ -28,8 +28,10 @@ export const API_SONARR_GET_HISTORY = '@api/sonarr_get_history'
 export const API_SONARR_GET_SEARCH = '@api/sonarr_get_search'
 export const API_SONARR_GET_PROFILES = '@api/sonarr_get_profiles'
 export const API_SONARR_GET_PATHS = '@api/sonarr_get_paths'
+export const API_SONARR_GET_COMMAND = '@api/sonarr_get_command'
 /* POST */
 export const API_SONARR_POST_SERIES = '@api/sonarr_post_series'
+export const API_SONARR_POST_COMMAND = '@api/sonarr_post_command'
 
 /* ***** RADARR ***** */
 export const API_RADARR_GET_MOVIES = '@api/radarr_get_movies'
@@ -37,6 +39,7 @@ export const API_RADARR_GET_MOVIES = '@api/radarr_get_movies'
 /* ********** SUCCESS CALLBACKS ********** */
 
 /* ***** SONARR ***** */
+/* GET */
 export const API_SONARR_GET_SERIES_SUCCESS = '@api/sonarr_get_series_success'
 export const API_SONARR_GET_CALENDAR_SUCCESS =
   '@api/sonarr_get_calendar_success'
@@ -47,13 +50,19 @@ export const API_SONARR_GET_SEARCH_SUCCESS = '@api/sonarr_get_search_success'
 export const API_SONARR_GET_PROFILES_SUCCESS =
   '@api/sonarr_get_profiles_success'
 export const API_SONARR_GET_PATHS_SUCCESS = '@api/sonarr_get_paths_success'
+export const API_SONARR_GET_COMMAND_SUCCESS = '@api/sonarr_get_command_success'
+/* POST */
 export const API_SONARR_POST_SERIES_SUCCESS = '@api/sonarr_post_series_success'
+export const API_SONARR_POST_COMMAND_SUCCESS =
+  '@api/sonarr_post_command_success'
 
 /* ***** RADARR ***** */
 export const API_RADARR_GET_MOVIES_SUCCESS = '@api/radarr_get_movies_success'
 
 export const CLEAR_EPISODES = '@clear/episodes'
 export const CLEAR_SEARCH_SERIES = '@clear/search_series'
+export const CLEAR_COMMAND = '@clear/command'
+export const COMMAND_COMPLETE = '@command/complete'
 export const SPINNER_TOGGLE = '@spinner/toggle'
 export const SPINNER_CLEAR = '@spinner/clear'
 export const ACTION_SHEET_OPEN = '@action_sheet/open'

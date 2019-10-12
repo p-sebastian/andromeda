@@ -10,6 +10,7 @@ import {
   SettingsScreen,
   ShowInfoScreen,
   ShowsScreen,
+  SonarrTaskScreen,
   TorrentAllScreen,
   UpcomingScreen
 } from '@screens/index'
@@ -30,6 +31,9 @@ import { AMaterialTopTabBar } from './components'
 
 const tabConfig: TabNavigatorConfig = {
   tabBarComponent: AMaterialTopTabBar,
+  tabBarOptions: {
+    scrollEnabled: true
+  },
   swipeEnabled: false,
   resetOnBlur: true,
   lazy: true
@@ -46,7 +50,8 @@ const SonarrTabs = createMaterialTopTabNavigator(
   {
     Shows: ShowsScreen,
     Upcoming: UpcomingScreen,
-    History: HistoryScreen
+    History: HistoryScreen,
+    Tasks: SonarrTaskScreen
   },
   tabConfig
 )
@@ -78,17 +83,35 @@ const LidarrTabs = createMaterialTopTabNavigator(
   },
   tabConfig
 )
+const LidarrStack = createStackNavigator(
+  {
+    Tabs: LidarrTabs
+  },
+  stackConfig
+)
 const SabnzbdTabs = createMaterialTopTabNavigator(
   {
     Home: HomeScreen
   },
   tabConfig
 )
+const SabnzbdStack = createStackNavigator(
+  {
+    Tabs: SabnzbdTabs
+  },
+  stackConfig
+)
 const TorrentTabs = createMaterialTopTabNavigator(
   {
     All: TorrentAllScreen
   },
   tabConfig
+)
+const TorrentStack = createStackNavigator(
+  {
+    Tabs: TorrentTabs
+  },
+  stackConfig
 )
 
 /**
@@ -98,9 +121,9 @@ const TorrentTabs = createMaterialTopTabNavigator(
 const AppSwitch = createSwitchNavigator({
   Sonarr: SonarrStack,
   Radarr: RadarrStack,
-  Lidarr: LidarrTabs,
-  Sabnzbd: SabnzbdTabs,
-  Torrent: TorrentTabs
+  Lidarr: LidarrStack,
+  Sabnzbd: SabnzbdStack,
+  Torrent: TorrentStack
 })
 
 const ModalStack = createStackNavigator(
@@ -112,26 +135,6 @@ const ModalStack = createStackNavigator(
     mode: 'modal',
     defaultNavigationOptions: {
       header: AHeader as any
-    }
-  }
-)
-/**
- * Puts a header in all tabs, can only be done
- * in a stacknavigator
- * [screens] on top of tabs as modals, must be put here
- */
-const withHeaderStack = createStackNavigator(
-  {
-    Tabs: AppSwitch
-    /* Showinfo: ShowInfoScreen,
-     * Addseries: AddSeriesScreen,
-     * Addinfo: AddInfoScreen */
-  },
-  {
-    // transitionConfig,
-    headerMode: 'none',
-    defaultNavigationOptions: {
-      // header: AHeader as any
     }
   }
 )
