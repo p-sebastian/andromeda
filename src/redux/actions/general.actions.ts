@@ -13,6 +13,7 @@ import {
   CLEAR_EPISODES,
   CLEAR_SEARCH_SERIES,
   COMMAND_COMPLETE,
+  COMMAND_TRIGGER_REFRESH,
   NETWORK_CHANGE,
   NETWORK_ENDPOINT_TOGGLE,
   SIDEBAR_TOGGLE,
@@ -44,6 +45,7 @@ export const do_command_complete = createAction(
   COMMAND_COMPLETE,
   action => (ids: number[]) => action(ids)
 )
+export const do_command_trigger_refresh = createAction(COMMAND_TRIGGER_REFRESH)
 
 export const do_action_sheet_open = createAction(
   ACTION_SHEET_OPEN,

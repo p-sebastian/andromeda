@@ -4,7 +4,8 @@ import { do_command_complete, do_toast_show } from '@actions/general.actions'
 import { ApiActionsType } from '@actions/index'
 import {
   API_SONARR_GET_COMMAND,
-  API_SONARR_POST_COMMAND_SUCCESS
+  API_SONARR_POST_COMMAND_SUCCESS,
+  COMMAND_TRIGGER_REFRESH
 } from '@actions/types'
 import { withApi } from '@utils/api.util'
 import { nrmlz } from '@utils/normalizr.util'
@@ -19,6 +20,7 @@ import {
   mapTo,
   switchMap,
   takeWhile,
+  tap,
   withLatestFrom
 } from 'rxjs/operators'
 import { isOfType } from 'typesafe-actions'
@@ -32,7 +34,7 @@ import { isOfType } from 'typesafe-actions'
  * */
 const commandPollingEpic: TEpic = (action$, state$) =>
   action$.pipe(
-    filter(isOfType(API_SONARR_POST_COMMAND_SUCCESS)),
+    filter(isOfType([API_SONARR_POST_COMMAND_SUCCESS, API_SONARR_GET_COMMAND])),
     mapTo(do_api_sonarr_get_command()),
     withApi(state$, 'GET'),
     withLatestFrom(state$),
@@ -57,7 +59,10 @@ const commandPollingEpic: TEpic = (action$, state$) =>
         // runningCommands will always be 1 call behind this loop,
         // so takeWhile can take the last call of action.payload.result.length === 0
         // to clear the data in the reducers
-        takeWhile(([, _state]) => _state.command.runningCommands.length > 0)
+        takeWhile(
+          ([, _state]) =>
+            _state.command.manual || _state.command.runningCommands.length > 0
+        )
       )
     }),
     concatMap(([action, _state]) => {

@@ -1,4 +1,6 @@
 import {
+  API_SONARR_GET_COMMAND,
+  API_SONARR_GET_COMMAND_SUCCESS,
   API_SONARR_POST_COMMAND,
   API_SONARR_POST_COMMAND_SUCCESS,
   CLEAR_COMMAND,
@@ -15,11 +17,14 @@ type State = {
   runningCommands: number[]
   // these are dismissable
   completedCommands: number[]
+  // Triggered manually
+  manual: boolean
 }
 const DEFAULT_STATE: State = {
   commandSeriesIds: {},
   runningCommands: [],
-  completedCommands: []
+  completedCommands: [],
+  manual: false
 }
 
 export const commandReducer = createReducer<typeof DEFAULT_STATE, TActions>(
@@ -32,6 +37,24 @@ export const commandReducer = createReducer<typeof DEFAULT_STATE, TActions>(
       [payload.params.seriesId]: payload.params.tvdbId
     }
   }))
+  .handleAction(API_SONARR_GET_COMMAND, state => ({ ...state, manual: true }))
+  // if what I get is not in running || completed, it means it
+  // was started outside the app
+  .handleAction(API_SONARR_GET_COMMAND_SUCCESS, (state, { payload }) => {
+    const result: number[] = payload.result
+    const merged = state.runningCommands.concat(state.completedCommands)
+    // new values
+    const out = without(result, ...merged)
+
+    return {
+      ...state,
+      // stop loop when manually started
+      manual: false,
+      runningCommands: out.length
+        ? [...state.runningCommands, ...out]
+        : state.runningCommands
+    }
+  })
   .handleAction(API_SONARR_POST_COMMAND_SUCCESS, (state, { payload }) => ({
     ...state,
     runningCommands: [...state.runningCommands, payload.id]
