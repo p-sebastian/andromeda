@@ -3,6 +3,7 @@ import {
   API_SONARR_GET_COMMAND_SUCCESS,
   API_SONARR_GET_HISTORY_SUCCESS,
   API_SONARR_GET_SERIES_SUCCESS,
+  API_SONARR_PUT_SERIES_SUCCESS,
   CLEAR_COMMAND
 } from '@actions/types'
 import { TCalendar } from '@interfaces/calendar.interface'
@@ -90,6 +91,20 @@ export const sonarrReducer = createReducer<typeof DEFAULT_STATE, TActions>(
         command: { ...state.entities.command, ...payload.entities['command'] }
       },
       result: { ...state.result, command: [...result] }
+    }
+  })
+  .handleAction(API_SONARR_PUT_SERIES_SUCCESS, (state, action) => {
+    const { tvdbId, monitored, seasons } = action.payload
+    const series = state.entities.series[tvdbId]
+    return {
+      ...state,
+      entities: {
+        ...state.entities,
+        series: {
+          ...state.entities.series,
+          [tvdbId]: { ...series, monitored, seasons: [...seasons] }
+        }
+      }
     }
   })
   .handleAction(CLEAR_COMMAND, (state, { payload }) => {

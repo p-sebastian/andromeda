@@ -32,6 +32,9 @@ export const API_SONARR_GET_COMMAND = '@api/sonarr_get_command'
 /* POST */
 export const API_SONARR_POST_SERIES = '@api/sonarr_post_series'
 export const API_SONARR_POST_COMMAND = '@api/sonarr_post_command'
+/* PUT */
+export const API_SONARR_PUT_SERIES = '@api/sonarr_put_series'
+export const API_SONARR_PUT_EPISODES = '@api/sonarr_put_episodes'
 
 /* ***** RADARR ***** */
 export const API_RADARR_GET_MOVIES = '@api/radarr_get_movies'
@@ -55,6 +58,10 @@ export const API_SONARR_GET_COMMAND_SUCCESS = '@api/sonarr_get_command_success'
 export const API_SONARR_POST_SERIES_SUCCESS = '@api/sonarr_post_series_success'
 export const API_SONARR_POST_COMMAND_SUCCESS =
   '@api/sonarr_post_command_success'
+/* PUT */
+export const API_SONARR_PUT_SERIES_SUCCESS = '@api/sonarr_put_series_success'
+export const API_SONARR_PUT_EPISODES_SUCCESS =
+  '@api/sonarr_put_episodes_success'
 
 /* ***** RADARR ***** */
 export const API_RADARR_GET_MOVIES_SUCCESS = '@api/radarr_get_movies_success'
@@ -63,7 +70,6 @@ export const CLEAR_EPISODES = '@clear/episodes'
 export const CLEAR_SEARCH_SERIES = '@clear/search_series'
 export const CLEAR_COMMAND = '@clear/command'
 export const COMMAND_COMPLETE = '@command/complete'
-export const COMMAND_TRIGGER_REFRESH = '@command/trigger_refresh'
 export const SPINNER_TOGGLE = '@spinner/toggle'
 export const SPINNER_CLEAR = '@spinner/clear'
 export const ACTION_SHEET_OPEN = '@action_sheet/open'

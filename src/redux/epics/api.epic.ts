@@ -12,9 +12,7 @@ import {
   on_api_sonarr_post_series_success
 } from '@actions/api.success.actions'
 import {
-  do_api_ajax_fail,
   do_network_endpoint_toggle,
-  do_spinner_clear,
   do_spinner_toggle,
   do_toast_show
 } from '@actions/general.actions'
@@ -32,23 +30,21 @@ import {
   API_SONARR_GET_SEARCH,
   API_SONARR_GET_SERIES,
   API_SONARR_POST_COMMAND,
-  API_SONARR_POST_COMMAND_SUCCESS,
   API_SONARR_POST_SERIES,
-  API_SONARR_POST_SERIES_SUCCESS
+  API_SONARR_POST_SERIES_SUCCESS,
+  API_SONARR_PUT_SERIES
 } from '@actions/types'
 import { NetInfoStateType } from '@react-native-community/netinfo'
-import { onCase, onComplete, withApi } from '@utils/api.util'
+import { onCase, onComplete, onError, withApi } from '@utils/api.util'
 import { logger } from '@utils/logger.util'
 import { TActions, TEpic } from '@utils/types.util'
 import { ImpactFeedbackStyle, impactAsync } from 'expo-haptics'
 import { ofType } from 'redux-observable'
 import { Observable, OperatorFunction, of } from 'rxjs'
 import {
-  catchError,
   concatMap,
   filter,
   map,
-  mapTo,
   mergeMap,
   tap,
   withLatestFrom
@@ -79,7 +75,10 @@ const spinnerStartEpic: TEpic = action$ =>
         API_RADARR_GET_MOVIES,
         API_SONARR_GET_SEARCH,
         API_SONARR_GET_PROFILES,
-        API_SONARR_GET_PATHS
+        API_SONARR_GET_PATHS,
+        API_SONARR_PUT_SERIES,
+        API_SONARR_POST_SERIES,
+        API_SONARR_POST_COMMAND
       ])
     ),
     tap(() => impactAsync(ImpactFeedbackStyle.Medium)),
@@ -125,10 +124,7 @@ const apiGetEpic: TEpic = (action$, state$) =>
            * Maps successAction to stream
            */
           map(([success]) => success as ApiSuccessActionsType),
-          catchError(error => {
-            logger.error(error)
-            return of(do_api_ajax_fail(error))
-          })
+          onError
         )
     ),
     // finish loading
@@ -150,10 +146,7 @@ const apiPostEpic: TEpic = (action$, state$) =>
            * Maps successAction to stream
            */
           map(([success]) => success as ApiSuccessActionsType),
-          catchError(error => {
-            logger.error(error)
-            return of(do_api_ajax_fail(error))
-          })
+          onError
         )
     ),
     onComplete(state$)

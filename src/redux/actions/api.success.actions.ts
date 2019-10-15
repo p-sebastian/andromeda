@@ -16,7 +16,9 @@ import {
   API_SONARR_GET_SEARCH_SUCCESS,
   API_SONARR_GET_SERIES_SUCCESS,
   API_SONARR_POST_COMMAND_SUCCESS,
-  API_SONARR_POST_SERIES_SUCCESS
+  API_SONARR_POST_SERIES_SUCCESS,
+  API_SONARR_PUT_EPISODES_SUCCESS,
+  API_SONARR_PUT_SERIES_SUCCESS
 } from './types'
 
 /*********** Success calls, managed by epics **********/
@@ -70,6 +72,17 @@ export const on_api_sonarr_post_series_success = createAction(
 export const on_api_sonarr_post_command_success = createAction(
   API_SONARR_POST_COMMAND_SUCCESS,
   action => (payload: ICommand, isOf: string) => action(payload, isOf)
+)
+export const on_api_sonarr_put_series_success = createAction(
+  API_SONARR_PUT_SERIES_SUCCESS,
+  action => (
+    payload: IRawSeries<{ coverType: string; url: string }>,
+    isOf: string
+  ) => action(payload, isOf)
+)
+export const on_api_sonarr_put_episodes_success = createAction(
+  API_SONARR_PUT_EPISODES_SUCCESS,
+  action => (payload: any, isOf: string) => action(payload, isOf)
 )
 
 /* RADARR */

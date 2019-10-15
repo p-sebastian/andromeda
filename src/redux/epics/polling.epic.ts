@@ -4,8 +4,7 @@ import { do_command_complete, do_toast_show } from '@actions/general.actions'
 import { ApiActionsType } from '@actions/index'
 import {
   API_SONARR_GET_COMMAND,
-  API_SONARR_POST_COMMAND_SUCCESS,
-  COMMAND_TRIGGER_REFRESH
+  API_SONARR_POST_COMMAND_SUCCESS
 } from '@actions/types'
 import { withApi } from '@utils/api.util'
 import { nrmlz } from '@utils/normalizr.util'
@@ -20,7 +19,6 @@ import {
   mapTo,
   switchMap,
   takeWhile,
-  tap,
   withLatestFrom
 } from 'rxjs/operators'
 import { isOfType } from 'typesafe-actions'

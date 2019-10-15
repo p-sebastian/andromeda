@@ -1,3 +1,4 @@
+import { MONITOR_EPICS } from '@epics/update.epic'
 import { combineEpics } from 'redux-observable'
 
 import { API_EPICS } from './api.epic'
@@ -11,5 +12,6 @@ export default combineEpics(
   ...SERVER_EPICS,
   ...API_EPICS,
   ...GENERAL_EPICS,
-  ...POLLING_EPICS
+  ...POLLING_EPICS,
+  ...MONITOR_EPICS
 )

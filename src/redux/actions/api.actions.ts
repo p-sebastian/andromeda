@@ -1,4 +1,4 @@
-import { IRawSeries } from '@interfaces/common.interface'
+import { IRawSeries, ISeriesValue } from '@interfaces/common.interface'
 import { CommandEnum, ServerEnum } from '@utils/enums.util'
 import moment from 'moment'
 import { createAction } from 'typesafe-actions'
@@ -14,7 +14,9 @@ import {
   API_SONARR_GET_SEARCH,
   API_SONARR_GET_SERIES,
   API_SONARR_POST_COMMAND,
-  API_SONARR_POST_SERIES
+  API_SONARR_POST_SERIES,
+  API_SONARR_PUT_EPISODES,
+  API_SONARR_PUT_SERIES
 } from './types'
 
 /**
@@ -38,7 +40,8 @@ const _config = <T extends string, K extends ServerEnum>(
 /* SONARR */
 export const do_api_sonarr_get_series = createAction(
   API_SONARR_GET_SERIES,
-  action => () => action(..._config('/series', ServerEnum.SONARR))
+  action => (id?: number) =>
+    action(..._config(`/series/${id ? id : ''}`, ServerEnum.SONARR))
 )
 export const do_api_sonarr_get_calendar = createAction(
   API_SONARR_GET_CALENDAR,
@@ -109,6 +112,18 @@ export const do_api_sonarr_post_command = createAction(
         tvdbId
       })
     )
+)
+// series.id; is ignored by the API, it is needed for
+// the app to know which series is loading
+export const do_api_sonarr_put_series = createAction(
+  API_SONARR_PUT_SERIES,
+  action => (series: ISeriesValue) =>
+    action(..._config(`/series/${series.id}`, ServerEnum.SONARR, series))
+)
+export const do_api_sonarr_put_episodes = createAction(
+  API_SONARR_PUT_EPISODES,
+  action => (ids: number[]) =>
+    action(..._config('/episode', ServerEnum.SONARR, ids))
 )
 
 /* RADARR */

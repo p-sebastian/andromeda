@@ -10,7 +10,8 @@ import AFAB from '@common/FAB.component.tsx'
 import AText from '@common/Text.component'
 import EpisodeItem from '@components/Episode-Item.component'
 import SeasonCard from '@components/Season-Card.component'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { useUpdate } from '@hooks/useUpdate'
 import { ISeriesValue } from '@interfaces/common.interface'
 import { IEpisode } from '@interfaces/episode.interface'
 import { COLORS, FONT } from '@utils/constants.util'
@@ -47,6 +48,7 @@ type Params = {
 
 const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
   const { id, tdbid, posterReq, fanartReq } = navigation.state.params as Params
+  const update = useUpdate(tdbid)
   const dispatch = useADispatch()
   const episodes = useEpisodes(id)
   const [isSelected, setIsSelected] = useState<{ [key: number]: boolean }>({})
@@ -61,6 +63,8 @@ const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
   const offsets = data.map(k => MAIN_WIDTH * 0.84 * (k - noSpecial.current))
   // Episodes toggled true
   const episodesSelected = Object.values(isSelected).filter(Boolean).length
+  const { monitored } = show
+  const bookmark = monitored ? 'bookmark' : 'bookmark-border'
 
   const toggle = (key: number) =>
     setIsSelected({ ...isSelected, [key]: !isSelected[key] })
@@ -115,7 +119,12 @@ const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
                 <Icon name="md-create" size={28} />
               </Button>
               <Button>
-                <Icon name="md-bookmark" size={28} />
+                <MaterialIcons
+                  name={bookmark}
+                  color={COLORS[ColorEnum.MAIN]}
+                  onPress={() => update()}
+                  size={28}
+                />
               </Button>
             </Gradient>
           </ForGradient>
@@ -189,6 +198,7 @@ const renderItem = (
   show: ISeriesValue
 ) => ({ item }: any) => (
   <SeasonCard
+    tvdbId={show.tvdbId}
     season={show.seasons.find(s => s.seasonNumber === Number(item))!}
     episodes={episodes[item]}
   />

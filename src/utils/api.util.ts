@@ -1,16 +1,21 @@
-import { do_spinner_clear, do_spinner_toggle } from '@actions/general.actions'
+import {
+  do_api_ajax_fail,
+  do_spinner_clear,
+  do_spinner_toggle
+} from '@actions/general.actions'
 import { ApiActionsType } from '@actions/index'
 import { ApiSuccessActionsType } from '@actions/index'
 import { do_server_set_status } from '@actions/server.actions'
 import { API_AJAX_FAIL } from '@actions/types'
 import { RootState } from '@reducers/index'
 import { TServerState } from '@reducers/server.reducer'
+import { logger } from '@utils/logger.util'
 import { memoize, values } from 'lodash'
 import { StateObservable } from 'redux-observable'
-import { Observable, OperatorFunction } from 'rxjs'
+import { Observable, OperatorFunction, of } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { AjaxResponse } from 'rxjs/internal/observable/dom/AjaxObservable'
-import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators'
+import { catchError, concatMap, map, tap, withLatestFrom } from 'rxjs/operators'
 import { isOfType } from 'typesafe-actions'
 
 import { ServerEnum } from './enums.util'
@@ -119,6 +124,14 @@ export const onComplete: OnComplete = state$ => action$ =>
           ]
       actions.push(action)
       return actions
+    })
+  )
+type OnError = OperatorFunction<any, TActions>
+export const onError: OnError = action$ =>
+  action$.pipe(
+    catchError(error => {
+      logger.error(error)
+      return of(do_api_ajax_fail(error))
     })
   )
 

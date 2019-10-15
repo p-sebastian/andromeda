@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons'
+import { useUpdate } from '@hooks/useUpdate'
 import { ISeason } from '@interfaces/common.interface'
 import { IEpisode } from '@interfaces/episode.interface'
 import { COLORS, FONT, GRADIENTS } from '@utils/constants.util'
@@ -8,13 +9,14 @@ import { byteToGB } from '@utils/helpers.util'
 import { BOX_SHADOW, MARGIN } from '@utils/position.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import moment from 'moment'
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 
 const MAIN_WIDTH = SCREEN_WIDTH - OFFSET
 const gradient = GRADIENTS[GradientEnum.SEASONS]
-type Props = { episodes: IEpisode[]; season: ISeason }
-const SeasonCard: React.FC<Props> = ({ season, episodes }) => {
+type Props = { episodes: IEpisode[]; season: ISeason; tvdbId: number }
+const SeasonCard: React.FC<Props> = ({ season, episodes, tvdbId }) => {
+  const update = useUpdate(tvdbId)
   const { seasonNumber, statistics, monitored } = season
   const { episodeFileCount, sizeOnDisk, totalEpisodeCount } = statistics!
   const bookmark = monitored ? 'bookmark' : 'bookmark-border'
@@ -40,7 +42,7 @@ const SeasonCard: React.FC<Props> = ({ season, episodes }) => {
               <Icon name="more-vert" size={28} />
             </Button>
             <Title>{title(seasonNumber)}</Title>
-            <Button>
+            <Button onPress={() => update(seasonNumber)}>
               <Icon name={bookmark} size={28} />
             </Button>
           </Top>
