@@ -1,4 +1,5 @@
 import {
+  do_api_sonarr_get_episodes,
   do_api_sonarr_get_series,
   do_api_sonarr_put_series
 } from '@actions/api.actions'
@@ -18,7 +19,13 @@ import { logger } from '@utils/logger.util'
 import { TActions, TEpic } from '@utils/types.util'
 import { cloneDeep } from 'lodash'
 import { of } from 'rxjs'
-import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import {
+  concatMap,
+  filter,
+  map,
+  mergeMap,
+  withLatestFrom
+} from 'rxjs/operators'
 import { isOfType } from 'typesafe-actions'
 
 const monitorEpisodesEpic: TEpic = (action$, state$) =>
@@ -71,7 +78,14 @@ const monitorSeriesEpic: TEpic = (action$, state$) =>
     mergeMap(ajax =>
       ajax.pipe(
         onCase(API_SONARR_PUT_SERIES)(on_api_sonarr_put_series_success),
-        map(([success]) => success as ApiSuccessActionsType)
+        concatMap(
+          ([success]) =>
+            [
+              success,
+              // also update episode list on monitored change
+              do_api_sonarr_get_episodes((success as any).payload.id)
+            ] as ApiSuccessActionsType[]
+        )
       )
     ),
     onError,

@@ -36,11 +36,10 @@ import {
 } from '@actions/types'
 import { NetInfoStateType } from '@react-native-community/netinfo'
 import { onCase, onComplete, onError, withApi } from '@utils/api.util'
-import { logger } from '@utils/logger.util'
 import { TActions, TEpic } from '@utils/types.util'
 import { ImpactFeedbackStyle, impactAsync } from 'expo-haptics'
 import { ofType } from 'redux-observable'
-import { Observable, OperatorFunction, of } from 'rxjs'
+import { Observable, OperatorFunction } from 'rxjs'
 import {
   concatMap,
   filter,

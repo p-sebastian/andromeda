@@ -6,6 +6,7 @@ import {
 import { do_navigate_back } from '@actions/navigation.actions'
 import ABackground from '@common/Background.component'
 import BottomDrawer from '@common/Bottom-Drawer.component'
+import ButtonIcon from '@common/Button-Icon.component'
 import AFAB from '@common/FAB.component.tsx'
 import AText from '@common/Text.component'
 import EpisodeItem from '@components/Episode-Item.component'
@@ -22,7 +23,11 @@ import { GradientEnum } from '@utils/enums.util'
 import { byteToGB } from '@utils/helpers.util'
 import { logger } from '@utils/logger.util'
 import { BORDER_RADIUS, BOX_SHADOW, MARGIN } from '@utils/position.util'
-import { useADispatch, useShallowSelector } from '@utils/recipes.util'
+import {
+  useADispatch,
+  useASelector,
+  useShallowSelector
+} from '@utils/recipes.util'
 import { ScreenFComponent } from '@utils/types.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import { isEmpty } from 'lodash'
@@ -48,6 +53,8 @@ type Params = {
 
 const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
   const { id, tdbid, posterReq, fanartReq } = navigation.state.params as Params
+  // check if update command is happening
+  const disable = useASelector(state => state.spinner[`/series/${id}`])
   const update = useUpdate(tdbid)
   const dispatch = useADispatch()
   const episodes = useEpisodes(id)
@@ -119,9 +126,10 @@ const ShowInfoScreen: ScreenFComponent = ({ navigation }) => {
                 <Icon name="md-create" size={28} />
               </Button>
               <Button>
-                <MaterialIcons
+                <ButtonIcon
+                  icon="material"
                   name={bookmark}
-                  color={COLORS[ColorEnum.MAIN]}
+                  loading={disable}
                   onPress={() => update()}
                   size={28}
                 />
@@ -198,6 +206,7 @@ const renderItem = (
   show: ISeriesValue
 ) => ({ item }: any) => (
   <SeasonCard
+    id={show.id}
     tvdbId={show.tvdbId}
     season={show.seasons.find(s => s.seasonNumber === Number(item))!}
     episodes={episodes[item]}

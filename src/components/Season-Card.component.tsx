@@ -1,3 +1,4 @@
+import ButtonIcon from '@common/Button-Icon.component'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useUpdate } from '@hooks/useUpdate'
 import { ISeason } from '@interfaces/common.interface'
@@ -7,16 +8,23 @@ import { OFFSET, SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils/dimensions.util'
 import { ColorEnum, GradientEnum } from '@utils/enums.util'
 import { byteToGB } from '@utils/helpers.util'
 import { BOX_SHADOW, MARGIN } from '@utils/position.util'
+import { useASelector } from '@utils/recipes.util'
 import { LinearGradient } from 'expo-linear-gradient'
 import moment from 'moment'
-import React, { useCallback } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 
 const MAIN_WIDTH = SCREEN_WIDTH - OFFSET
 const gradient = GRADIENTS[GradientEnum.SEASONS]
-type Props = { episodes: IEpisode[]; season: ISeason; tvdbId: number }
-const SeasonCard: React.FC<Props> = ({ season, episodes, tvdbId }) => {
+type Props = {
+  episodes: IEpisode[]
+  season: ISeason
+  tvdbId: number
+  id: number
+}
+const SeasonCard: React.FC<Props> = ({ season, episodes, tvdbId, id }) => {
   const update = useUpdate(tvdbId)
+  const disable = useASelector(state => state.spinner[`/series/${id}`])
   const { seasonNumber, statistics, monitored } = season
   const { episodeFileCount, sizeOnDisk, totalEpisodeCount } = statistics!
   const bookmark = monitored ? 'bookmark' : 'bookmark-border'
@@ -42,9 +50,13 @@ const SeasonCard: React.FC<Props> = ({ season, episodes, tvdbId }) => {
               <Icon name="more-vert" size={28} />
             </Button>
             <Title>{title(seasonNumber)}</Title>
-            <Button onPress={() => update(seasonNumber)}>
-              <Icon name={bookmark} size={28} />
-            </Button>
+            <ButtonIcon
+              icon="material"
+              name={bookmark}
+              loading={disable}
+              onPress={() => update(seasonNumber)}
+              size={28}
+            />
           </Top>
           <Center>
             {/* <Text>Monitored episodes</Text> */}
